@@ -20,6 +20,7 @@
             "dest": "/api/index.php"
         }
     ],
+    "buildCommand": "echo \"Frontend build skipped\"",
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
