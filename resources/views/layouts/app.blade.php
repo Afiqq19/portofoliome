@@ -53,8 +53,15 @@
             </a>
             
             <div class="nav-links hidden md:flex">
-                <a href="{{ route('home') }}#skills" class="nav-link">Keahlian</a>
-                <a href="{{ route('home') }}#projects" class="nav-link">Projek</a>
+                @if($profile->enable_skills ?? true)
+                    <a href="{{ route('home') }}#skills" class="nav-link">Keahlian</a>
+                @endif
+                @if($profile->enable_projects ?? true)
+                    <a href="{{ route('home') }}#projects" class="nav-link">Projek</a>
+                @endif
+                @if($profile->enable_certificates ?? true)
+                    <a href="{{ route('home') }}#certificates" class="nav-link">Sertifikat</a>
+                @endif
                 <a href="{{ route('home') }}#contact" class="nav-link">Kontak</a>
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-outline">Dashboard</a>
@@ -71,8 +78,15 @@
 
         <!-- Mobile Menu Dropdown -->
         <div x-show="mobileMenuOpen" x-transition class="md:hidden absolute top-full left-0 right-0 bg-secondary border-b border-glass p-4 flex flex-col gap-4 shadow-xl" style="display: none; border-bottom-color: var(--glass-border)">
-            <a href="{{ route('home') }}#skills" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Keahlian</a>
-            <a href="{{ route('home') }}#projects" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Projek</a>
+            @if($profile->enable_skills ?? true)
+                <a href="{{ route('home') }}#skills" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Keahlian</a>
+            @endif
+            @if($profile->enable_projects ?? true)
+                <a href="{{ route('home') }}#projects" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Projek</a>
+            @endif
+            @if($profile->enable_certificates ?? true)
+                <a href="{{ route('home') }}#certificates" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Sertifikat</a>
+            @endif
             <a href="{{ route('home') }}#contact" class="text-secondary hover:text-white font-medium py-2" @click="mobileMenuOpen = false">Kontak</a>
             @auth
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-primary w-full mt-2 text-center" @click="mobileMenuOpen = false">Dashboard Admin</a>
@@ -96,8 +110,15 @@
             <h3 class="text-2xl font-bold mb-4 font-['Space_Grotesk'] text-gradient">{{ $profile->name ?? 'PortfolioMe' }}</h3>
             <p class="text-secondary mb-6 max-w-md mx-auto">Membangun pengalaman digital masa depan, satu baris kode pada satu waktu.</p>
             <div class="flex justify-center gap-6 mb-8 text-sm text-secondary font-medium">
-                <a href="{{ route('home') }}#skills" class="hover:text-accent-primary transition-colors">Keahlian</a>
-                <a href="{{ route('home') }}#projects" class="hover:text-accent-primary transition-colors">Projek</a>
+                @if($profile->enable_skills ?? true)
+                    <a href="{{ route('home') }}#skills" class="hover:text-accent-primary transition-colors">Keahlian</a>
+                @endif
+                @if($profile->enable_projects ?? true)
+                    <a href="{{ route('home') }}#projects" class="hover:text-accent-primary transition-colors">Projek</a>
+                @endif
+                @if($profile->enable_certificates ?? true)
+                    <a href="{{ route('home') }}#certificates" class="hover:text-accent-primary transition-colors">Sertifikat</a>
+                @endif
                 <a href="{{ route('home') }}#contact" class="hover:text-accent-primary transition-colors">Kontak</a>
             </div>
             <div class="text-sm text-muted">

@@ -79,4 +79,26 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Social links berhasil diperbarui! ✅');
     }
+
+    public function editSettings()
+    {
+        $profile = Profile::first();
+        if (!$profile) {
+            $profile = Profile::create(['name' => 'Your Name']);
+        }
+        return view('admin.settings.index', compact('profile'));
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $profile = Profile::first();
+        
+        $profile->update([
+            'enable_skills' => $request->has('enable_skills'),
+            'enable_projects' => $request->has('enable_projects'),
+            'enable_certificates' => $request->has('enable_certificates'),
+        ]);
+
+        return back()->with('success', 'Pengaturan tampilan berhasil diperbarui! 🎨');
+    }
 }

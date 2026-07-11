@@ -22,6 +22,7 @@ class PortfolioController extends Controller
         $skills = Skill::orderBy('order')->get()->groupBy('category');
         $projects = Project::published()->orderBy('order')->get();
         $featuredProjects = Project::published()->featured()->orderBy('order')->take(6)->get();
+        $certificates = \App\Models\Certificate::published()->orderBy('order')->get();
 
         $stats = [
             'projects' => Project::published()->count(),
@@ -29,7 +30,7 @@ class PortfolioController extends Controller
             'visitors' => Visitor::distinct('ip_address')->count(),
         ];
 
-        return view('portfolio.home', compact('profile', 'skills', 'projects', 'featuredProjects', 'stats'));
+        return view('portfolio.home', compact('profile', 'skills', 'projects', 'featuredProjects', 'certificates', 'stats'));
     }
 
     /**

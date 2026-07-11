@@ -111,7 +111,7 @@
 @endif
 
 <!-- Skills Section -->
-@if(count($skills) > 0)
+@if(($profile->enable_skills ?? true) && count($skills) > 0)
 <section id="skills" class="py-24 bg-gradient-to-b from-transparent via-bg-secondary/50 to-transparent relative">
     <div class="container relative z-10">
         <div class="flex items-center gap-4 mb-16 justify-center">
@@ -152,6 +152,7 @@
 @endif
 
 <!-- Projects Section -->
+@if($profile->enable_projects ?? true)
 <section id="projects" class="py-24 relative">
     <div class="container">
         <div class="flex items-center gap-4 mb-16 justify-center">
@@ -203,6 +204,62 @@
         </div>
     </div>
 </section>
+@endif
+
+<!-- Certificates Section -->
+@if(($profile->enable_certificates ?? true) && count($certificates) > 0)
+<section id="certificates" class="py-24 relative bg-gradient-to-t from-bg-secondary/30 to-transparent">
+    <div class="container">
+        <div class="flex items-center gap-4 mb-16 justify-center">
+            <div class="h-px bg-gradient-to-r from-transparent to-accent-secondary w-12 md:w-24"></div>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Sertifikat & <span class="text-gradient text-accent-secondary">Penghargaan</span></h2>
+            <div class="h-px bg-gradient-to-l from-transparent to-accent-secondary w-12 md:w-24"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($certificates as $cert)
+                <div class="group relative rounded-3xl overflow-hidden glass-panel border border-white/5 hover:border-accent-secondary/40 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]">
+                    <div class="absolute inset-0 bg-gradient-to-br from-accent-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
+                    
+                    @if($cert->image)
+                        <div class="h-48 overflow-hidden relative z-10">
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                            <img src="{{ asset('storage/' . $cert->image) }}" alt="{{ $cert->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        </div>
+                    @endif
+                    
+                    <div class="p-6 md:p-8 relative z-20">
+                        <div class="text-xs font-bold tracking-wider text-accent-secondary uppercase mb-2">
+                            {{ $cert->date ? $cert->date->format('M Y') : 'Penghargaan' }}
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 font-['Space_Grotesk'] text-white group-hover:text-accent-secondary transition-colors">{{ $cert->title }}</h3>
+                        @if($cert->issuer)
+                            <p class="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                {{ $cert->issuer }}
+                            </p>
+                        @endif
+                        @if($cert->description)
+                            <p class="text-secondary text-sm line-clamp-3 leading-relaxed mb-6">
+                                {{ $cert->description }}
+                            </p>
+                        @endif
+                        
+                        @if($cert->credential_url)
+                            <div class="mt-4 pt-4 border-t border-white/5 group-hover:border-accent-secondary/20 transition-colors">
+                                <a href="{{ $cert->credential_url }}" target="_blank" class="text-sm font-bold text-accent-secondary flex items-center gap-2 hover:text-white transition-colors">
+                                    Lihat Kredensial
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 <!-- Contact Section -->
 <section id="contact" class="py-24 relative overflow-hidden">

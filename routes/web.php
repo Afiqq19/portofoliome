@@ -39,10 +39,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/social-links', [ProfileController::class, 'updateSocialLinks'])->name('profile.social-links');
+    
+    // Quick Settings
+    Route::get('/settings', [ProfileController::class, 'editSettings'])->name('settings.index');
+    Route::put('/settings', [ProfileController::class, 'updateSettings'])->name('settings.update');
 
     // Projects
     Route::patch('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
     Route::resource('projects', ProjectController::class);
+
+    // Certificates
+    Route::patch('certificates/{certificate}/toggle-status', [\App\Http\Controllers\Admin\CertificateController::class, 'toggleStatus'])->name('certificates.toggle-status');
+    Route::resource('certificates', \App\Http\Controllers\Admin\CertificateController::class);
 
     // Skills
     Route::get('/skills', [SkillController::class, 'index'])->name('skills.index');

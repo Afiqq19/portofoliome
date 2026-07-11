@@ -17,6 +17,15 @@ class Profile extends Model
         'phone',
         'location',
         'trakteer_url',
+        'enable_skills',
+        'enable_projects',
+        'enable_certificates',
+    ];
+
+    protected $casts = [
+        'enable_skills' => 'boolean',
+        'enable_projects' => 'boolean',
+        'enable_certificates' => 'boolean',
     ];
 
     public function socialLinks(): HasMany
