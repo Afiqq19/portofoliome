@@ -21,6 +21,7 @@
         }
     ],
     "buildCommand": "echo \"Frontend build skipped\"",
+    "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
