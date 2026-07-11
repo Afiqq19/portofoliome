@@ -14,39 +14,48 @@
         Visibilitas Menu
     </h2>
     
-    <form action="{{ route('settings.update') }}" method="POST">
+    <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf
         @method('PUT')
         
         <div class="bg-tertiary rounded-lg p-5 mb-6 border border-glass">
             <p class="text-sm text-secondary mb-5">Pilih menu / bagian mana saja yang ingin ditampilkan di halaman utama portofolio Anda. Jika centang dihilangkan, menu tersebut akan otomatis disembunyikan (draft) dari publik.</p>
             
-            <div class="form-group mb-5">
-                <label class="flex items-center gap-4 cursor-pointer p-3 rounded-lg hover:bg-white/5 transition-colors" style="border: 1px solid var(--glass-border)">
-                    <input type="checkbox" name="enable_skills" value="1" {{ $profile->enable_skills ?? true ? 'checked' : '' }} class="w-6 h-6 rounded" style="accent-color: var(--accent-primary);">
-                    <div>
-                        <span class="block font-bold text-lg">Tampilkan Keahlian</span>
+            <div class="form-group mb-4">
+                <label class="flex items-center justify-between cursor-pointer p-5 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/5 hover:border-white/10 group" style="background: rgba(0,0,0,0.2);">
+                    <div class="pr-4">
+                        <span class="block font-bold text-lg text-white mb-1 group-hover:text-accent-primary transition-colors">Tampilkan Keahlian</span>
                         <span class="text-sm text-secondary">Menampilkan daftar kemampuan dan keahlian teknis Anda.</span>
+                    </div>
+                    <div class="relative inline-flex items-center flex-shrink-0">
+                        <input type="checkbox" name="enable_skills" value="1" {{ $profile->enable_skills ?? true ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[110%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-accent-primary border border-white/10 shadow-inner"></div>
                     </div>
                 </label>
             </div>
             
-            <div class="form-group mb-5">
-                <label class="flex items-center gap-4 cursor-pointer p-3 rounded-lg hover:bg-white/5 transition-colors" style="border: 1px solid var(--glass-border)">
-                    <input type="checkbox" name="enable_projects" value="1" {{ $profile->enable_projects ?? true ? 'checked' : '' }} class="w-6 h-6 rounded" style="accent-color: var(--accent-primary);">
-                    <div>
-                        <span class="block font-bold text-lg">Tampilkan Projek</span>
-                        <span class="text-sm text-secondary">Menampilkan daftar portofolio / hasil kerja Anda.</span>
+            <div class="form-group mb-4">
+                <label class="flex items-center justify-between cursor-pointer p-5 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/5 hover:border-white/10 group" style="background: rgba(0,0,0,0.2);">
+                    <div class="pr-4">
+                        <span class="block font-bold text-lg text-white mb-1 group-hover:text-accent-primary transition-colors">Tampilkan Projek</span>
+                        <span class="text-sm text-secondary">Menampilkan portofolio dan hasil kerja Anda kepada publik.</span>
+                    </div>
+                    <div class="relative inline-flex items-center flex-shrink-0">
+                        <input type="checkbox" name="enable_projects" value="1" {{ $profile->enable_projects ?? true ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[110%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-accent-primary border border-white/10 shadow-inner"></div>
                     </div>
                 </label>
             </div>
             
             <div class="form-group mb-2">
-                <label class="flex items-center gap-4 cursor-pointer p-3 rounded-lg hover:bg-white/5 transition-colors" style="border: 1px solid var(--glass-border)">
-                    <input type="checkbox" name="enable_certificates" value="1" {{ $profile->enable_certificates ?? true ? 'checked' : '' }} class="w-6 h-6 rounded" style="accent-color: var(--accent-primary);">
-                    <div>
-                        <span class="block font-bold text-lg">Tampilkan Sertifikat</span>
-                        <span class="text-sm text-secondary">Menampilkan penghargaan dan sertifikat yang Anda peroleh.</span>
+                <label class="flex items-center justify-between cursor-pointer p-5 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/5 hover:border-white/10 group" style="background: rgba(0,0,0,0.2);">
+                    <div class="pr-4">
+                        <span class="block font-bold text-lg text-white mb-1 group-hover:text-accent-primary transition-colors">Tampilkan Sertifikat</span>
+                        <span class="text-sm text-secondary">Menampilkan halaman penghargaan dan sertifikat yang Anda peroleh.</span>
+                    </div>
+                    <div class="relative inline-flex items-center flex-shrink-0">
+                        <input type="checkbox" name="enable_certificates" value="1" {{ $profile->enable_certificates ?? true ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-14 h-7 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[110%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-accent-primary border border-white/10 shadow-inner"></div>
                     </div>
                 </label>
             </div>
