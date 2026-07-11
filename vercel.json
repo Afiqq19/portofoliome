@@ -3,7 +3,7 @@
     "framework": null,
     "functions": {
         "api/index.php": {
-            "runtime": "vercel-php@0.9.0"
+            "runtime": "vercel-php@0.7.2"
         }
     },
     "routes": [
@@ -25,7 +25,7 @@
     "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
+        "APP_DEBUG": "true",
         "APP_URL": "https://portofoliomsyafiq19.vercel.app",
         "APP_KEY": "base64:8wGVBHrUPXJHv03/ttANXWeAnTwJhm8Pfcm9TpfMaIQ=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
