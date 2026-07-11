@@ -42,6 +42,15 @@
         "DB_PORT": "5432",
         "DB_DATABASE": "db_portofoliome",
         "DB_USERNAME": "postgres",
-        "DB_PASSWORD": "rahasia123"
+        "DB_PASSWORD": "rahasia123",
+        "MAIL_MAILER": "smtp",
+        "MAIL_HOST": "smtp.gmail.com",
+        "MAIL_PORT": "465",
+        "MAIL_USERNAME": "muhammadsonic19@gmail.com",
+        "MAIL_PASSWORD": "jlecralrhkizoxmx",
+        "MAIL_ENCRYPTION": "ssl",
+        "MAIL_FROM_ADDRESS": "muhammadsonic19@gmail.com",
+        "MAIL_FROM_NAME": "PortfolioMe",
+        "VITE_APP_NAME": "PortfolioMe"
     }
 }
