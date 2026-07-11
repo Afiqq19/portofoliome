@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $profile->bio ?? 'PortfolioMe - Premium Personal Portfolio' }}">
     <title>@yield('title', config('app.name', 'PortfolioMe'))</title>
+    <link rel="icon" href="{{ asset('iconn.png') }}">
 
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

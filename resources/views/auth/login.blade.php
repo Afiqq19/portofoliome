@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - {{ config('app.name', 'PortfolioMe') }}</title>
+    <link rel="icon" href="{{ asset('iconn.png') }}">
 
     <!-- Vite -->
     @vite(['resources/css/app.css'])
