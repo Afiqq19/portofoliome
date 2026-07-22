@@ -68,3 +68,28 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 });
+
+// ============================================================
+// AUTO DEPLOY WEBHOOK (Tombol Ajaib Portofolio)
+// CREATED BY: MSS (MASTER CREATOR)
+// ============================================================
+Route::get('/update-rahasia-mss', function () {
+    $gitPath = 'git';
+    if (file_exists('D:\laragon\bin\git\cmd\git.exe')) {
+        $gitPath = 'D:\laragon\bin\git\cmd\git.exe';
+    } elseif (file_exists('C:\laragon\bin\git\cmd\git.exe')) {
+        $gitPath = 'C:\laragon\bin\git\cmd\git.exe';
+    }
+    
+    putenv('GIT_TERMINAL_PROMPT=0');
+    putenv('GCM_INTERACTIVE=false');
+    
+    $repoDir = dirname(base_path());
+    $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --local credential.helper manager-core 2>&1");
+    $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
+    $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
+    
+    return "<h1 style='color:green;'>Berhasil Menarik Kodingan Baru dari GitHub oleh MSS!</h1>
+            <h3>Laporan Log:</h3>
+            <pre style='background:#333;color:#0f0;padding:20px;border-radius:10px;'>$output0\n$output1\n$output2</pre>";
+});
