@@ -93,3 +93,21 @@ Route::get('/update-rahasia-mss', function () {
             <h3>Laporan Log:</h3>
             <pre style='background:#333;color:#0f0;padding:20px;border-radius:10px;'>$output0\n$output1\n$output2</pre>";
 });
+
+// ============================================================
+// TOMBOL RAHASIA PEMBUAT AKUN ADMIN
+// ============================================================
+Route::get('/buat-akun-admin-mss', function () {
+    \App\Models\User::updateOrCreate(
+        ['email' => 'admin@gmail.com'],
+        [
+            'name' => 'Admin Portofolio',
+            'password' => bcrypt('rahasia123'),
+            'role' => 'admin'
+        ]
+    );
+    return "<h1 style='color:blue;'>Akun Admin Berhasil Dibuat!</h1>
+            <h3>Email: admin@gmail.com</h3>
+            <h3>Password: rahasia123</h3>
+            <a href='/login'>Klik di sini untuk Login</a>";
+});
