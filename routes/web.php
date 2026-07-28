@@ -100,8 +100,11 @@ Route::get('/update-rahasia-mss', function () {
     putenv('GIT_TERMINAL_PROMPT=0');
     putenv('GCM_INTERACTIVE=false');
     
-    $repoDir = dirname(base_path());
-    $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --local credential.helper manager-core 2>&1");
+    // Perbaikan: Repo directory adalah folder utama laravel, BUKAN parent foldernya
+    $repoDir = base_path();
+    
+    // Perbaikan: Bypass Git dubious ownership error
+    $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
     $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
     $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
     
