@@ -338,7 +338,8 @@
             <!-- Daftar Catatan -->
             <div class="lg:col-span-2">
                 @if($notes->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Tambahan max-h dan overflow agar bisa discroll -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[550px] overflow-y-auto pr-2" style="scrollbar-width: thin; scrollbar-color: rgba(99, 102, 241, 0.5) transparent;">
                         @foreach($notes as $note)
                             <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-accent-primary/30 transition-all hover:-translate-y-1">
                                 <div class="flex justify-between items-start mb-4">
