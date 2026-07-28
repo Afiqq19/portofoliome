@@ -6,6 +6,9 @@
     <meta name="description" content="{{ $profile->bio ?? 'MSyafiq Portofolio - Premium Personal Portfolio' }}">
     <title>@yield('title', config('app.name', 'MSyafiq Portofolio'))</title>
     <link rel="icon" href="{{ asset('iconn.png') }}">
+    
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="RKZ6qgPEUEpVfljmxyis7hAxPPHd589Vhe0A25k0PyI" />
 
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
