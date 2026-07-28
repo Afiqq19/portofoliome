@@ -25,9 +25,44 @@
             <span class="text-primary">Hello, I'm</span><br/>
             <span class="text-gradient">{{ $profile->name ?? 'Welcome to My Portfolio' }}</span>
         </h1>
-        <p class="text-xl md:text-2xl text-secondary mb-10 delay-300 max-w-2xl mx-auto font-light leading-relaxed">
+        <p class="text-xl md:text-2xl text-secondary mb-8 delay-300 max-w-2xl mx-auto font-light leading-relaxed">
             {{ $profile->title ?? 'Web Developer & Designer' }}
         </p>
+        
+        <!-- Live Clock & Date Widget -->
+        <div class="flex justify-center mb-10 delay-300 animate-fade-in" x-data="liveClock()">
+            <div class="glass-panel px-6 py-3 rounded-full inline-flex items-center gap-4 border border-white/10 shadow-[0_0_15px_rgba(99,102,241,0.2)] bg-white/5 backdrop-blur-md hover:border-accent-primary/50 transition-colors duration-300">
+                <div class="flex items-center gap-2 text-accent-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span class="font-mono font-bold tracking-wider text-lg" x-text="time">00:00:00</span>
+                </div>
+                <div class="w-px h-5 bg-white/20"></div>
+                <div class="flex items-center gap-2 text-secondary text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span x-text="date">Senin, 1 Jan 2024</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function liveClock() {
+                return {
+                    time: '',
+                    date: '',
+                    init() {
+                        this.updateClock();
+                        setInterval(() => this.updateClock(), 1000);
+                    },
+                    updateClock() {
+                        const now = new Date();
+                        // Format Waktu
+                        this.time = now.toLocaleTimeString('id-ID', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/\./g, ':');
+                        // Format Tanggal
+                        this.date = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    }
+                }
+            }
+        </script>
         
         <div class="flex flex-wrap justify-center gap-6 delay-300">
             <a href="#projects" class="btn btn-primary px-8 py-4 text-lg rounded-full group">
@@ -261,6 +296,78 @@
 </section>
 @endif
 
+<!-- Workspace / Catatan Pengunjung -->
+<section id="workspace" class="py-24 bg-bg-secondary/20 relative">
+    <div class="container relative z-10">
+        <div class="flex items-center gap-4 mb-16 justify-center">
+            <div class="h-px bg-gradient-to-r from-transparent to-accent-primary w-12 md:w-24"></div>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Workspace <span class="text-gradient">Publik</span></h2>
+            <div class="h-px bg-gradient-to-l from-transparent to-accent-primary w-12 md:w-24"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Form Catatan -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 sticky top-24">
+                    <h3 class="text-xl font-bold mb-4 font-['Space_Grotesk'] text-white">Tinggalkan Jejak! 🚀</h3>
+                    <p class="text-sm text-secondary mb-6">Tulis pesan, kesan, atau sekadar menyapa pengunjung lain di workspace publik ini.</p>
+                    
+                    @if(session('success_note'))
+                        <div class="alert alert-success rounded-xl mb-6 text-sm py-3 px-4 flex items-center bg-success/20 text-success border border-success/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            {{ session('success_note') }}
+                        </div>
+                    @endif
+                    
+                    <form action="{{ route('notes.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <input type="text" name="name" class="form-control bg-bg-primary/50 border-white/10 focus:border-accent-primary rounded-xl px-4 py-3 text-sm" required placeholder="Nama Anda (Boleh Samaran)">
+                        </div>
+                        <div class="form-group mb-6">
+                            <textarea name="content" class="form-control bg-bg-primary/50 border-white/10 focus:border-accent-primary rounded-xl px-4 py-3 text-sm min-h-[120px]" required placeholder="Tulis catatan Anda di sini..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 group">
+                            Kirim Catatan
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Daftar Catatan -->
+            <div class="lg:col-span-2">
+                @if($notes->count() > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @foreach($notes as $note)
+                            <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-accent-primary/30 transition-all hover:-translate-y-1">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center font-bold text-white shadow-lg">
+                                            {{ strtoupper(substr($note->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-white text-sm">{{ $note->name }}</h4>
+                                            <p class="text-xs text-muted">{{ $note->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-secondary text-sm leading-relaxed whitespace-pre-wrap">{{ $note->content }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="flex flex-col items-center justify-center h-full min-h-[300px] text-center border-2 border-dashed border-white/10 rounded-3xl p-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <h4 class="text-lg font-bold text-white mb-2">Belum Ada Catatan</h4>
+                        <p class="text-sm text-secondary">Jadilah yang pertama meninggalkan jejak di workspace ini!</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Contact Section -->
 <section id="contact" class="py-24 relative overflow-hidden">
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent-secondary/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -271,6 +378,31 @@
                 <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Mari <span class="text-gradient">Berdiskusi</span></h2>
                 <div class="h-px bg-gradient-to-l from-transparent to-accent-secondary w-12 md:w-24"></div>
             </div>
+            
+            @if($profile && ($profile->email || $profile->phone || $profile->location))
+            <div class="flex flex-wrap justify-center gap-6 mb-12">
+                @if($profile->email)
+                <a href="mailto:{{ $profile->email }}" class="flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3 rounded-full hover:bg-accent-primary/20 hover:border-accent-primary/50 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-primary"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span class="text-sm font-semibold text-gray-300">{{ $profile->email }}</span>
+                </a>
+                @endif
+                
+                @if($profile->phone)
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $profile->phone) }}" target="_blank" class="flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3 rounded-full hover:bg-accent-secondary/20 hover:border-accent-secondary/50 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-secondary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span class="text-sm font-semibold text-gray-300">{{ $profile->phone }}</span>
+                </a>
+                @endif
+                
+                @if($profile->location)
+                <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span class="text-sm font-semibold text-gray-300">{{ $profile->location }}</span>
+                </div>
+                @endif
+            </div>
+            @endif
             
             <div class="glass-panel p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
                 <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent rounded-3xl pointer-events-none"></div>

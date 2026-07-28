@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\BackupController;
+use App\Http\Controllers\Admin\NoteController;
 use Illuminate\Support\Facades\Route;
 
 // ── Public Routes (No Login Required) ─────────────────
@@ -22,6 +24,9 @@ Route::middleware(\App\Http\Middleware\TrackVisitor::class)->group(function () {
     // Ticket System Routes
     Route::get('/ticket/{ticket_id}', [\App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
     Route::post('/ticket/{ticket_id}/reply', [\App\Http\Controllers\TicketController::class, 'reply'])->name('ticket.reply');
+    
+    // Notes Route
+    Route::post('/notes', [PortfolioController::class, 'storeNote'])->name('notes.store');
 });
 
 // ── Auth Routes ───────────────────────────────────────
@@ -67,6 +72,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::post('/messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+    // Backup & Restore
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+    Route::get('/backup/download', [BackupController::class, 'download'])->name('backup.download');
+    Route::post('/backup', [BackupController::class, 'store'])->name('backup.store');
+    Route::post('/backup/restore', [BackupController::class, 'restore'])->name('backup.restore');
+    Route::delete('/backup/delete', [BackupController::class, 'delete'])->name('backup.delete');
+
+    // Notes
+    Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
+    Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 });
 
 // ============================================================

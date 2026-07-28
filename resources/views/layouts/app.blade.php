@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ $profile->bio ?? 'PortfolioMe - Premium Personal Portfolio' }}">
-    <title>@yield('title', config('app.name', 'PortfolioMe'))</title>
+    <meta name="description" content="{{ $profile->bio ?? 'MSyafiq Portofolio - Premium Personal Portfolio' }}">
+    <title>@yield('title', config('app.name', 'MSyafiq Portofolio'))</title>
     <link rel="icon" href="{{ asset('iconn.png') }}">
 
     <!-- Vite -->
@@ -16,6 +16,9 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
                     backgroundColor: {
                         primary: 'var(--bg-primary)',
                         secondary: 'var(--bg-secondary)',
@@ -44,13 +47,19 @@
     <!-- BoxIcons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body class="antialiased text-primary">
+<body class="antialiased text-primary relative">
+
+    <!-- Scroll Progress Bar -->
+    <div class="fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-primary to-accent-secondary z-[9999] transition-all duration-75 shadow-[0_0_10px_var(--accent-glow)]" 
+         x-data="{ scrollProgress: 0 }" 
+         @scroll.window="scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100"
+         :style="`width: ${scrollProgress}%`"></div>
 
     <!-- Navigation -->
     <nav class="navbar animate-fade-in" x-data="{ mobileMenuOpen: false }">
         <div class="container flex justify-between items-center relative">
             <a href="{{ route('home') }}" class="nav-brand text-gradient">
-                {{ $profile->name ?? 'PortfolioMe' }}
+                {{ $profile->name ?? 'MSyafiq Portofolio' }}
             </a>
             
             <div class="nav-links hidden md:flex">
@@ -108,7 +117,7 @@
         <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-primary to-transparent opacity-50"></div>
         
         <div class="container text-center relative z-10">
-            <h3 class="text-2xl font-bold mb-4 font-['Space_Grotesk'] text-gradient">{{ $profile->name ?? 'PortfolioMe' }}</h3>
+            <h3 class="text-2xl font-bold mb-4 font-['Space_Grotesk'] text-gradient">{{ $profile->name ?? 'MSyafiq Portofolio' }}</h3>
             <p class="text-secondary mb-6 max-w-md mx-auto">Membangun pengalaman digital masa depan, satu baris kode pada satu waktu.</p>
             <div class="flex justify-center gap-6 mb-8 text-sm text-secondary font-medium">
                 @if($profile->enable_skills ?? true)
@@ -123,7 +132,7 @@
                 <a href="{{ route('home') }}#contact" class="hover:text-accent-primary transition-colors">Kontak</a>
             </div>
             <div class="text-sm text-muted">
-                <p>&copy; {{ date('Y') }} {{ $profile->name ?? 'PortfolioMe' }}. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} {{ $profile->name ?? 'MSyafiq Portofolio' }}. All rights reserved.</p>
             </div>
         </div>
         

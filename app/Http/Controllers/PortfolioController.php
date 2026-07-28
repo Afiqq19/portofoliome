@@ -8,6 +8,7 @@ use App\Models\Profile;
 use App\Models\Project;
 use App\Models\Skill;
 use App\Models\Visitor;
+use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,7 +31,9 @@ class PortfolioController extends Controller
             'visitors' => Visitor::distinct('ip_address')->count(),
         ];
 
-        return view('portfolio.home', compact('profile', 'skills', 'projects', 'featuredProjects', 'certificates', 'stats'));
+        $notes = Note::latest()->get();
+
+        return view('portfolio.home', compact('profile', 'skills', 'projects', 'featuredProjects', 'certificates', 'stats', 'notes'));
     }
 
     /**
@@ -123,5 +126,20 @@ class PortfolioController extends Controller
         ContactMessage::create($validated);
 
         return back()->with('success', 'Pesan berhasil dikirim! Terima kasih. 📬');
+    }
+
+    /**
+     * Store visitor note (Workspace)
+     */
+    public function storeNote(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'content' => 'required|string|max:1000',
+        ]);
+
+        Note::create($validated);
+
+        return back()->with('success_note', 'Catatan Anda berhasil dipublikasikan! 🎉');
     }
 }

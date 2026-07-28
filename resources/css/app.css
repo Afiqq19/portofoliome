@@ -313,6 +313,7 @@ textarea.form-control {
 
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 2rem;
 }
 
@@ -320,6 +321,8 @@ textarea.form-control {
     color: var(--text-secondary);
     font-weight: 500;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .nav-link::after {

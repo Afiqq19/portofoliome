@@ -7,6 +7,8 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProjectController extends Controller
 {
@@ -23,6 +25,13 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'thumbnail.max' => 'Ukuran gambar thumbnail terlalu besar! Maksimal 20 MB.',
+            'thumbnail.image' => 'File thumbnail harus berupa gambar.',
+            'title.required' => 'Judul projek wajib diisi.',
+            'status.required' => 'Status publikasi wajib dipilih.',
+        ];
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -30,7 +39,7 @@ class ProjectController extends Controller
             'tech_stack' => 'nullable|string',
             'demo_url' => 'nullable|url|max:500',
             'github_url' => 'nullable|url|max:500',
-            'thumbnail' => 'nullable|image|max:5120',
+            'thumbnail' => 'nullable|image|max:20480',
             'zip_file' => 'nullable|file',
             'apk_file' => 'nullable|file',
             'is_featured' => 'nullable|boolean',
@@ -39,7 +48,7 @@ class ProjectController extends Controller
             'credentials_password' => 'nullable|array',
             'credentials_role' => 'nullable|array',
             'credentials_note' => 'nullable|array',
-        ]);
+        ], $messages);
 
         $validated['slug'] = Str::slug($validated['title']);
         $validated['tech_stack'] = array_filter(array_map('trim', explode(',', $validated['tech_stack'] ?? '')));
@@ -62,7 +71,18 @@ class ProjectController extends Controller
         $validated['credentials'] = $credentials;
 
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('projects/thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+            $path = 'projects/thumbnails/' . $filename;
+            
+            // Auto compress
+            Storage::disk('public')->makeDirectory('projects/thumbnails');
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($file->getPathname());
+            $image->scaleDown(width: 1920, height: 1080);
+            $image->save(storage_path('app/public/' . $path));
+            
+            $validated['thumbnail'] = $path;
         }
 
         if ($request->hasFile('zip_file')) {
@@ -87,6 +107,13 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
+        $messages = [
+            'thumbnail.max' => 'Ukuran gambar thumbnail terlalu besar! Maksimal 20 MB.',
+            'thumbnail.image' => 'File thumbnail harus berupa gambar.',
+            'title.required' => 'Judul projek wajib diisi.',
+            'status.required' => 'Status publikasi wajib dipilih.',
+        ];
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -94,7 +121,7 @@ class ProjectController extends Controller
             'tech_stack' => 'nullable|string',
             'demo_url' => 'nullable|url|max:500',
             'github_url' => 'nullable|url|max:500',
-            'thumbnail' => 'nullable|image|max:5120',
+            'thumbnail' => 'nullable|image|max:20480',
             'zip_file' => 'nullable|file',
             'apk_file' => 'nullable|file',
             'is_featured' => 'nullable|boolean',
@@ -103,7 +130,7 @@ class ProjectController extends Controller
             'credentials_password' => 'nullable|array',
             'credentials_role' => 'nullable|array',
             'credentials_note' => 'nullable|array',
-        ]);
+        ], $messages);
 
         $validated['slug'] = Str::slug($validated['title']);
         $validated['tech_stack'] = array_filter(array_map('trim', explode(',', $validated['tech_stack'] ?? '')));
@@ -129,7 +156,19 @@ class ProjectController extends Controller
             if ($project->thumbnail) {
                 Storage::disk('public')->delete($project->thumbnail);
             }
-            $validated['thumbnail'] = $request->file('thumbnail')->store('projects/thumbnails', 'public');
+            
+            $file = $request->file('thumbnail');
+            $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+            $path = 'projects/thumbnails/' . $filename;
+            
+            // Auto compress
+            Storage::disk('public')->makeDirectory('projects/thumbnails');
+            $manager = new ImageManager(new Driver());
+            $image = $manager->decode($file->getPathname());
+            $image->scaleDown(width: 1920, height: 1080);
+            $image->save(storage_path('app/public/' . $path));
+            
+            $validated['thumbnail'] = $path;
         }
 
         if ($request->hasFile('zip_file')) {
