@@ -105,9 +105,23 @@ Route::get('/update-rahasia-mss', function () {
     $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
     $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
     
-    return "<h1 style='color:green;'>Berhasil Menarik Kodingan Baru dari GitHub oleh MSS!</h1>
+    // Tambahan perintah agar mesin kompresor dan database ikut diperbarui
+    $output3 = shell_exec("cd \"$repoDir\" && composer install --no-interaction 2>&1");
+    $output4 = shell_exec("cd \"$repoDir\" && php artisan migrate --force 2>&1");
+    
+    return "<h1 style='color:green;'>Berhasil Menarik Kodingan Baru & Update Sistem oleh MSS!</h1>
             <h3>Laporan Log:</h3>
-            <pre style='background:#333;color:#0f0;padding:20px;border-radius:10px;'>$output0\n$output1\n$output2</pre>";
+            <pre style='background:#333;color:#0f0;padding:20px;border-radius:10px;'>
+<b>[GIT CONFIG]</b>
+$output0
+<b>[GIT FETCH & PULL]</b>
+$output1
+$output2
+<b>[COMPOSER INSTALL]</b>
+$output3
+<b>[DATABASE MIGRATE]</b>
+$output4
+            </pre>";
 });
 
 // ============================================================
@@ -115,7 +129,7 @@ Route::get('/update-rahasia-mss', function () {
 // ============================================================
 Route::get('/buat-akun-admin-mss', function () {
     \App\Models\User::updateOrCreate(
-        ['email' => 'admin@gmail.com'],
+        ['email' => 'projek.msyafiq19@gmail.com'],
         [
             'name' => 'Admin Portofolio',
             'password' => bcrypt('rahasia123'),
