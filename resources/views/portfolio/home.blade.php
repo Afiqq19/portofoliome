@@ -128,7 +128,7 @@
         <div class="max-w-4xl mx-auto">
             <div class="flex items-center gap-4 mb-10 justify-center">
                 <div class="h-px bg-gradient-to-r from-transparent to-accent-primary w-12 md:w-24"></div>
-                <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Tentang <span class="text-gradient">Saya</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Tentang <span class="text-gradient">Saya</span></h2>
                 <div class="h-px bg-gradient-to-l from-transparent to-accent-primary w-12 md:w-24"></div>
             </div>
             
@@ -152,7 +152,7 @@
     <div class="container relative z-10">
         <div class="flex items-center gap-4 mb-16 justify-center">
             <div class="h-px bg-gradient-to-r from-transparent to-accent-secondary w-12 md:w-24"></div>
-            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Keahlian <span class="text-gradient">Teknis</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Keahlian <span class="text-gradient">Teknis</span></h2>
             <div class="h-px bg-gradient-to-l from-transparent to-accent-secondary w-12 md:w-24"></div>
         </div>
         
@@ -193,7 +193,7 @@
     <div class="container">
         <div class="flex items-center gap-4 mb-16 justify-center">
             <div class="h-px bg-gradient-to-r from-transparent to-accent-primary w-12 md:w-24"></div>
-            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Projek <span class="text-gradient">Terbaru</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Projek <span class="text-gradient">Terbaru</span></h2>
             <div class="h-px bg-gradient-to-l from-transparent to-accent-primary w-12 md:w-24"></div>
         </div>
         
@@ -248,7 +248,7 @@
     <div class="container">
         <div class="flex items-center gap-4 mb-16 justify-center">
             <div class="h-px bg-gradient-to-r from-transparent to-accent-secondary w-12 md:w-24"></div>
-            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Sertifikat & <span class="text-gradient text-accent-secondary">Penghargaan</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Sertifikat & <span class="text-gradient text-accent-secondary">Penghargaan</span></h2>
             <div class="h-px bg-gradient-to-l from-transparent to-accent-secondary w-12 md:w-24"></div>
         </div>
         
@@ -302,7 +302,7 @@
     <div class="container relative z-10">
         <div class="flex items-center gap-4 mb-16 justify-center">
             <div class="h-px bg-gradient-to-r from-transparent to-accent-primary w-12 md:w-24"></div>
-            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Workspace <span class="text-gradient">Publik</span></h2>
+            <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Workspace <span class="text-gradient">Publik</span></h2>
             <div class="h-px bg-gradient-to-l from-transparent to-accent-primary w-12 md:w-24"></div>
         </div>
         
@@ -377,7 +377,7 @@
         <div class="max-w-3xl mx-auto">
             <div class="flex items-center gap-4 mb-12 justify-center">
                 <div class="h-px bg-gradient-to-r from-transparent to-accent-secondary w-12 md:w-24"></div>
-                <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk']">Mari <span class="text-gradient">Berdiskusi</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold font-['Space_Grotesk'] text-center">Mari <span class="text-gradient">Berdiskusi</span></h2>
                 <div class="h-px bg-gradient-to-l from-transparent to-accent-secondary w-12 md:w-24"></div>
             </div>
             
