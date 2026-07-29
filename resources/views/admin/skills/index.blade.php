@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
     <div>
         <h1 class="text-3xl font-bold mb-2">Keahlian (Skills)</h1>
         <p class="text-secondary">Kelola daftar keahlian dan persentase penguasaannya.</p>
@@ -38,7 +38,7 @@
                     </div>
 
                     <div style="position: relative; z-index: 1;">
-                        <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0" style="margin-bottom: 0.5rem;">
                             <span class="text-xs text-secondary uppercase tracking-wider font-semibold">Profisiensi</span>
                             <span class="text-sm font-bold text-accent-primary">{{ $skill->proficiency }}%</span>
                         </div>

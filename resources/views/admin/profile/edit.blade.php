@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
     <div>
         <h1 class="text-3xl font-bold mb-2">Profil & Sosmed</h1>
         <p class="text-secondary">Kelola data diri dan tautan sosial media yang tampil di halaman portofolio.</p>
