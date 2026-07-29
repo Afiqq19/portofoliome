@@ -21,23 +21,24 @@
             </div>
         @endif
         
-        <h1 class="text-5xl md:text-7xl mb-6 delay-200 tracking-tight font-black">
+        <h1 class="text-4xl sm:text-5xl md:text-7xl mb-4 md:mb-6 delay-200 tracking-tight font-black px-2">
             <span class="text-primary">Hello, I'm</span><br/>
             <span class="text-gradient">{{ $profile->name ?? 'Welcome to My Portfolio' }}</span>
         </h1>
-        <p class="text-xl md:text-2xl text-secondary mb-8 delay-300 max-w-2xl mx-auto font-light leading-relaxed">
+        <p class="text-lg md:text-2xl text-secondary mb-6 md:mb-8 delay-300 max-w-2xl mx-auto font-light leading-relaxed px-4">
             {{ $profile->title ?? 'Web Developer & Designer' }}
         </p>
         
         <!-- Live Clock & Date Widget -->
-        <div class="flex justify-center mb-10 delay-300 animate-fade-in" x-data="liveClock()">
-            <div class="glass-panel px-6 py-3 rounded-full inline-flex items-center gap-4 border border-white/10 shadow-[0_0_15px_rgba(99,102,241,0.2)] bg-white/5 backdrop-blur-md hover:border-accent-primary/50 transition-colors duration-300">
-                <div class="flex items-center gap-2 text-accent-primary">
+        <div class="flex justify-center mb-10 delay-300 animate-fade-in px-4" x-data="liveClock()">
+            <div class="glass-panel px-4 md:px-6 py-3 rounded-3xl md:rounded-full flex flex-col md:flex-row items-center gap-2 md:gap-4 border border-white/10 shadow-[0_0_15px_rgba(99,102,241,0.2)] bg-white/5 backdrop-blur-md hover:border-accent-primary/50 transition-colors duration-300 text-center">
+                <div class="flex items-center justify-center gap-2 text-accent-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span class="font-mono font-bold tracking-wider text-lg" x-text="time">00:00:00</span>
+                    <span class="font-mono font-bold tracking-wider text-base md:text-lg" x-text="time">00:00:00</span>
                 </div>
-                <div class="w-px h-5 bg-white/20"></div>
-                <div class="flex items-center gap-2 text-secondary text-sm font-medium">
+                <div class="hidden md:block w-px h-5 bg-white/20"></div>
+                <div class="w-12 h-px md:hidden bg-white/20"></div>
+                <div class="flex items-center justify-center gap-2 text-secondary text-xs md:text-sm font-medium">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span x-text="date">Senin, 1 Jan 2024</span>
                 </div>
@@ -94,26 +95,26 @@
 <section class="py-20 relative">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent-primary/5 to-transparent pointer-events-none"></div>
     <div class="container relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-5xl mx-auto">
-            <div class="glass-panel p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 text-center max-w-5xl mx-auto px-4">
+            <div class="glass-panel p-6 md:p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div class="relative z-10">
-                    <div class="text-5xl font-black text-gradient mb-2">{{ $stats['projects'] ?? 0 }}</div>
-                    <div class="text-secondary uppercase tracking-[0.2em] text-xs font-bold">Total Projek</div>
+                    <div class="text-4xl md:text-5xl font-black text-gradient mb-2">{{ $stats['projects'] ?? 0 }}</div>
+                    <div class="text-secondary uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold">Total Projek</div>
                 </div>
             </div>
-            <div class="glass-panel p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden">
+            <div class="glass-panel p-6 md:p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div class="relative z-10">
-                    <div class="text-5xl font-black text-gradient mb-2">{{ $stats['downloads'] ?? 0 }}</div>
-                    <div class="text-secondary uppercase tracking-[0.2em] text-xs font-bold">Total Unduhan</div>
+                    <div class="text-4xl md:text-5xl font-black text-gradient mb-2">{{ $stats['downloads'] ?? 0 }}</div>
+                    <div class="text-secondary uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold">Total Unduhan</div>
                 </div>
             </div>
-            <div class="glass-panel p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden">
+            <div class="glass-panel p-6 md:p-8 group hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(99,102,241,0.2)] transition-all duration-300 border border-white/5 hover:border-accent-primary/30 relative overflow-hidden sm:col-span-2 md:col-span-1">
                 <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div class="relative z-10">
-                    <div class="text-5xl font-black text-gradient mb-2">{{ $stats['visitors'] ?? 0 }}</div>
-                    <div class="text-secondary uppercase tracking-[0.2em] text-xs font-bold">Total Pengunjung</div>
+                    <div class="text-4xl md:text-5xl font-black text-gradient mb-2">{{ $stats['visitors'] ?? 0 }}</div>
+                    <div class="text-secondary uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold">Total Pengunjung</div>
                 </div>
             </div>
         </div>
