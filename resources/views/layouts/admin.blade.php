@@ -51,18 +51,17 @@
 </head>
 <body class="antialiased text-primary">
 
-    <div class="admin-layout" x-data="{ sidebarOpen: false }">
+    <div class="flex min-h-screen bg-bg-primary" x-data="{ sidebarOpen: false }">
         <!-- Sidebar Toggle Mobile -->
-        <style>
-            @media (min-width: 768px) { .mobile-toggle-btn { display: none !important; } }
-        </style>
-        <button @click="sidebarOpen = !sidebarOpen" class="btn btn-outline mobile-toggle-btn" style="position: fixed; top: 1rem; right: 1rem; z-index: 50; background: var(--bg-primary);">
+        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden fixed top-4 right-4 z-[60] p-2 rounded-lg bg-bg-secondary border border-glass-border shadow-lg text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
         </button>
 
         <!-- Sidebar -->
-        <aside class="sidebar" :class="{ 'hidden': !sidebarOpen, 'md:flex': true }" style="background: rgba(18, 18, 23, 0.6); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.05); box-shadow: 5px 0 30px rgba(0,0,0,0.5);">
-            <div class="sidebar-header">
+        <aside class="w-[260px] flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 transform md:translate-x-0" 
+               :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
+               style="background: rgba(18, 18, 23, 0.95); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.05); box-shadow: 5px 0 30px rgba(0,0,0,0.5);">
+            <div class="p-6 border-b border-glass" style="border-bottom-color: var(--glass-border)">
                 <a href="{{ route('admin.dashboard') }}" class="nav-brand text-gradient text-2xl">
                     Admin Panel
                 </a>
@@ -134,11 +133,11 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="admin-main relative">
+        <main class="flex-1 relative w-full md:ml-[260px] p-4 sm:p-6 md:p-8 min-h-screen overflow-x-hidden">
             
             <!-- Top Header Navbar -->
-            <div class="flex justify-between items-center mb-8 pb-4 border-b border-glass" style="border-bottom-color: var(--glass-border)">
-                <div class="hidden md:block">
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-glass mt-12 md:mt-0" style="border-bottom-color: var(--glass-border)">
+                <div class="hidden sm:block">
                     <p class="text-secondary text-sm">{{ date('l, d F Y') }}</p>
                     <h2 class="text-xl font-bold">Halo, {{ $profile->name ?? 'Admin' }}! 👋</h2>
                 </div>
