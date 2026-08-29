@@ -492,22 +492,28 @@ img {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.25rem;
+    white-space: nowrap;
 }
 
 .nav-link {
     color: var(--text-secondary);
     font-weight: 500;
-    font-size: 0.925rem;
+    font-size: 0.875rem;
     position: relative;
-    padding: 0.5rem 0.25rem;
-    transition: color var(--transition-fast);
+    padding: 0.4rem 0.2rem;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    line-height: 1.2;
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 50%;
     width: 0;
     height: 2px;

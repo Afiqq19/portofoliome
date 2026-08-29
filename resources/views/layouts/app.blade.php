@@ -77,20 +77,20 @@
 
     <!-- Navigation Header -->
     <nav class="navbar" x-data="{ mobileMenuOpen: false }">
-        <div class="container flex justify-between items-center relative">
-            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
-                    <div class="w-full h-full bg-primary-dark rounded-[10px] flex items-center justify-center font-black text-lg text-gradient">
+        <div class="container max-w-7xl flex justify-between items-center relative gap-4">
+            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-2.5 flex-shrink-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
+                    <div class="w-full h-full bg-primary-dark rounded-[10px] flex items-center justify-center font-black text-sm sm:text-base text-gradient">
                         {{ substr($profile->name ?? 'MS', 0, 2) }}
                     </div>
                 </div>
-                <span class="text-xl font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.02] transition-transform">
+                <span class="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.02] transition-transform whitespace-nowrap">
                     {{ $profile->name ?? 'MSyafiq' }}
                 </span>
             </a>
             
             <!-- Desktop Navigation Links -->
-            <div class="nav-links hidden lg:flex items-center gap-7 text-sm">
+            <div class="nav-links hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm whitespace-nowrap">
                 <a href="{{ route('home') }}#hero" class="nav-link">Beranda</a>
                 @if($profile->bio ?? true)
                     <a href="{{ route('home') }}#about" class="nav-link">Tentang</a>
@@ -105,24 +105,24 @@
                 @if($profile->enable_certificates ?? true)
                     <a href="{{ route('certificates') }}" class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}">Sertifikat</a>
                 @endif
-                <a href="{{ route('estimator') }}" class="nav-link text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1.5 {{ request()->routeIs('estimator') ? 'active' : '' }}">
+                <a href="{{ route('estimator') }}" class="nav-link text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 {{ request()->routeIs('estimator') ? 'active' : '' }}">
                     <i class='bx bx-calculator text-base'></i>
-                    <span>Estimasi Projek</span>
+                    <span>Estimasi</span>
                 </a>
                 <a href="{{ route('home') }}#workspace" class="nav-link">Workspace</a>
                 <a href="{{ route('home') }}#contact" class="nav-link">Kontak</a>
             </div>
 
             <!-- Action Button / Admin Link -->
-            <div class="hidden lg:flex items-center gap-4">
+            <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary btn-shimmer flex items-center gap-2 shadow-md">
-                        <i class='bx bxs-dashboard text-lg'></i>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary btn-shimmer flex items-center gap-1.5 shadow-md px-3.5 py-2 text-xs">
+                        <i class='bx bxs-dashboard text-base'></i>
                         <span>Dashboard</span>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline flex items-center gap-2 hover:border-accent-primary">
-                        <i class='bx bx-log-in text-lg'></i>
+                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline flex items-center gap-1.5 hover:border-accent-primary px-3.5 py-2 text-xs">
+                        <i class='bx bx-log-in text-base'></i>
                         <span>Admin</span>
                     </a>
                 @endauth
