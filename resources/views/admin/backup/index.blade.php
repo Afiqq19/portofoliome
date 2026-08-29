@@ -2,100 +2,104 @@
 
 @section('content')
 <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">Backup & Restore Database</h1>
-    <p class="text-secondary">Kelola backup database untuk keamanan data website Anda.</p>
+    <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Backup & Restore Database</h1>
+    <p class="text-slate-500 text-sm">Kelola pencadangan dan pemulihan database untuk keamanan data portofolio.</p>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <!-- Download Backup -->
-    <div class="glass-panel p-8 border-t-4 border-t-accent-primary flex flex-col justify-center items-center text-center h-full" style="border-top: 4px solid var(--accent-primary)">
-        <div class="w-16 h-16 rounded-full bg-accent-primary/20 flex items-center justify-center text-accent-primary mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-3xl mb-4">
+            <i class='bx bx-download'></i>
         </div>
-        <h3 class="text-xl font-bold mb-2">Download Backup</h3>
-        <p class="text-secondary mb-6 text-sm">
-            Unduh seluruh data database dalam format file SQL.<br>
-            Simpan file ini di tempat yang aman sebagai cadangan.
+        <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-900 mb-2">Download File Backup</h3>
+        <p class="text-slate-500 text-xs leading-relaxed mb-6 max-w-sm">
+            Unduh seluruh struktur dan data database dalam format file SQL (.sql) sebagai cadangan lokal.
         </p>
-        <a href="{{ route('admin.backup.download') }}" class="btn btn-primary px-6 py-3 w-max">
-            Download Backup Sekarang
+        <a href="{{ route('admin.backup.download') }}" class="btn btn-primary w-full py-3 text-sm font-bold shadow-md flex items-center justify-center gap-2">
+            <i class='bx bx-cloud-download text-lg'></i>
+            <span>Download Backup Sekarang</span>
         </a>
     </div>
 
     <!-- Upload Backup -->
-    <div class="glass-panel p-8 border-t-4 border-t-success flex flex-col justify-center items-center text-center h-full" style="border-top: 4px solid var(--success)">
-        <div class="w-16 h-16 rounded-full bg-success/20 flex items-center justify-center text-success mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl mb-4">
+            <i class='bx bx-upload'></i>
         </div>
-        <h3 class="text-xl font-bold mb-2">Upload File Backup</h3>
-        <p class="text-secondary mb-6 text-sm">
-            Upload file SQL backup untuk disimpan di server.<br>
-            Gunakan tombol Restore di bawah untuk mengembalikan data.
+        <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-900 mb-2">Upload File Cadangan</h3>
+        <p class="text-slate-500 text-xs leading-relaxed mb-6 max-w-sm">
+            Unggah file SQL cadangan untuk disimpan atau dipulihkan kembali ke dalam database.
         </p>
-        <form action="{{ route('admin.backup.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col items-center gap-3 w-full max-w-xs">
+        <form action="{{ route('admin.backup.store') }}" method="POST" enctype="multipart/form-data" class="w-full space-y-3">
             @csrf
-            <input type="file" name="backup_file" accept=".sql,.txt" required class="w-full text-sm text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-success/10 file:text-success hover:file:bg-success/20 cursor-pointer">
+            <input type="file" name="backup_file" accept=".sql,.txt" required class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border file:border-slate-200 file:text-xs file:font-semibold file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 cursor-pointer">
             @error('backup_file')
-                <span class="text-danger text-xs">{{ $message }}</span>
+                <span class="text-rose-600 text-xs block">{{ $message }}</span>
             @enderror
-            <button type="submit" class="btn" style="background: var(--success); color: white; border: none; padding: 0.75rem 1.5rem; width: max-content;">
-                Upload File
+            <button type="submit" class="btn btn-outline w-full py-3 text-sm font-bold flex items-center justify-center gap-2 hover:border-emerald-500 hover:text-emerald-600">
+                <i class='bx bx-cloud-upload text-lg'></i>
+                <span>Upload File SQL</span>
             </button>
         </form>
     </div>
 </div>
 
 <!-- History -->
-<div class="card">
-    <div class="card-body border-b flex justify-between items-center" style="border-bottom-color: var(--glass-border)">
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
         <div>
-            <h3 class="text-xl font-bold">Riwayat File Backup</h3>
-            <p class="text-sm text-secondary">File backup yang tersimpan di server saat ini</p>
+            <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-900">Riwayat File Backup</h3>
+            <p class="text-xs text-slate-500">Daftar file cadangan database yang tersimpan di server</p>
         </div>
     </div>
     
-    <div class="p-0 table-container rounded-none border-0">
+    <div class="table-container border-0 rounded-none shadow-none">
         @if(empty($backups))
-            <div class="p-12 text-center text-secondary">
-                <div class="inline-flex justify-center items-center w-16 h-16 rounded-full bg-white/5 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            <div class="p-16 text-center text-slate-500">
+                <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class='bx bx-data'></i>
                 </div>
-                <p>Belum ada file backup. Klik tombol "Download Backup Sekarang" untuk membuat backup pertama.</p>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">Belum Ada File Cadangan</h3>
+                <p class="text-sm text-slate-400">Klik tombol "Download Backup Sekarang" untuk membuat cadangan data pertama.</p>
             </div>
         @else
-            <table class="w-full text-left border-collapse">
+            <table>
                 <thead>
                     <tr>
-                        <th class="w-1/2 py-4 pl-6 text-xs uppercase tracking-wider text-secondary">Nama File</th>
-                        <th class="w-1/6 py-4 text-xs uppercase tracking-wider text-secondary">Ukuran</th>
-                        <th class="w-1/6 py-4 text-xs uppercase tracking-wider text-secondary">Tanggal</th>
-                        <th class="w-1/6 py-4 pr-6 text-xs uppercase tracking-wider text-secondary text-center">Aksi</th>
+                        <th>Nama File</th>
+                        <th width="120">Ukuran</th>
+                        <th width="180">Tanggal Buat</th>
+                        <th width="160" class="text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-100">
                     @foreach($backups as $backup)
-                    <tr class="hover:bg-white/5 transition-colors border-t border-white/5">
-                        <td class="py-4 pl-6 font-bold flex items-center gap-3 break-all text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" class="flex-shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                            <span class="text-white">{{ $backup['name'] }}</span>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td>
+                            <div class="flex items-center gap-2.5 font-mono text-xs font-bold text-slate-800 break-all">
+                                <i class='bx bx-file text-indigo-500 text-base'></i>
+                                <span>{{ $backup['name'] }}</span>
+                            </div>
                         </td>
-                        <td class="py-4 text-sm text-secondary whitespace-nowrap">{{ $backup['size'] }} KB</td>
-                        <td class="py-4 text-sm text-secondary whitespace-nowrap">{{ $backup['date'] }}</td>
-                        <td class="py-4 pr-6">
-                            <div class="flex gap-2 justify-center">
-                                <form action="{{ route('admin.backup.restore') }}" method="POST" onsubmit="return confirm('⚠️ PERINGATAN: Restore akan menimpa SELURUH data saat ini dengan data dari file backup ini. Pastikan Anda sudah membuat backup terbaru sebelum melanjutkan!\n\nLanjutkan restore?')">
+                        <td class="text-xs text-slate-500 whitespace-nowrap">{{ $backup['size'] }} KB</td>
+                        <td class="text-xs text-slate-500 whitespace-nowrap">{{ $backup['date'] }}</td>
+                        <td class="text-right">
+                            <div class="flex gap-2 justify-end">
+                                <form action="{{ route('admin.backup.restore') }}" method="POST" onsubmit="return confirm('⚠️ PERINGATAN: Tindakan ini akan menimpa data database saat ini dengan data dari file backup ini!\n\nLanjutkan restore?')">
                                     @csrf
                                     <input type="hidden" name="filename" value="{{ $backup['name'] }}">
-                                    <button type="submit" class="btn btn-sm hover:scale-105 transition-transform" style="background: var(--warning); color: white; border: none; padding: 0.5rem 1rem;">
-                                        Restore
+                                    <button type="submit" class="btn btn-sm btn-outline text-amber-600 border-amber-200 hover:bg-amber-500 hover:text-white" title="Restore Data">
+                                        <i class='bx bx-refresh'></i>
+                                        <span>Restore</span>
                                     </button>
                                 </form>
                                 <form action="{{ route('admin.backup.delete') }}" method="POST" onsubmit="return confirm('Hapus file backup ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="filename" value="{{ $backup['name'] }}">
-                                    <button type="submit" class="btn btn-sm btn-danger hover:scale-105 transition-transform" style="padding: 0.5rem 1rem;">
-                                        Hapus
+                                    <button type="submit" class="btn btn-sm btn-danger px-2.5" title="Hapus File">
+                                        <i class='bx bx-trash text-sm'></i>
                                     </button>
                                 </form>
                             </div>

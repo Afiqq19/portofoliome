@@ -1,15 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
-    <div class="flex items-center gap-4">
-        <a href="{{ route('admin.projects.index') }}" class="btn btn-outline btn-sm px-2 text-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        </a>
-        <div>
-            <h1 class="text-3xl font-bold mb-1">Edit Projek: {{ $project->title }}</h1>
-            <p class="text-secondary">Perbarui informasi projek.</p>
-        </div>
+<div class="flex items-center gap-4 mb-8">
+    <a href="{{ route('admin.projects.index') }}" class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-500 flex items-center justify-center shadow-sm transition-colors">
+        <i class='bx bx-arrow-back text-lg'></i>
+    </a>
+    <div>
+        <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Edit Projek: {{ $project->title }}</h1>
+        <p class="text-slate-500 text-sm">Perbarui data, deskripsi, tautan, dan file unduhan projek.</p>
     </div>
 </div>
 
@@ -18,169 +16,190 @@
     @method('PUT')
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Main Form (Kiri) -->
-        <div class="lg:col-span-2">
-            <div class="glass-panel p-6 mb-8">
-                <h2 class="text-xl font-bold mb-6 border-b pb-4" style="border-bottom-color: var(--glass-border)">Informasi Dasar</h2>
+        
+        <!-- Main Form (Kiri - 2 Cols) -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- Basic Info Card -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center gap-2.5">
+                    <i class='bx bx-edit text-2xl text-indigo-600'></i>
+                    <span>Informasi Utama Projek</span>
+                </h2>
                 
-                <div class="form-group">
-                    <label class="form-label">Judul Projek <span class="text-danger">*</span></label>
-                    <input type="text" name="title" class="form-control" value="{{ old('title', $project->title) }}" required>
+                <div class="form-group mb-5">
+                    <label class="form-label">Judul Projek <span class="text-rose-500">*</span></label>
+                    <input type="text" name="title" class="form-control text-sm" value="{{ old('title', $project->title) }}" required>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Deskripsi Singkat</label>
-                    <textarea name="description" class="form-control" rows="2">{{ old('description', $project->description) }}</textarea>
+                <div class="form-group mb-5">
+                    <label class="form-label">Deskripsi Singkat (Ringkasan)</label>
+                    <textarea name="description" class="form-control text-sm" rows="2">{{ old('description', $project->description) }}</textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Deskripsi Lengkap (Markdown/Text)</label>
-                    <textarea name="long_description" class="form-control" rows="8">{{ old('long_description', $project->long_description) }}</textarea>
+                <div class="form-group mb-5">
+                    <label class="form-label">Deskripsi Lengkap (Detail Fitur & Solusi)</label>
+                    <textarea name="long_description" class="form-control text-sm" rows="7">{{ old('long_description', $project->long_description) }}</textarea>
                 </div>
                 
                 <div class="form-group mb-0">
                     <label class="form-label">Tech Stack</label>
-                    <input type="text" name="tech_stack" class="form-control" value="{{ old('tech_stack', implode(', ', $project->tech_stack ?? [])) }}">
+                    <input type="text" name="tech_stack" class="form-control text-sm" value="{{ old('tech_stack', implode(', ', $project->tech_stack ?? [])) }}" placeholder="Laravel, Vue.js, Tailwind CSS (pisahkan dengan koma)">
                 </div>
             </div>
             
-            <div class="glass-panel p-6">
-                <h2 class="text-xl font-bold mb-6 border-b pb-4" style="border-bottom-color: var(--glass-border)">
-                    Panduan Login (Kredensial)
+            <!-- Credentials Card -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4 mb-2 flex items-center gap-2.5">
+                    <i class='bx bx-key text-2xl text-purple-600'></i>
+                    <span>Panduan Akun Login Demo</span>
                 </h2>
+                <p class="text-xs text-slate-500 mb-6">Akun demo testing untuk pengunjung yang mengunduh aplikasi.</p>
                 
                 <div x-data="credentialsForm()">
-                    <template x-for="(cred, index) in credentials" :key="index">
-                        <div class="bg-tertiary p-4 rounded-lg mb-4 relative border" style="border-color: var(--glass-border)">
-                            <button type="button" @click="removeCred(index)" class="absolute top-2 right-2 text-danger hover:text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
-                            </button>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                                <div class="form-group mb-0">
-                                    <label class="form-label text-xs">Username / Email</label>
-                                    <input type="text" :name="`credentials_username[]`" x-model="cred.username" class="form-control py-1 px-2 text-sm">
+                    <div class="space-y-4 mb-4">
+                        <template x-for="(cred, index) in credentials" :key="index">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 relative group">
+                                <button type="button" @click="removeCred(index)" class="absolute top-3 right-3 text-slate-400 hover:text-rose-600 transition-colors">
+                                    <i class='bx bx-trash text-lg'></i>
+                                </button>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                    <div>
+                                        <label class="form-label text-xs">Username / Email</label>
+                                        <input type="text" :name="`credentials_username[]`" x-model="cred.username" class="form-control text-xs py-2 px-3">
+                                    </div>
+                                    <div>
+                                        <label class="form-label text-xs">Password</label>
+                                        <input type="text" :name="`credentials_password[]`" x-model="cred.password" class="form-control text-xs py-2 px-3 font-mono">
+                                    </div>
                                 </div>
-                                <div class="form-group mb-0">
-                                    <label class="form-label text-xs">Password</label>
-                                    <input type="text" :name="`credentials_password[]`" x-model="cred.password" class="form-control py-1 px-2 text-sm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label text-xs">Role / Peran</label>
+                                        <input type="text" :name="`credentials_role[]`" x-model="cred.role" class="form-control text-xs py-2 px-3">
+                                    </div>
+                                    <div>
+                                        <label class="form-label text-xs">Catatan Tambahan</label>
+                                        <input type="text" :name="`credentials_note[]`" x-model="cred.note" class="form-control text-xs py-2 px-3">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="form-group mb-0">
-                                    <label class="form-label text-xs">Role</label>
-                                    <input type="text" :name="`credentials_role[]`" x-model="cred.role" class="form-control py-1 px-2 text-sm">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <label class="form-label text-xs">Catatan Tambahan</label>
-                                    <input type="text" :name="`credentials_note[]`" x-model="cred.note" class="form-control py-1 px-2 text-sm">
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
                     
-                    <button type="button" @click="addCred()" class="btn btn-outline btn-sm w-full border-dashed">
-                        + Tambah Akun Demo
+                    <button type="button" @click="addCred()" class="btn btn-outline btn-sm w-full border-dashed py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 hover:border-indigo-500 hover:text-indigo-600">
+                        <i class='bx bx-plus'></i>
+                        <span>Tambah Akun Demo Baru</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Sidebar Form (Kanan) -->
-        <div class="lg:col-span-1">
-            <div class="glass-panel p-6 mb-8">
-                <h2 class="text-xl font-bold mb-6 border-b pb-4" style="border-bottom-color: var(--glass-border)">Pengaturan & File</h2>
+        <!-- Sidebar Form (Kanan - 1 Col) -->
+        <div class="lg:col-span-1 space-y-8">
+            
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4">
+                    Publikasi & File
+                </h2>
                 
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-control" style="background-color: var(--bg-tertiary)">
-                        <option value="published" {{ $project->status === 'published' ? 'selected' : '' }}>Publish (Tampil)</option>
+                <div class="form-group mb-0">
+                    <label class="form-label text-xs">Status Publikasi</label>
+                    <select name="status" class="form-select text-sm">
+                        <option value="published" {{ $project->status === 'published' ? 'selected' : '' }}>Publik (Tampilkan di Web)</option>
                         <option value="draft" {{ $project->status === 'draft' ? 'selected' : '' }}>Draft (Sembunyikan)</option>
                     </select>
                 </div>
                 
-                <div class="form-group mb-6">
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_featured" value="1" {{ $project->is_featured ? 'checked' : '' }} class="w-5 h-5 rounded" style="background-color: var(--bg-tertiary); border: 1px solid var(--glass-border)">
+                        <input type="checkbox" name="is_featured" value="1" {{ $project->is_featured ? 'checked' : '' }} class="w-4 h-4 rounded text-indigo-600 accent-indigo-600">
                         <div>
-                            <span class="block font-medium">Jadikan Unggulan (Featured)</span>
-                            <span class="block text-xs text-secondary">Tampil di halaman depan</span>
+                            <span class="block text-xs font-bold text-slate-900">Projek Unggulan (Featured)</span>
+                            <span class="block text-[11px] text-slate-500">Tampil dengan badge sorotan</span>
                         </div>
                     </label>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Thumbnail Projek</label>
+                <!-- Thumbnail -->
+                <div class="form-group mb-0">
+                    <label class="form-label text-xs">Thumbnail Gambar</label>
                     @if($project->thumbnail)
-                        <div class="mb-3 flex justify-start">
-                            <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumb" style="width: 150px; height: 150px; object-fit: cover; border-radius: 0.5rem; border: 2px solid var(--accent-primary);">
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumb" class="w-full h-32 object-cover rounded-xl border border-slate-200 shadow-sm">
                         </div>
                     @endif
-                    <div class="border-2 border-dashed rounded-lg p-4 text-center" style="border-color: var(--glass-border)">
-                        <input type="file" name="thumbnail" class="w-full text-sm" accept="image/*">
-                        <div class="mt-3 text-xs leading-relaxed text-secondary bg-bg-tertiary p-3 rounded-lg text-left">
-                            <strong>⚠️ Panduan Gambar:</strong><br>
-                            - Gunakan format <strong>Lanskap/Horizontal (Rasio 16:9)</strong>.<br>
-                            - Resolusi yang disarankan: <strong>1280x720</strong> atau <strong>1920x1080</strong> pixel.<br>
-                            - <i>Hindari foto vertikal (berdiri) karena akan meninggalkan ruang kosong hitam di sisinya.</i>
-                        </div>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
+                        <input type="file" name="thumbnail" class="w-full text-xs" accept="image/*">
+                        <p class="text-[11px] text-slate-500 mt-2">Biarkan kosong jika tidak ingin mengubah thumbnail.</p>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label text-success flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        Upload Source Code (ZIP/RAR)
+                <!-- ZIP Source -->
+                <div class="form-group mb-0">
+                    <label class="form-label text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+                        <i class='bx bx-file-blank text-base'></i>
+                        <span>Source Code (ZIP/RAR)</span>
                     </label>
                     @if($project->zip_path)
-                        <div class="mb-3 p-3 bg-success/10 border border-success/20 rounded-lg text-sm text-success flex justify-between items-center">
-                            <span>File ZIP/RAR sudah ada</span>
+                        <div class="mb-2 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-800 flex items-center gap-2">
+                            <i class='bx bx-check-circle text-base text-emerald-600'></i>
+                            <span>File ZIP aktif sudah tersimpan</span>
                         </div>
                     @endif
-                    <div class="border-2 border-dashed border-success/30 bg-success/5 rounded-lg p-4 text-center">
-                        <input type="file" name="zip_file" class="w-full text-sm" accept=".zip,.rar,.7z">
-                        <p class="text-xs text-secondary mt-2">Biarkan kosong jika tidak ingin mengubah</p>
+                    <div class="border-2 border-dashed border-emerald-300 rounded-xl p-4 text-center bg-emerald-50/50">
+                        <input type="file" name="zip_file" class="w-full text-xs" accept=".zip,.rar,.7z">
+                        <p class="text-[11px] text-slate-500 mt-1.5">Biarkan kosong jika tidak ingin mengganti file ZIP.</p>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label text-accent-primary flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                        Upload Aplikasi Android (APK)
+                <!-- APK Android -->
+                <div class="form-group mb-0">
+                    <label class="form-label text-xs text-cyan-700 font-bold flex items-center gap-1.5">
+                        <i class='bx bxl-android text-base'></i>
+                        <span>Aplikasi Android (.APK)</span>
                     </label>
                     @if($project->apk_path)
-                        <div class="mb-3 p-3 bg-accent-primary/10 border border-accent-primary/20 rounded-lg text-sm text-accent-primary flex justify-between items-center">
-                            <span>File APK (Android) sudah ada</span>
+                        <div class="mb-2 p-2.5 bg-cyan-50 border border-cyan-200 rounded-xl text-xs font-semibold text-cyan-800 flex items-center gap-2">
+                            <i class='bx bx-check-circle text-base text-cyan-600'></i>
+                            <span>File APK aktif sudah tersimpan</span>
                         </div>
                     @endif
-                    <div class="border-2 border-dashed border-accent-primary/30 bg-accent-primary/5 rounded-lg p-4 text-center">
-                        <input type="file" name="apk_file" class="w-full text-sm" accept=".apk">
-                        <p class="text-xs text-secondary mt-2">Opsional. File <strong>.apk</strong> khusus untuk perangkat <strong>Android</strong>. Biarkan kosong jika tidak diubah.</p>
+                    <div class="border-2 border-dashed border-cyan-300 rounded-xl p-4 text-center bg-cyan-50/50">
+                        <input type="file" name="apk_file" class="w-full text-xs" accept=".apk">
+                        <p class="text-[11px] text-slate-500 mt-1.5">Biarkan kosong jika tidak ingin mengganti APK.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="glass-panel p-6 mb-8">
-                <h2 class="text-xl font-bold mb-6 border-b pb-4" style="border-bottom-color: var(--glass-border)">Tautan Eksternal</h2>
+            <!-- External Links -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4">
+                    Tautan Luar
+                </h2>
                 
-                <div class="form-group">
-                    <label class="form-label flex items-center gap-2 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                        URL Live Demo
+                <div class="form-group mb-0">
+                    <label class="form-label text-xs flex items-center gap-1.5">
+                        <i class='bx bx-link-external text-indigo-600'></i>
+                        <span>URL Live Demo</span>
                     </label>
-                    <input type="url" name="demo_url" class="form-control py-2" value="{{ old('demo_url', $project->demo_url) }}">
+                    <input type="url" name="demo_url" class="form-control text-xs py-2 px-3" value="{{ old('demo_url', $project->demo_url) }}">
                 </div>
                 
                 <div class="form-group mb-0">
-                    <label class="form-label flex items-center gap-2 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-                        URL Github Repository
+                    <label class="form-label text-xs flex items-center gap-1.5">
+                        <i class='bx bxl-github text-slate-700'></i>
+                        <span>URL GitHub Repository</span>
                     </label>
-                    <input type="url" name="github_url" class="form-control py-2" value="{{ old('github_url', $project->github_url) }}">
+                    <input type="url" name="github_url" class="form-control text-xs py-2 px-3" value="{{ old('github_url', $project->github_url) }}">
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full py-4 text-lg">Simpan Perubahan</button>
+            <button type="submit" class="btn btn-primary w-full py-4 text-base font-bold shadow-lg flex items-center justify-center gap-2">
+                <i class='bx bx-save text-xl'></i>
+                <span>Simpan Perubahan Projek</span>
+            </button>
         </div>
     </div>
 </form>
@@ -190,7 +209,6 @@ function credentialsForm() {
     return {
         credentials: @json(old('credentials_username') ? [] : ($project->credentials ?? [])),
         init() {
-            // Populate old data if exists
             let oldUsernames = @json(old('credentials_username', []));
             let oldPasswords = @json(old('credentials_password', []));
             let oldRoles = @json(old('credentials_role', []));

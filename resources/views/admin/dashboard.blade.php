@@ -2,106 +2,196 @@
 
 @section('content')
 <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
-    <p class="text-secondary">Selamat datang kembali! Berikut adalah ringkasan portofolio Anda.</p>
+    <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Dashboard</h1>
+    <p class="text-slate-500 text-sm">Selamat datang kembali! Berikut adalah ringkasan aktivitas portofolio Anda.</p>
 </div>
 
-<!-- Stats Overview -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="glass-panel p-6 border-l-4 border-l-accent-primary" style="border-left: 4px solid var(--accent-primary)">
-        <div class="flex justify-between items-start">
+<!-- Stats Overview (Bento Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    
+    <!-- Total Projek -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div class="flex justify-between items-start mb-4">
             <div>
-                <p class="text-secondary text-sm font-bold uppercase tracking-wider mb-1">Total Projek</p>
-                <h3 class="text-3xl font-bold">{{ $stats['total_projects'] }}</h3>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Projek</p>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900">{{ $stats['total_projects'] }}</h3>
             </div>
-            <div class="p-3 bg-tertiary rounded-lg text-accent-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl">
+                <i class='bx bx-folder'></i>
             </div>
         </div>
-        <div class="mt-4 text-sm text-secondary">
-            <span class="text-success">{{ $stats['published_projects'] }}</span> dipublikasikan
+        <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">
+                {{ $stats['published_projects'] }} Publik
+            </span>
+            <span>dari total projek</span>
         </div>
     </div>
 
-    <div class="glass-panel p-6 border-l-4 border-l-success" style="border-left: 4px solid var(--success)">
-        <div class="flex justify-between items-start">
+    <!-- Total Unduhan -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div class="flex justify-between items-start mb-4">
             <div>
-                <p class="text-secondary text-sm font-bold uppercase tracking-wider mb-1">Total Unduhan</p>
-                <h3 class="text-3xl font-bold">{{ $stats['total_downloads'] }}</h3>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Unduhan</p>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-emerald-600">{{ $stats['total_downloads'] }}</h3>
             </div>
-            <div class="p-3 bg-tertiary rounded-lg text-success">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl">
+                <i class='bx bx-download'></i>
             </div>
+        </div>
+        <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
+            <span class="text-emerald-600 font-semibold">ZIP & APK</span>
+            <span>diunduh pengunjung</span>
         </div>
     </div>
 
-    <div class="glass-panel p-6 border-l-4 border-l-accent-secondary" style="border-left: 4px solid var(--accent-secondary)">
-        <div class="flex justify-between items-start">
+    <!-- Pesan Masuk -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div class="flex justify-between items-start mb-4">
             <div>
-                <p class="text-secondary text-sm font-bold uppercase tracking-wider mb-1">Pesan Masuk</p>
-                <h3 class="text-3xl font-bold">{{ $stats['total_messages'] }}</h3>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pesan Masuk</p>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-indigo-600">{{ $stats['total_messages'] }}</h3>
             </div>
-            <div class="p-3 bg-tertiary rounded-lg text-accent-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
+                <i class='bx bx-envelope'></i>
             </div>
         </div>
-        <div class="mt-4 text-sm text-secondary">
-            <span class="text-danger">{{ $stats['unread_messages'] }}</span> belum dibaca
-        </div>
-    </div>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <!-- Trakteer Info Box -->
-    <div class="glass-panel p-8 border-l-4 border-l-red-500 relative overflow-hidden group h-full flex flex-col justify-center" style="border-left: 4px solid #ef4444">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-        <h3 class="text-2xl font-bold mb-4 text-white flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            Donasi Terintegrasi
-        </h3>
-        <p class="text-secondary mb-6 leading-relaxed">
-            Sistem donasi kini ditangani sepenuhnya oleh <strong>Trakteer.id</strong>. Anda akan menerima notifikasi email setiap ada donatur baru.
-        </p>
-        <div class="flex gap-4">
-            <a href="https://trakteer.id" target="_blank" class="btn btn-outline hover:bg-red-500 hover:border-red-500 hover:text-white transition-all w-max" style="border-color: #ef4444; color: #ef4444;">Buka Dashboard Trakteer</a>
-        </div>
-    </div>
-
-    <!-- Recent Messages -->
-    <div class="card">
-        <div class="card-body border-b" style="border-bottom-color: var(--glass-border)">
-            <h3 class="text-xl font-bold flex items-center justify-between">
-                Pesan Terbaru
-                <a href="{{ route('admin.messages.index') }}" class="text-sm text-accent-primary font-normal">Lihat Semua</a>
-            </h3>
-        </div>
-        <div class="p-0 table-container rounded-none border-0">
-            @if(count($recentMessages) > 0)
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Pengirim</th>
-                            <th>Pesan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($recentMessages as $msg)
-                        <tr style="{{ !$msg->is_read ? 'background: rgba(99, 102, 241, 0.05)' : '' }}">
-                            <td>
-                                <div class="font-bold">{{ $msg->name }} {!! !$msg->is_read ? '<span class="w-2 h-2 rounded-full bg-accent-primary inline-block"></span>' : '' !!}</div>
-                                <div class="text-xs text-secondary">{{ $msg->created_at->diffForHumans() }}</div>
-                            </td>
-                            <td>
-                                <div class="text-sm text-secondary truncate max-w-xs">{{ Str::limit($msg->message, 50) }}</div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
+            @if($stats['unread_messages'] > 0)
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700">
+                    {{ $stats['unread_messages'] }} Belum Dibaca
+                </span>
             @else
-                <div class="p-6 text-center text-secondary">Belum ada pesan.</div>
+                <span class="text-slate-400">Semua pesan terbaca</span>
             @endif
         </div>
     </div>
+
+    <!-- Total Pengunjung -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pengunjung</p>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-sky-600">{{ \App\Models\Visitor::distinct('ip_address')->count() }}</h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl">
+                <i class='bx bx-user-voice'></i>
+            </div>
+        </div>
+        <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
+            <span class="text-sky-600 font-semibold">IP Unik</span>
+            <span>tercatat di sistem</span>
+        </div>
+    </div>
+
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Trakteer Info Box & Quick Actions (1 Col) -->
+    <div class="lg:col-span-1 space-y-6">
+        
+        <!-- Trakteer Card -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl shadow-sm">
+                    ☕
+                </div>
+                <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-900">Donasi Trakteer</h3>
+            </div>
+            <p class="text-slate-500 text-xs leading-relaxed mb-5">
+                Sistem donasi terhubung dengan <strong>Trakteer.id</strong>. Anda menerima notifikasi email setiap ada dukungan kopi baru dari pengunjung.
+            </p>
+            <a href="https://trakteer.id" target="_blank" rel="noopener noreferrer" class="btn btn-outline w-full text-xs font-bold flex items-center justify-center gap-2 hover:border-rose-500 hover:text-rose-600">
+                <i class='bx bx-link-external'></i>
+                <span>Buka Dashboard Trakteer</span>
+            </a>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Aksi Cepat</h3>
+            <div class="space-y-2">
+                <a href="{{ route('admin.projects.create') }}" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class='bx bx-plus-circle text-lg text-indigo-600'></i>
+                        <span>Tambah Projek Baru</span>
+                    </span>
+                    <i class='bx bx-chevron-right text-slate-400'></i>
+                </a>
+                <a href="{{ route('admin.profile.edit') }}" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class='bx bx-user-circle text-lg text-purple-600'></i>
+                        <span>Edit Profil & Keahlian</span>
+                    </span>
+                    <i class='bx bx-chevron-right text-slate-400'></i>
+                </a>
+                <a href="{{ route('admin.messages.index') }}" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class='bx bx-chat text-lg text-emerald-600'></i>
+                        <span>Lihat Semua Pesan</span>
+                    </span>
+                    <i class='bx bx-chevron-right text-slate-400'></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Messages Table (2 Cols) -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-full flex flex-col justify-between">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-900">Pesan Masuk Terbaru</h3>
+                    <p class="text-xs text-slate-400">Pesan dan pertanyaan dari form kontak portofolio</p>
+                </div>
+                <a href="{{ route('admin.messages.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+                    <span>Lihat Semua</span>
+                    <i class='bx bx-chevron-right'></i>
+                </a>
+            </div>
+            
+            <div class="flex-1">
+                @if(count($recentMessages) > 0)
+                    <div class="divide-y divide-slate-100">
+                        @foreach($recentMessages as $msg)
+                            <div class="p-5 flex items-start gap-4 hover:bg-slate-50 transition-colors {{ !$msg->is_read ? 'bg-indigo-50/40' : '' }}">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-bold text-sm flex items-center justify-center shadow-sm flex-shrink-0">
+                                    {{ strtoupper(substr($msg->name, 0, 1)) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2 mb-1">
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-sm text-slate-900 truncate">{{ $msg->name }}</h4>
+                                            @if(!$msg->is_read)
+                                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                            @endif
+                                        </div>
+                                        <span class="text-[11px] text-slate-400 font-mono">{{ $msg->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 line-clamp-1 mb-1">{{ $msg->subject ?? '(Tanpa Subjek)' }}</p>
+                                    <p class="text-xs text-slate-400 truncate">{{ $msg->message }}</p>
+                                </div>
+                                <a href="{{ route('admin.messages.show', $msg) }}" class="btn btn-outline btn-sm py-1.5 px-3 text-xs self-center flex-shrink-0 hover:border-indigo-500 hover:text-indigo-600">
+                                    Buka
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="p-12 text-center text-slate-400">
+                        <i class='bx bx-envelope-open text-4xl text-slate-300 mb-2'></i>
+                        <p class="text-sm font-medium">Belum ada pesan yang masuk.</p>
+                    </div>
+                @endif
+            </div>
+
+            <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
+                <span class="text-xs text-slate-400 font-medium">Portofolio Live & Realtime Tracking</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection

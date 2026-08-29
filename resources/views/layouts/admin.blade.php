@@ -6,8 +6,16 @@
     <title>Admin Dashboard - {{ config('app.name', 'MSyafiq Portofolio') }}</title>
     <link rel="icon" href="{{ asset('iconn.png') }}">
 
-    <!-- Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- BoxIcons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Vite Assets -->
+    @vite(['resources/css/admin.css', 'resources/js/app.js'])
     
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,22 +25,16 @@
                 extend: {
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
-                    },
-                    backgroundColor: {
-                        primary: 'var(--bg-primary)',
-                        secondary: 'var(--bg-secondary)',
-                        tertiary: 'var(--bg-tertiary)',
-                    },
-                    textColor: {
-                        primary: 'var(--text-primary)',
-                        secondary: 'var(--text-secondary)',
-                        muted: 'var(--text-muted)',
-                        danger: '#ef4444',
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        accent: {
-                            primary: 'var(--accent-primary)',
-                            secondary: 'var(--accent-secondary)',
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
                         }
                     }
                 }
@@ -42,143 +44,163 @@
     
     <!-- AlpineJS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
-    
-    <!-- BoxIcons -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-    <!-- ChartJS for stats -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="antialiased text-primary">
+<body class="bg-slate-50 text-slate-900 antialiased font-sans">
 
-    <div class="flex min-h-screen bg-bg-primary" x-data="{ sidebarOpen: false }">
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: false }">
+        
+        <!-- Mobile Backdrop -->
+        <div x-show="sidebarOpen" 
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="sidebarOpen = false" 
+             class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 md:hidden"
+             style="display: none;"></div>
+
         <!-- Sidebar Toggle Mobile -->
-        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden fixed top-4 right-4 z-[60] p-2 rounded-lg bg-bg-secondary border border-glass-border shadow-lg text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden fixed top-4 right-4 z-50 p-2.5 rounded-xl bg-white border border-slate-200 shadow-md text-slate-700 hover:text-indigo-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
         </button>
 
         <!-- Sidebar -->
-        <aside class="w-[260px] flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 transform md:translate-x-0" 
-               :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-               style="background: rgba(18, 18, 23, 0.95); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.05); box-shadow: 5px 0 30px rgba(0,0,0,0.5);">
-            <div class="p-6 border-b border-glass" style="border-bottom-color: var(--glass-border)">
-                <a href="{{ route('admin.dashboard') }}" class="nav-brand text-gradient text-2xl">
-                    Admin Panel
-                </a>
-                <p class="text-sm text-secondary mt-1">MSyafiq Portofolio</p>
+        <aside class="w-[260px] flex flex-col fixed inset-y-0 left-0 z-50 bg-white border-r border-slate-200 shadow-sm transition-transform duration-300 transform md:translate-x-0" 
+               :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}">
+            
+            <!-- Sidebar Header / Brand -->
+            <div class="p-6 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-indigo-500/20">
+                    {{ substr($profile->name ?? 'A', 0, 1) }}
+                </div>
+                <div>
+                    <h2 class="font-bold text-base font-['Space_Grotesk'] text-slate-900 leading-tight">Admin Panel</h2>
+                    <p class="text-xs text-slate-500 font-medium">{{ $profile->name ?? 'Portofolio' }}</p>
+                </div>
             </div>
             
-            <nav class="sidebar-nav">
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-4 py-6 overflow-y-auto space-y-1">
+                
                 <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-                    Dashboard
+                    <i class='bx bxs-dashboard text-lg'></i>
+                    <span>Dashboard</span>
                 </a>
                 
-                <div class="text-xs text-muted font-bold uppercase tracking-wider mt-6 mb-2 px-4">Konten</div>
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-6 mb-2 px-3">Konten</div>
                 
                 <a href="{{ route('admin.profile.edit') }}" class="sidebar-link {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Profil & Sosmed
+                    <i class='bx bx-user text-lg'></i>
+                    <span>Profil & Sosmed</span>
                 </a>
                 
                 <a href="{{ route('admin.skills.index') }}" class="sidebar-link {{ request()->routeIs('admin.skills.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                    Keahlian
+                    <i class='bx bx-code-alt text-lg'></i>
+                    <span>Keahlian</span>
                 </a>
                 
                 <a href="{{ route('admin.projects.index') }}" class="sidebar-link {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>
-                    Projek
+                    <i class='bx bx-folder text-lg'></i>
+                    <span>Projek</span>
                 </a>
 
                 <a href="{{ route('admin.certificates.index') }}" class="sidebar-link {{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-                    Sertifikat
+                    <i class='bx bx-award text-lg'></i>
+                    <span>Sertifikat</span>
                 </a>
                 
-                <div class="text-xs text-muted font-bold uppercase tracking-wider mt-6 mb-2 px-4">Interaksi</div>
-                
-                <a href="{{ route('admin.donations.index') }}" class="sidebar-link {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                    Donasi
-                </a>
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-6 mb-2 px-3">Interaksi</div>
                 
                 <a href="{{ route('admin.messages.index') }}" class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                    Pesan Masuk
+                    <i class='bx bx-envelope text-lg'></i>
+                    <span>Pesan Masuk</span>
+                </a>
+
+                <a href="{{ route('admin.notes.index') }}" class="sidebar-link {{ request()->routeIs('admin.notes.*') ? 'active' : '' }}">
+                    <i class='bx bx-notepad text-lg'></i>
+                    <span>Catatan Pengunjung</span>
+                </a>
+                
+                <a href="{{ route('admin.donations.index') }}" class="sidebar-link {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
+                    <i class='bx bx-coffee text-lg'></i>
+                    <span>Donasi (Trakteer)</span>
+                </a>
+
+                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-6 mb-2 px-3">Sistem</div>
+
+                <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                    <i class='bx bx-slider text-lg'></i>
+                    <span>Pengaturan Tampilan</span>
+                </a>
+
+                <a href="{{ route('admin.backup.index') }}" class="sidebar-link {{ request()->routeIs('admin.backup.*') ? 'active' : '' }}">
+                    <i class='bx bx-data text-lg'></i>
+                    <span>Backup & Restore</span>
                 </a>
             </nav>
             
-            <div class="p-4 border-t flex flex-col gap-2" style="border-color: var(--glass-border)">
-                <a href="{{ route('admin.notes.index') }}" class="sidebar-link w-full text-secondary hover:text-white mt-0 mb-0 {{ request()->routeIs('admin.notes.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    Catatan Pengunjung
-                </a>
-                <a href="{{ route('admin.backup.index') }}" class="sidebar-link w-full text-secondary hover:text-white mt-0 mb-0 {{ request()->routeIs('admin.backup.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-                    Backup & Restore
-                </a>
-                <a href="{{ route('admin.settings.index') }}" class="sidebar-link w-full text-secondary hover:text-white mt-0 mb-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    Pengaturan Web
-                </a>
+            <!-- Bottom User & Logout Box -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="sidebar-link w-full text-danger hover:bg-danger hover:text-white mt-0 mb-0" style="color: var(--danger)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-                        Logout
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/60 transition-colors">
+                        <i class='bx bx-log-out text-base'></i>
+                        <span>Keluar (Logout)</span>
                     </button>
                 </form>
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 relative w-full md:ml-[260px] p-4 sm:p-6 md:p-8 min-h-screen overflow-x-hidden">
+        <!-- Main Content Area -->
+        <main class="flex-1 relative w-full md:ml-[260px] p-5 sm:p-8 min-h-screen overflow-x-hidden">
             
             <!-- Top Header Navbar -->
-            <div class="flex justify-between items-center mb-8 pb-4 border-b border-glass mt-12 md:mt-0" style="border-bottom-color: var(--glass-border)">
-                <div class="hidden sm:block">
-                    <p class="text-secondary text-sm">{{ date('l, d F Y') }}</p>
-                    <h2 class="text-xl font-bold">Halo, {{ $profile->name ?? 'Admin' }}! 👋</h2>
+            <header class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8 pb-4 border-b border-slate-200">
+                <div>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{{ date('l, d F Y') }}</p>
+                    <h2 class="text-2xl font-bold font-['Space_Grotesk'] text-slate-900">Halo, {{ $profile->name ?? 'Admin' }}! 👋</h2>
                 </div>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('home') }}" target="_blank" class="btn btn-outline btn-sm" style="border-color: var(--accent-primary); color: var(--text-primary);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                        Lihat Web
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('home') }}" target="_blank" class="btn btn-outline btn-sm flex items-center gap-2 shadow-sm hover:border-indigo-500 hover:text-indigo-600">
+                        <i class='bx bx-link-external text-base'></i>
+                        <span>Lihat Website</span>
                     </a>
                 </div>
-            </div>
+            </header>
 
             <!-- Flash Messages (Floating Toasts) -->
-            <div style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; min-width: 300px; max-width: 400px;">
+            <div style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; min-width: 320px; max-width: 420px;">
                 @if(session('success'))
-                    <div class="alert alert-success animate-fade-in shadow-lg" x-data="{ show: true }" x-show="show" style="background: rgba(16, 185, 129, 0.15); backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                        <span class="flex-1 font-medium">{{ session('success') }}</span>
-                        <button @click="show = false" class="hover:text-white">&times;</button>
+                    <div class="alert alert-success shadow-lg" x-data="{ show: true }" x-show="show">
+                        <i class='bx bx-check-circle text-xl mr-2 text-emerald-600'></i>
+                        <span class="flex-1 font-medium text-emerald-900">{{ session('success') }}</span>
+                        <button @click="show = false" class="text-emerald-700 hover:text-emerald-900 text-lg leading-none">&times;</button>
                     </div>
                 @endif
             
                 @if(session('error') || $errors->any())
-                    <div class="alert alert-error animate-fade-in shadow-lg" x-data="{ show: true }" x-show="show" style="background: rgba(239, 68, 68, 0.15); backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                    <div class="alert alert-error shadow-lg" x-data="{ show: true }" x-show="show">
+                        <i class='bx bx-error-circle text-xl mr-2 text-rose-600'></i>
                         <div class="flex-1">
                             @if(session('error'))
-                                <p class="font-medium">{{ session('error') }}</p>
+                                <p class="font-medium text-rose-900">{{ session('error') }}</p>
                             @endif
                             @if($errors->any())
-                                <ul class="text-sm mt-1" style="list-style-type: disc; padding-left: 1rem;">
+                                <ul class="text-xs mt-1 text-rose-800" style="list-style-type: disc; padding-left: 1rem;">
                                     @foreach($errors->all() as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
                             @endif
                         </div>
-                        <button @click="show = false" class="hover:text-white">&times;</button>
+                        <button @click="show = false" class="text-rose-700 hover:text-rose-900 text-lg leading-none">&times;</button>
                     </div>
                 @endif
             </div>
 
+            <!-- Page Content -->
             @yield('content')
         </main>
     </div>

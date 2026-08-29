@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
 use App\Models\ContactMessage;
 use App\Models\Donation;
 use App\Models\Profile;
@@ -21,9 +22,13 @@ class PortfolioController extends Controller
     {
         $profile = Profile::with('socialLinks')->first();
         $skills = Skill::orderBy('order')->get()->groupBy('category');
-        $projects = Project::published()->orderBy('order')->get();
         $featuredProjects = Project::published()->featured()->orderBy('order')->take(6)->get();
-        $certificates = \App\Models\Certificate::published()->orderBy('order')->get();
+        // Fallback if no featured project is set, take latest published
+        if ($featuredProjects->isEmpty()) {
+            $featuredProjects = Project::published()->orderBy('order')->take(6)->get();
+        }
+        $certificates = Certificate::published()->orderBy('order')->take(3)->get();
+        $totalCertificates = Certificate::published()->count();
 
         $stats = [
             'projects' => Project::published()->count(),
@@ -33,7 +38,36 @@ class PortfolioController extends Controller
 
         $notes = Note::latest()->get();
 
-        return view('portfolio.home', compact('profile', 'skills', 'projects', 'featuredProjects', 'certificates', 'stats', 'notes'));
+        return view('portfolio.home', compact('profile', 'skills', 'featuredProjects', 'certificates', 'totalCertificates', 'stats', 'notes'));
+    }
+
+    /**
+     * Dedicated Project Estimator Page
+     */
+    public function estimator()
+    {
+        $profile = Profile::with('socialLinks')->first();
+        return view('portfolio.estimator', compact('profile'));
+    }
+
+    /**
+     * Dedicated All Certificates Gallery Page
+     */
+    public function certificates()
+    {
+        $profile = Profile::with('socialLinks')->first();
+        $certificates = Certificate::published()->orderBy('order')->get();
+        return view('portfolio.certificates', compact('profile', 'certificates'));
+    }
+
+    /**
+     * Dedicated All Projects Catalog Page
+     */
+    public function projects()
+    {
+        $profile = Profile::with('socialLinks')->first();
+        $projects = Project::published()->orderBy('order')->get();
+        return view('portfolio.projects', compact('profile', 'projects'));
     }
 
     /**
@@ -100,7 +134,6 @@ class PortfolioController extends Controller
 
         Donation::create($validated);
 
-        // If project_id exists, also trigger download
         if ($request->project_id) {
             $project = Project::find($request->project_id);
             if ($project) {
