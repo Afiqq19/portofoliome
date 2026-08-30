@@ -12,7 +12,7 @@
     <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
 
     <div class="container relative z-10 max-w-5xl mx-auto flex flex-col items-center">
-        
+
         <!-- 3D Hologram Avatar Frame with Floating Orbital Badges -->
         <div class="reveal mb-8 relative inline-block">
             <div class="avatar-hologram-wrapper tilt-card spotlight-card">
@@ -44,10 +44,10 @@
         </div>
         
         <!-- Main Title & Dynamic Role Typewriter -->
-        <div class="reveal reveal-delay-2 max-w-4xl mx-auto">
+        <div class="reveal reveal-delay-1 max-w-4xl mx-auto">
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-black font-['Space_Grotesk'] tracking-tight mb-4 leading-tight">
-                <span class="text-slate-200">Halo, Saya</span> <br class="hidden sm:inline"/>
-                <span class="text-gradient">{{ $profile->name ?? 'Muhammad Syafiq' }}</span>
+                <span class="text-slate-200" x-text="$store.lang?.current === 'en' ? 'Hi, I am' : 'Halo, Saya'">Halo, Saya</span> <br class="hidden sm:inline"/>
+                <span class="text-gradient">{{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}</span>
             </h1>
             
             <!-- Typewriter Dynamic Role Display -->
@@ -59,7 +59,7 @@
                 }
             @endphp
             <div class="text-xl sm:text-2xl md:text-3xl text-slate-300 font-semibold mb-6 flex items-center justify-center gap-2 flex-wrap min-h-[40px]">
-                <span class="text-slate-400 font-normal">Seorang</span>
+                <span class="text-slate-400 font-normal" x-text="$store.lang?.current === 'en' ? 'A passionate' : 'Seorang'">Seorang</span>
                 <span id="role-typewriter" 
                       class="typewriter-text text-accent-cyan font-bold" 
                       data-roles="{{ json_encode($rolesList) }}">
@@ -67,13 +67,14 @@
                 </span>
             </div>
 
-            <p class="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed mb-8">
+            <p class="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed mb-8"
+               x-text="$store.lang?.current === 'en' ? 'Crafting interactive web & mobile applications with premium aesthetics, optimal speed, and clean code architecture.' : 'Menciptakan aplikasi web & mobile interaktif dengan estetika premium, kecepatan optimal, dan arsitektur kode modern.'">
                 Menciptakan aplikasi web & mobile interaktif dengan estetika premium, kecepatan optimal, dan arsitektur kode modern.
             </p>
         </div>
 
         <!-- Sleek Digital Live Clock Widget -->
-        <div class="reveal reveal-delay-3 flex justify-center mb-10 w-full" x-data="liveClockWidget()">
+        <div class="reveal reveal-delay-2 flex justify-center mb-10 w-full" x-data="liveClockWidget()">
             <div class="glass-panel px-5 md:px-8 py-3 rounded-full flex items-center gap-4 border border-white/10 shadow-[0_0_25px_rgba(99,102,241,0.2)] bg-white/5 backdrop-blur-xl hover:border-indigo-500/50 hover:shadow-[0_0_35px_rgba(99,102,241,0.35)] transition-all duration-300">
                 <div class="flex items-center gap-2.5 text-accent-cyan">
                     <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
@@ -109,12 +110,12 @@
         <!-- High-Impact Action CTAs -->
         <div class="reveal reveal-delay-3 flex flex-wrap justify-center gap-4 sm:gap-6 mb-12">
             <a href="#projects" class="btn btn-primary btn-shimmer btn-lg group shadow-xl">
-                <span>Eksplorasi Projek</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Explore Projects' : 'Eksplorasi Projek'">Eksplorasi Projek</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
             <a href="#contact" class="btn btn-outline btn-lg group">
                 <i class='bx bx-paper-plane text-xl group-hover:rotate-12 transition-transform text-accent-cyan'></i>
-                <span>Hubungi Saya</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Get in Touch' : 'Hubungi Saya'">Hubungi Saya</span>
             </a>
         </div>
         
@@ -151,7 +152,7 @@
                 <div class="text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-gradient mb-2 stat-counter" data-target="{{ $stats['projects'] ?? 0 }}">
                     {{ $stats['projects'] ?? 0 }}
                 </div>
-                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold">Karya & Projek Selesai</div>
+                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold" x-text="$store.lang?.current === 'en' ? 'Completed Works & Projects' : 'Karya & Projek Selesai'">Karya & Projek Selesai</div>
             </div>
 
             <!-- Stat 2: Downloads -->
@@ -162,7 +163,7 @@
                 <div class="text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-gradient-cyan mb-2 stat-counter" data-target="{{ $stats['downloads'] ?? 0 }}">
                     {{ $stats['downloads'] ?? 0 }}
                 </div>
-                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold">Total Unduhan Source/APK</div>
+                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold" x-text="$store.lang?.current === 'en' ? 'Total Source & APK Downloads' : 'Total Unduhan Source/APK'">Total Unduhan Source/APK</div>
             </div>
 
             <!-- Stat 3: Visitors -->
@@ -173,7 +174,7 @@
                 <div class="text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-gradient mb-2 stat-counter" data-target="{{ $stats['visitors'] ?? 0 }}">
                     {{ $stats['visitors'] ?? 0 }}
                 </div>
-                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold">Pengunjung Unik</div>
+                <div class="text-slate-400 uppercase tracking-[0.2em] text-xs font-bold" x-text="$store.lang?.current === 'en' ? 'Unique Visitors' : 'Pengunjung Unik'">Pengunjung Unik</div>
             </div>
 
         </div>
@@ -219,9 +220,9 @@
 <section id="about" class="py-24 relative">
     <div class="container max-w-5xl mx-auto">
         <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3">Tentang Saya</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100">
-                Dedikasi & <span class="text-gradient">Filosofi Kode</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Dedication &' : 'Dedikasi &'">Dedikasi &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Code Philosophy' : 'Filosofi Kode'">Filosofi Kode</span>
             </h2>
         </div>
         
@@ -230,7 +231,7 @@
                 <!-- Verified Dev Badge -->
                 <div class="flex items-center gap-3 mb-6">
                     <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-xs uppercase tracking-widest font-bold text-slate-400">Pengembang Terverifikasi</span>
+                    <span class="text-xs uppercase tracking-widest font-bold text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified Software Engineer' : 'Pengembang Terverifikasi'">Pengembang Terverifikasi</span>
                 </div>
                 
                 <div class="text-lg md:text-xl text-slate-300 leading-relaxed font-light space-y-4">
@@ -244,8 +245,8 @@
                             <i class='bx bx-check-shield text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200">Arsitektur Bersih</div>
-                            <div class="text-xs text-slate-400">Struktur rapi & teruji</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Clean Architecture' : 'Arsitektur Bersih'">Arsitektur Bersih</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Robust & maintainable' : 'Struktur rapi & teruji'">Struktur rapi & teruji</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3.5">
@@ -253,8 +254,8 @@
                             <i class='bx bx-tachometer text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200">Kecepatan Tinggi</div>
-                            <div class="text-xs text-slate-400">Optimasi performa & SEO</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'High Speed' : 'Kecepatan Tinggi'">Kecepatan Tinggi</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Optimized performance & SEO' : 'Optimasi performa & SEO'">Optimasi performa & SEO</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3.5">
@@ -262,8 +263,8 @@
                             <i class='bx bx-palette text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200">Desain Modern</div>
-                            <div class="text-xs text-slate-400">UI/UX Memukau</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Modern Design' : 'Desain Modern'">Desain Modern</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Stunning UI/UX' : 'UI/UX Memukau'">UI/UX Memukau</div>
                         </div>
                     </div>
                 </div>
@@ -274,15 +275,98 @@
 @endif
 
 <!-- ═══════════════════════════════════════════════════════
-     5. TECHNICAL SKILLS SECTION ("Keahlian Teknis")
+     5. CLEAN CODE SNIPPET / MOCKUP EDITOR SHOWCASE (Nomor 5)
+     ═══════════════════════════════════════════════════════ -->
+<section class="py-16 relative">
+    <div class="container max-w-5xl mx-auto px-4" x-data="{ activeTab: 'php' }">
+        <div class="reveal flex flex-col items-center mb-12 text-center">
+            <div class="badge mb-3">Live Code Preview</div>
+            <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-2">
+                <span x-text="$store.lang?.current === 'en' ? 'Engineered for' : 'Arsitektur'">Arsitektur</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Performance & Scalability' : 'Performa & Kecepatan'">Performa & Kecepatan</span>
+            </h2>
+            <p class="text-slate-400 text-sm md:text-base max-w-lg" x-text="$store.lang?.current === 'en' ? 'A glimpse into the clean, modern structure powering my digital solutions.' : 'Cuplikan struktur kode bersih, teruji, dan modular yang digunakan dalam membangun solusi aplikasi.'">
+                Cuplikan struktur kode bersih, teruji, dan modular yang digunakan dalam membangun solusi aplikasi.
+            </p>
+        </div>
+
+        <div class="reveal glass-panel rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0a0a12]/95 backdrop-blur-2xl">
+            <!-- Mockup Editor Title Bar -->
+            <div class="flex items-center justify-between px-6 py-4 bg-black/40 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                    <span class="text-xs font-mono text-slate-400 ml-3 font-semibold">VS Code Studio • MSS Developer</span>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex items-center gap-2">
+                    <button @click="activeTab = 'php'" 
+                            class="px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                            :class="activeTab === 'php' ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40' : 'text-slate-400 hover:text-white'">
+                        <i class='bx bxl-php text-base'></i>
+                        <span>ProjectController.php</span>
+                    </button>
+                    <button @click="activeTab = 'vue'" 
+                            class="px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                            :class="activeTab === 'vue' ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40' : 'text-slate-400 hover:text-white'">
+                        <i class='bx bxl-vuejs text-base'></i>
+                        <span>AppExperience.vue</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Content Area -->
+            <div class="p-6 md:p-8 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto text-slate-300">
+                <div x-show="activeTab === 'php'">
+                    <p class="text-slate-500">// Modern Laravel 11 Clean Controller Architecture</p>
+                    <p><span class="text-purple-400 font-bold">namespace</span> <span class="text-cyan-300">App\Http\Controllers</span>;</p>
+                    <br>
+                    <p><span class="text-purple-400 font-bold">class</span> <span class="text-amber-300 font-bold">PortfolioEngine</span> <span class="text-purple-400 font-bold">extends</span> <span class="text-cyan-300">Controller</span> {</p>
+                    <p class="pl-4"><span class="text-purple-400 font-bold">public function</span> <span class="text-blue-400 font-bold">deployHighPerformanceApp</span>(<span class="text-cyan-300">ProjectRequest</span> <span class="text-indigo-300">$request</span>): <span class="text-emerald-400">JsonResponse</span> {</p>
+                    <p class="pl-8"><span class="text-indigo-300">$app</span> = <span class="text-cyan-300">Application</span>::<span class="text-blue-400">createWithStrictSecurity</span>([</p>
+                    <p class="pl-12"><span class="text-amber-200">'architect'</span> => <span class="text-emerald-300">'Mhd. Syafiq Syahmi'</span>,</p>
+                    <p class="pl-12"><span class="text-amber-200">'performance'</span> => <span class="text-emerald-300">'100/100 Google PageSpeed'</span>,</p>
+                    <p class="pl-12"><span class="text-amber-200">'stack'</span> => [<span class="text-amber-200">'Laravel 11'</span>, <span class="text-amber-200">'Vue.js'</span>, <span class="text-amber-200">'Tailwind'</span>, <span class="text-amber-200">'MySQL'</span>],</p>
+                    <p class="pl-12"><span class="text-amber-200">'status'</span> => <span class="text-amber-200">'Production Ready 🚀'</span></p>
+                    <p class="pl-8">]);</p>
+                    <br>
+                    <p class="pl-8"><span class="text-purple-400 font-bold">return</span> <span class="text-cyan-300">response</span>()-><span class="text-blue-400">json</span>([<span class="text-amber-200">'success'</span> => <span class="text-purple-400">true</span>, <span class="text-amber-200">'data'</span> => <span class="text-indigo-300">$app</span>]);</p>
+                    <p class="pl-4">}</p>
+                    <p>}</p>
+                </div>
+
+                <div x-show="activeTab === 'vue'" style="display: none;">
+                    <p class="text-slate-500">&lt;!-- Reactive State & Cyber Glassmorphism UI Engine --&gt;</p>
+                    <p>&lt;<span class="text-purple-400 font-bold">script setup</span>&gt;</p>
+                    <p><span class="text-purple-400 font-bold">import</span> { <span class="text-cyan-300">ref</span>, <span class="text-cyan-300">onMounted</span> } <span class="text-purple-400 font-bold">from</span> <span class="text-amber-300">'vue'</span>;</p>
+                    <br>
+                    <p><span class="text-purple-400 font-bold">const</span> <span class="text-indigo-300">developer</span> = <span class="text-cyan-300">ref</span>({</p>
+                    <p class="pl-4">name: <span class="text-emerald-300">'Mhd. Syafiq Syahmi'</span>,</p>
+                    <p class="pl-4">mission: <span class="text-emerald-300">'Deliver ultra-responsive, state-of-the-art web products.'</span>,</p>
+                    <p class="pl-4">availability: <span class="text-purple-400 font-bold">true</span></p>
+                    <p>});</p>
+                    <br>
+                    <p><span class="text-cyan-300">onMounted</span>(() =&gt; {</p>
+                    <p class="pl-4"><span class="text-blue-400">console</span>.<span class="text-blue-400">log</span>(<span class="text-emerald-300">'✨ Welcome to MSyafiq Portfolio Studio!'</span>);</p>
+                    <p>});</p>
+                    <p>&lt;/<span class="text-purple-400 font-bold">script</span>&gt;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     5.5 TECHNICAL SKILLS SECTION ("Keahlian Teknis")
      ═══════════════════════════════════════════════════════ -->
 @if(($profile->enable_skills ?? true) && count($skills) > 0)
 <section id="skills" class="py-24 relative">
     <div class="container max-w-6xl mx-auto">
         <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3">Teknologi & Kemampuan</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Tech Stack & Capabilities' : 'Teknologi & Kemampuan'">Teknologi & Kemampuan</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100">
-                Keahlian <span class="text-gradient">Teknis & Stack</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Technical' : 'Keahlian'">Keahlian</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Skills & Stack' : 'Teknis & Stack'">Teknis & Stack</span>
             </h2>
         </div>
         
@@ -326,16 +410,16 @@
 @endif
 
 <!-- ═══════════════════════════════════════════════════════
-     5.5 JOURNEY & EXPERIENCE TIMELINE ("Perjalanan & Pengalaman")
+     5.6 JOURNEY & EXPERIENCE TIMELINE ("Perjalanan & Pengalaman")
      ═══════════════════════════════════════════════════════ -->
 <section id="timeline" class="py-24 relative">
     <div class="container max-w-5xl mx-auto">
         <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3">Jejak & Pencapaian</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Milestones & Career' : 'Jejak & Pencapaian'">Jejak & Pencapaian</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                Perjalanan <span class="text-gradient">& Pengalaman</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Journey &' : 'Perjalanan'">Perjalanan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Experience' : '& Pengalaman'">& Pengalaman</span>
             </h2>
-            <p class="text-slate-400 max-w-lg text-sm md:text-base">Garis waktu dedikasi, eksplorasi teknologi, dan peran dalam membangun produk digital berkualitas.</p>
+            <p class="text-slate-400 max-w-lg text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Timeline of dedication, technological exploration, and building digital products.' : 'Garis waktu dedikasi, eksplorasi teknologi, dan peran dalam membangun produk digital berkualitas.'">Garis waktu dedikasi, eksplorasi teknologi, dan peran dalam membangun produk digital berkualitas.</p>
         </div>
 
         <div class="timeline-container relative">
@@ -344,22 +428,19 @@
             <div class="space-y-12 md:space-y-16">
                 <!-- Milestone 1 -->
                 <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <!-- Dot (Desktop Center) -->
                     <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 shadow-[0_0_15px_#6366f1]"></div>
-                    <!-- Dot (Mobile Left) -->
                     <div class="md:hidden timeline-dot left-[6px] top-6 shadow-[0_0_15px_#6366f1]"></div>
 
-                    <!-- Left Column (Content) -->
                     <div class="w-full md:w-1/2 md:pr-12 md:text-right">
                         <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-indigo-500/40 group">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold font-mono mb-3">
                                 <i class='bx bx-calendar'></i>
-                                <span>2024 - Sekarang</span>
+                                <span x-text="$store.lang?.current === 'en' ? '2024 - Present' : '2024 - Sekarang'">2024 - Sekarang</span>
                             </div>
                             <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2">
                                 Freelance Fullstack & Mobile Developer
                             </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed">
+                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Designing and delivering custom web solutions, POS inventory systems, Android APK mobile apps, QRIS payment gateway integration, and automated WhatsApp bots.' : 'Merancang dan mengembangkan solusi web kustom, sistem kasir inventori, aplikasi mobile Android (APK), integrasi payment gateway QRIS, dan otomatisasi bot WhatsApp untuk berbagai kebutuhan bisnis.'">
                                 Merancang dan mengembangkan solusi web kustom, sistem kasir inventori, aplikasi mobile Android (APK), integrasi payment gateway QRIS, dan otomatisasi bot WhatsApp untuk berbagai kebutuhan bisnis.
                             </p>
                             <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
@@ -371,20 +452,16 @@
                         </div>
                     </div>
 
-                    <!-- Right Column (Empty spacer for zigzag) -->
                     <div class="hidden md:block w-1/2"></div>
                 </div>
 
                 <!-- Milestone 2 -->
                 <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <!-- Dot -->
                     <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-cyan-400 shadow-[0_0_15px_#06b6d4]"></div>
                     <div class="md:hidden timeline-dot left-[6px] top-6 bg-cyan-400 shadow-[0_0_15px_#06b6d4]"></div>
 
-                    <!-- Left Column (Spacer) -->
                     <div class="hidden md:block w-1/2"></div>
 
-                    <!-- Right Column (Content) -->
                     <div class="w-full md:w-1/2 md:pl-12">
                         <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-cyan-500/40 group">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-mono mb-3">
@@ -394,7 +471,7 @@
                             <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-cyan-400 transition-colors mb-2">
                                 Web App Architect & Modern Tech Explorer
                             </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed">
+                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Focusing on modern web architecture, RESTful API design, interactive UI/UX, SEO optimizations, and building production-grade cloud systems.' : 'Fokus mendalami arsitektur modern web, RESTful API, dynamic UI/UX, optimasi SEO, serta membangun proyek open-source dan sistem manajemen berbasis cloud.'">
                                 Fokus mendalami arsitektur modern web, RESTful API, dynamic UI/UX, optimasi SEO, serta membangun proyek open-source dan sistem manajemen berbasis cloud.
                             </p>
                             <div class="flex flex-wrap gap-1.5 mt-4">
@@ -408,21 +485,19 @@
 
                 <!-- Milestone 3 -->
                 <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <!-- Dot -->
                     <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-purple-400 shadow-[0_0_15px_#a855f7]"></div>
                     <div class="md:hidden timeline-dot left-[6px] top-6 bg-purple-400 shadow-[0_0_15px_#a855f7]"></div>
 
-                    <!-- Left Column (Content) -->
                     <div class="w-full md:w-1/2 md:pr-12 md:text-right">
                         <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-purple-500/40 group">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold font-mono mb-3">
                                 <i class='bx bx-calendar'></i>
                                 <span>2022 - 2023</span>
                             </div>
-                            <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-purple-400 transition-colors mb-2">
+                            <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-purple-400 transition-colors mb-2" x-text="$store.lang?.current === 'en' ? 'Intensive Tech Training & Certifications' : 'Pembelajaran Intensif & Sertifikasi'">
                                 Pembelajaran Intensif & Sertifikasi
                             </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed">
+                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Completing comprehensive courses in structured programming, algorithms, database architecture, and user interface design (UI/UX).' : 'Menyelesaikan berbagai pelatihan komprehensif di bidang pemrograman terstruktur, algoritma, database modeling, dan desain antarmuka pengguna (UI/UX).'">
                                 Menyelesaikan berbagai pelatihan komprehensif di bidang pemrograman terstruktur, algoritma, database modeling, dan desain antarmuka pengguna (UI/UX).
                             </p>
                             <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
@@ -433,7 +508,6 @@
                         </div>
                     </div>
 
-                    <!-- Right Column (Spacer) -->
                     <div class="hidden md:block w-1/2"></div>
                 </div>
             </div>
@@ -448,23 +522,16 @@
 <section id="projects" class="py-24 relative">
     <div class="container max-w-6xl mx-auto">
         <div class="reveal flex flex-col items-center mb-12 text-center">
-            <div class="badge mb-3">Portofolio Karya</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Featured Portfolio' : 'Portofolio Karya'">Portofolio Karya</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                Projek <span class="text-gradient">Unggulan & Rilis</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Featured' : 'Projek'">Projek</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Projects & Releases' : 'Unggulan & Rilis'">Unggulan & Rilis</span>
             </h2>
-            <p class="text-slate-400 max-w-xl text-sm md:text-base">Pilihan aplikasi siap pakai, open-source, dan sistem skala produksi terbaik yang telah dibangun.</p>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Curated selection of production-grade web apps, APKs, and open-source systems.' : 'Pilihan aplikasi siap pakai, open-source, dan sistem skala produksi terbaik yang telah dibangun.'">Pilihan aplikasi siap pakai, open-source, dan sistem skala produksi terbaik yang telah dibangun.</p>
         </div>
 
         <!-- Projects Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             @foreach($featuredProjects as $project)
-                @php
-                    $categoryTag = strtolower($project->category ?? 'web');
-                    $tagsString = is_array($project->tech_stack) ? implode(' ', $project->tech_stack) : ($project->tech_stack ?? '');
-                    if ($project->apk_path) {
-                        $tagsString .= ' mobile apk android';
-                    }
-                @endphp
                 <div class="reveal">
                     <div class="glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/10 hover:border-indigo-500/40 flex flex-col h-full group justify-between">
                         
@@ -495,7 +562,7 @@
                                     <div class="absolute top-4 left-4 z-20">
                                         <div class="backdrop-blur-md bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
                                             <i class='bx bxl-android'></i>
-                                            <span>APK Tersedia</span>
+                                            <span>APK Ready</span>
                                         </div>
                                     </div>
                                 @endif
@@ -522,7 +589,7 @@
                         <!-- Actions Footer -->
                         <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between mt-auto">
                             <a href="{{ route('project.show', $project->slug) }}" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
-                                <span>Lihat Detail</span>
+                                <span x-text="$store.lang?.current === 'en' ? 'View Details' : 'Lihat Detail'">Lihat Detail</span>
                                 <i class='bx bx-right-arrow-alt text-base'></i>
                             </a>
 
@@ -549,7 +616,7 @@
         <div class="reveal flex justify-center">
             <a href="{{ route('projects.all') }}" class="btn btn-outline py-3.5 px-8 rounded-full text-sm font-bold flex items-center gap-2 hover:border-indigo-500 hover:text-indigo-400 shadow-lg">
                 <i class='bx bx-grid-alt text-lg'></i>
-                <span>Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Browse All Projects ({{ $stats[\'projects\'] ?? 0 }})' : 'Jelajahi Seluruh Projek ({{ $stats[\'projects\'] ?? 0 }})'">Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})</span>
                 <i class='bx bx-right-arrow-alt text-lg'></i>
             </a>
         </div>
@@ -564,11 +631,11 @@
 <section id="certificates" class="py-24 relative">
     <div class="container max-w-6xl mx-auto">
         <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3">Pencapaian & Lisensi</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Credentials & Awards' : 'Pencapaian & Lisensi'">Pencapaian & Lisensi</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                Sertifikat & <span class="text-gradient">Penghargaan</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Certificates &' : 'Sertifikat &'">Sertifikat &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Honors' : 'Penghargaan'">Penghargaan</span>
             </h2>
-            <p class="text-slate-400 max-w-xl text-sm md:text-base">Pengakuan resmi atas keahlian dan kompetensi dalam pengembangan teknologi.</p>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Official recognition of expertise and competence in tech development.' : 'Pengakuan resmi atas keahlian dan kompetensi dalam pengembangan teknologi.'">Pengakuan resmi atas keahlian dan kompetensi dalam pengembangan teknologi.</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -609,7 +676,7 @@
                     @if($cert->credential_url)
                         <div class="p-6 pt-0">
                             <a href="{{ $cert->credential_url }}" target="_blank" class="btn btn-outline btn-sm w-full rounded-xl flex items-center justify-center gap-2 hover:border-purple-500 text-xs">
-                                <span>Verifikasi Kredensial</span>
+                                <span x-text="$store.lang?.current === 'en' ? 'Verify Credential' : 'Verifikasi Kredensial'">Verifikasi Kredensial</span>
                                 <i class='bx bx-link-external'></i>
                             </a>
                         </div>
@@ -622,7 +689,7 @@
         <div class="reveal flex justify-center">
             <a href="{{ route('certificates') }}" class="btn btn-outline py-3.5 px-8 rounded-full text-sm font-bold flex items-center gap-2 hover:border-purple-500 hover:text-purple-400 shadow-lg">
                 <i class='bx bx-award text-lg'></i>
-                <span>Buka Galeri Seluruh Sertifikat ({{ $totalCertificates ?? count($certificates) }})</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Open Certificates Gallery ({{ $totalCertificates ?? count($certificates) }})' : 'Buka Galeri Seluruh Sertifikat ({{ $totalCertificates ?? count($certificates) }})'">Buka Galeri Seluruh Sertifikat ({{ $totalCertificates ?? count($certificates) }})</span>
                 <i class='bx bx-right-arrow-alt text-lg'></i>
             </a>
         </div>
@@ -631,46 +698,115 @@
 @endif
 
 <!-- ═══════════════════════════════════════════════════════
-     7.5 PROJECT ESTIMATOR TEASER CTA BANNER
+     8. INTERACTIVE FAQ ACCORDION SECTION (Nomor 4)
      ═══════════════════════════════════════════════════════ -->
-<section class="py-16 relative">
-    <div class="container max-w-5xl mx-auto px-4">
-        <div class="reveal glass-panel p-8 sm:p-12 rounded-3xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-indigo-950/40 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="max-w-xl text-center md:text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold font-mono mb-3">
-                    <i class='bx bx-calculator'></i>
-                    <span>Kalkulator Estimasi Biaya</span>
+<section id="faq" class="py-24 relative" x-data="{ activeFaq: 1 }">
+    <div class="container max-w-4xl mx-auto">
+        <div class="reveal flex flex-col items-center mb-16 text-center">
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'FAQ & Inquiries' : 'Tanya Jawab Umum'">Tanya Jawab Umum</div>
+            <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
+                <span x-text="$store.lang?.current === 'en' ? 'Frequently' : 'Pertanyaan'">Pertanyaan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Asked Questions' : 'yang Sering Diajukan'">yang Sering Diajukan</span>
+            </h2>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Everything you need to know about project workflows, revisions, warranties, and deployment.' : 'Semua hal penting seputar alur kerjasama, revisi, garansi, dan proses pengerjaan projek.'">
+                Semua hal penting seputar alur kerjasama, revisi, garansi, dan proses pengerjaan projek.
+            </p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <div class="reveal glass-card rounded-2xl border border-white/10 overflow-hidden transition-all">
+                <button @click="activeFaq = activeFaq === 1 ? null : 1" class="w-full p-6 text-left flex justify-between items-center gap-4 cursor-pointer focus:outline-none">
+                    <span class="font-bold text-slate-100 text-base md:text-lg flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold font-mono">01</span>
+                        <span x-text="$store.lang?.current === 'en' ? 'How long does a website or mobile app project take?' : 'Berapa lama estimasi waktu pengerjaan projek website/aplikasi?'">Berapa lama estimasi waktu pengerjaan projek website/aplikasi?</span>
+                    </span>
+                    <i class="bx text-2xl text-indigo-400 transition-transform duration-300" :class="activeFaq === 1 ? 'bx-chevron-up rotate-180' : 'bx-chevron-down'"></i>
+                </button>
+                <div x-show="activeFaq === 1" x-collapse class="px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    <p x-text="$store.lang?.current === 'en' ? 'It depends on the complexity of features. Simple landing pages take 3-7 workdays, company profiles take 7-14 days, while full-scale custom web applications, SaaS, or e-commerce systems typically take 2-4 weeks.' : 'Tergantung pada kompleksitas fitur. Landing page promosi berkisar 3-7 hari kerja, website company profile 7-14 hari, sedangkan custom web application/SaaS/toko online sistem penuh sekitar 2-4 minggu dengan milestone terstruktur.'">
+                        Tergantung pada kompleksitas fitur. Landing page promosi berkisar 3-7 hari kerja, website company profile 7-14 hari, sedangkan custom web application/SaaS/toko online sistem penuh sekitar 2-4 minggu dengan milestone terstruktur.
+                    </p>
                 </div>
-                <h2 class="text-2xl sm:text-4xl font-black font-['Space_Grotesk'] text-slate-100 mb-3 leading-tight">
-                    Punya Ide Projek? <span class="text-gradient">Hitung Estimasi</span> Biayanya!
-                </h2>
-                <p class="text-slate-400 text-sm leading-relaxed">
-                    Pilih kategori aplikasi dan fitur yang Anda butuhkan untuk melihat perkiraan durasi pengerjaan dan estimasi investasi secara instan.
-                </p>
             </div>
 
-            <div class="flex-shrink-0">
-                <a href="{{ route('estimator') }}" class="btn btn-primary btn-shimmer py-4 px-8 rounded-2xl text-sm font-bold flex items-center gap-2.5 shadow-xl hover:scale-105 transition-transform">
-                    <i class='bx bx-calculator text-xl'></i>
-                    <span>Buka Kalkulator Estimasi</span>
-                    <i class='bx bx-right-arrow-alt text-xl'></i>
-                </a>
+            <!-- FAQ 2 -->
+            <div class="reveal glass-card rounded-2xl border border-white/10 overflow-hidden transition-all">
+                <button @click="activeFaq = activeFaq === 2 ? null : 2" class="w-full p-6 text-left flex justify-between items-center gap-4 cursor-pointer focus:outline-none">
+                    <span class="font-bold text-slate-100 text-base md:text-lg flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold font-mono">02</span>
+                        <span x-text="$store.lang?.current === 'en' ? 'Do I get the complete source code and full ownership?' : 'Apakah saya mendapatkan source code lengkap & hak milik penuh?'">Apakah saya mendapatkan source code lengkap & hak milik penuh?</span>
+                    </span>
+                    <i class="bx text-2xl text-cyan-400 transition-transform duration-300" :class="activeFaq === 2 ? 'bx-chevron-up rotate-180' : 'bx-chevron-down'"></i>
+                </button>
+                <div x-show="activeFaq === 2" x-collapse class="px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    <p x-text="$store.lang?.current === 'en' ? 'Yes, 100%! Upon project handover and final payment, all source code repositories (ZIP/GitHub), database schemas, design assets, and administrative credentials are fully transferred to you without hidden dependencies.' : 'Ya, 100%! Setelah pelunasan dan serah terima projek, seluruh repositori source code (ZIP/GitHub), skema database, aset desain, dan kredensial admin sistem diserahkan penuh kepada Anda tanpa ikatan dependensi tersembunyi.'">
+                        Ya, 100%! Setelah pelunasan dan serah terima projek, seluruh repositori source code (ZIP/GitHub), skema database, aset desain, dan kredensial admin sistem diserahkan penuh kepada Anda tanpa ikatan dependensi tersembunyi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="reveal glass-card rounded-2xl border border-white/10 overflow-hidden transition-all">
+                <button @click="activeFaq = activeFaq === 3 ? null : 3" class="w-full p-6 text-left flex justify-between items-center gap-4 cursor-pointer focus:outline-none">
+                    <span class="font-bold text-slate-100 text-base md:text-lg flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold font-mono">03</span>
+                        <span x-text="$store.lang?.current === 'en' ? 'What is the payment structure and revision policy?' : 'Bagaimana tahapan pembayaran dan kebijakan revisi projek?'">Bagaimana tahapan pembayaran dan kebijakan revisi projek?</span>
+                    </span>
+                    <i class="bx text-2xl text-purple-400 transition-transform duration-300" :class="activeFaq === 3 ? 'bx-chevron-up rotate-180' : 'bx-chevron-down'"></i>
+                </button>
+                <div x-show="activeFaq === 3" x-collapse class="px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    <p x-text="$store.lang?.current === 'en' ? 'Payments are milestone-based (typically 40-50% upfront to initiate development, remainder upon demo approval). We provide free revisions during development to guarantee output matches your initial scope agreement.' : 'Pembayaran dilakukan bertahap (DP 40-50% di awal untuk mulai development, sisa pelunasan setelah live demo lolos uji coba Anda). Kami memberikan revisi gratis hingga hasil sesuai kesepakatan rancangan awal.'">
+                        Pembayaran dilakukan bertahap (DP 40-50% di awal untuk mulai development, sisa pelunasan setelah live demo lolos uji coba Anda). Kami memberikan revisi gratis hingga hasil sesuai kesepakatan rancangan awal.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="reveal glass-card rounded-2xl border border-white/10 overflow-hidden transition-all">
+                <button @click="activeFaq = activeFaq === 4 ? null : 4" class="w-full p-6 text-left flex justify-between items-center gap-4 cursor-pointer focus:outline-none">
+                    <span class="font-bold text-slate-100 text-base md:text-lg flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold font-mono">04</span>
+                        <span x-text="$store.lang?.current === 'en' ? 'Is there a bug-fix warranty and after-sales support?' : 'Apakah ada garansi perbaikan bug dan pendampingan setelah rilis?'">Apakah ada garansi perbaikan bug dan pendampingan setelah rilis?</span>
+                    </span>
+                    <i class="bx text-2xl text-emerald-400 transition-transform duration-300" :class="activeFaq === 4 ? 'bx-chevron-up rotate-180' : 'bx-chevron-down'"></i>
+                </button>
+                <div x-show="activeFaq === 4" x-collapse class="px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    <p x-text="$store.lang?.current === 'en' ? 'Absolutely! Every completed project includes a 30-day free bug-fix warranty and technical maintenance assistance to ensure everything runs smoothly in production.' : 'Tentu saja! Setiap projek yang selesai mendapatkan garansi bebas bug gratis selama 30 hari kalender serta pendampingan teknis agar sistem berjalan stabil di server produksi.'">
+                        Tentu saja! Setiap projek yang selesai mendapatkan garansi bebas bug gratis selama 30 hari kalender serta pendampingan teknis agar sistem berjalan stabil di server produksi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="reveal glass-card rounded-2xl border border-white/10 overflow-hidden transition-all">
+                <button @click="activeFaq = activeFaq === 5 ? null : 5" class="w-full p-6 text-left flex justify-between items-center gap-4 cursor-pointer focus:outline-none">
+                    <span class="font-bold text-slate-100 text-base md:text-lg flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold font-mono">05</span>
+                        <span x-text="$store.lang?.current === 'en' ? 'Can you assist with server deployment and domain configuration?' : 'Apakah bisa mendampingi setup hosting, VPS & domain kustom?'">Apakah bisa mendampingi setup hosting, VPS & domain kustom?</span>
+                    </span>
+                    <i class="bx text-2xl text-amber-400 transition-transform duration-300" :class="activeFaq === 5 ? 'bx-chevron-up rotate-180' : 'bx-chevron-down'"></i>
+                </button>
+                <div x-show="activeFaq === 5" x-collapse class="px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    <p x-text="$store.lang?.current === 'en' ? 'Yes, we provide end-to-end deployment assistance: setting up your custom domain (.com/.id), configuring cPanel/VPS/Cloud hosting, and installing SSL HTTPS until the website is live.' : 'Ya, kami siap membantu proses deployment end-to-end: mulai dari konfigurasi domain (.com/.id), setup web server cPanel/VPS/Cloud, hingga sertifikat SSL HTTPS terpasang dan siap digunakan publik.'">
+                        Ya, kami siap membantu proses deployment end-to-end: mulai dari konfigurasi domain (.com/.id), setup web server cPanel/VPS/Cloud, hingga sertifikat SSL HTTPS terpasang dan siap digunakan publik.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
-     8. PUBLIC WORKSPACE / GUESTBOOK ("Workspace Publik")
+     9. PUBLIC WORKSPACE / GUESTBOOK ("Workspace Publik")
      ═══════════════════════════════════════════════════════ -->
 <section id="workspace" class="py-24 relative">
     <div class="container max-w-6xl mx-auto">
         <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3">Buku Tamu Digital</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Digital Guestbook' : 'Buku Tamu Digital'">Buku Tamu Digital</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                Workspace <span class="text-gradient">Publik</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Public' : 'Workspace'">Workspace</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Workspace' : 'Publik'">Publik</span>
             </h2>
-            <p class="text-slate-400 max-w-xl text-sm md:text-base">Tinggalkan jejak, sapaan, atau masukan untuk pengembang dan pengunjung lainnya secara langsung.</p>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Leave a note, feedback, or quick greeting directly for the developer and visitors.' : 'Tinggalkan jejak, sapaan, atau masukan untuk pengembang dan pengunjung lainnya secara langsung.'">Tinggalkan jejak, sapaan, atau masukan untuk pengembang dan pengunjung lainnya secara langsung.</p>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -679,9 +815,9 @@
                 <div class="glass-panel p-6 md:p-8 rounded-3xl border border-white/10 sticky top-28 backdrop-blur-2xl shadow-2xl">
                     <div class="flex items-center gap-2.5 mb-3">
                         <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
-                        <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100">Kirim Catatan! 🚀</h3>
+                        <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100" x-text="$store.lang?.current === 'en' ? 'Leave a Note! 🚀' : 'Kirim Catatan! 🚀'">Kirim Catatan! 🚀</h3>
                     </div>
-                    <p class="text-xs text-slate-400 mb-6">Pesan Anda akan tampil di feed publik portofolio ini.</p>
+                    <p class="text-xs text-slate-400 mb-6" x-text="$store.lang?.current === 'en' ? 'Your message will appear live on the public feed.' : 'Pesan Anda akan tampil di feed publik portofolio ini.'">Pesan Anda akan tampil di feed publik portofolio ini.</p>
                     
                     @if(session('success_note'))
                         <div class="alert alert-success rounded-xl mb-6 text-sm py-3 px-4 flex items-center">
@@ -693,15 +829,15 @@
                     <form action="{{ route('notes.store') }}" method="POST">
                         @csrf
                         <div class="form-group mb-4">
-                            <label class="form-label text-xs">Nama Anda</label>
+                            <label class="form-label text-xs" x-text="$store.lang?.current === 'en' ? 'Your Name' : 'Nama Anda'">Nama Anda</label>
                             <input type="text" name="name" class="form-control rounded-xl" required placeholder="Nama Anda / Samaran">
                         </div>
                         <div class="form-group mb-6">
-                            <label class="form-label text-xs">Pesan Anda</label>
+                            <label class="form-label text-xs" x-text="$store.lang?.current === 'en' ? 'Your Message' : 'Pesan Anda'">Pesan Anda</label>
                             <textarea name="content" class="form-control rounded-xl min-h-[110px]" required placeholder="Tuliskan catatan atau sapaan..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-shimmer w-full rounded-xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 group">
-                            <span>Kirim ke Papan Catatan</span>
+                        <button type="submit" class="btn btn-primary btn-shimmer w-full rounded-xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 group cursor-pointer">
+                            <span x-text="$store.lang?.current === 'en' ? 'Post to Board' : 'Kirim ke Papan Catatan'">Kirim ke Papan Catatan</span>
                             <i class='bx bx-send text-base group-hover:translate-x-1 transition-transform'></i>
                         </button>
                     </form>
@@ -732,8 +868,8 @@
                 @else
                     <div class="flex flex-col items-center justify-center h-full min-h-[300px] text-center border border-dashed border-white/10 rounded-3xl p-8 bg-white/5">
                         <i class='bx bx-message-square-dots text-5xl text-slate-600 mb-3'></i>
-                        <h4 class="text-lg font-bold text-slate-200 mb-1">Belum Ada Catatan</h4>
-                        <p class="text-sm text-slate-400">Jadilah orang pertama yang menulis catatan di workspace ini!</p>
+                        <h4 class="text-lg font-bold text-slate-200 mb-1" x-text="$store.lang?.current === 'en' ? 'No Notes Yet' : 'Belum Ada Catatan'">Belum Ada Catatan</h4>
+                        <p class="text-sm text-slate-400" x-text="$store.lang?.current === 'en' ? 'Be the first to leave a note on this workspace!' : 'Jadilah orang pertama yang menulis catatan di workspace ini!'">Jadilah orang pertama yang menulis catatan di workspace ini!</p>
                     </div>
                 @endif
             </div>
@@ -742,16 +878,16 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
-     9. CONTACT SECTION ("Mari Berdiskusi")
+     10. CONTACT SECTION ("Mari Berdiskusi")
      ═══════════════════════════════════════════════════════ -->
 <section id="contact" class="py-24 relative overflow-hidden">
     <div class="container max-w-4xl mx-auto">
         <div class="reveal flex flex-col items-center mb-14 text-center">
-            <div class="badge mb-3">Hubungi Langsung</div>
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Get in Touch' : 'Hubungi Langsung'">Hubungi Langsung</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                Mari Mulai <span class="text-gradient">Kolaborasi</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Let\'s Start a' : 'Mari Mulai'">Mari Mulai</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Collaboration' : 'Kolaborasi'">Kolaborasi</span>
             </h2>
-            <p class="text-slate-400 max-w-lg text-sm md:text-base">Punya ide projek menarik, tawaran kerjasama, atau sekadar ingin berdiskusi? Jangan ragu untuk menghubungi saya.</p>
+            <p class="text-slate-400 max-w-lg text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Have an exciting project idea, partnership inquiry, or just want to chat? Feel free to reach out.' : 'Punya ide projek menarik, tawaran kerjasama, atau sekadar ingin berdiskusi? Jangan ragu untuk menghubungi saya.'">Punya ide projek menarik, tawaran kerjasama, atau sekadar ingin berdiskusi? Jangan ragu untuk menghubungi saya.</p>
         </div>
         
         <!-- Direct Contact Pills -->
@@ -794,27 +930,27 @@
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="form-group mb-0">
-                        <label class="form-label">Nama Lengkap</label>
+                        <label class="form-label" x-text="$store.lang?.current === 'en' ? 'Full Name' : 'Nama Lengkap'">Nama Lengkap</label>
                         <input type="text" name="name" class="form-control rounded-xl" required placeholder="Contoh: Xie Syahmi">
                     </div>
                     <div class="form-group mb-0">
-                        <label class="form-label">Alamat Email</label>
+                        <label class="form-label" x-text="$store.lang?.current === 'en' ? 'Email Address' : 'Alamat Email'">Alamat Email</label>
                         <input type="email" name="email" class="form-control rounded-xl" required placeholder="xie@example.com">
                     </div>
                 </div>
                 
                 <div class="form-group mb-6">
-                    <label class="form-label">Subjek / Topik</label>
+                    <label class="form-label" x-text="$store.lang?.current === 'en' ? 'Subject / Inquiry Topic' : 'Subjek / Topik'">Subjek / Topik</label>
                     <input type="text" name="subject" class="form-control rounded-xl" placeholder="Tawaran Kerjasama / Projek Web">
                 </div>
 
                 <div class="form-group mb-8">
-                    <label class="form-label">Pesan Anda</label>
+                    <label class="form-label" x-text="$store.lang?.current === 'en' ? 'Your Message' : 'Pesan Anda'">Pesan Anda</label>
                     <textarea name="message" class="form-control rounded-xl min-h-[140px]" required placeholder="Jelaskan kebutuhan, ide, atau pertanyaan Anda..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-shimmer w-full rounded-2xl py-4 text-base font-bold flex items-center justify-center gap-2 group shadow-xl">
-                    <span>Kirim Pesan Sekarang</span>
+                <button type="submit" class="btn btn-primary btn-shimmer w-full rounded-2xl py-4 text-base font-bold flex items-center justify-center gap-2 group shadow-xl cursor-pointer">
+                    <span x-text="$store.lang?.current === 'en' ? 'Send Message Now' : 'Kirim Pesan Sekarang'">Kirim Pesan Sekarang</span>
                     <i class='bx bx-send text-xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform'></i>
                 </button>
             </form>

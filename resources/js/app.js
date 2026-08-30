@@ -3,17 +3,35 @@
  * Features:
  * 1. Constellation Particle Canvas with Mouse Interactivity
  * 2. 3D Tilt Cards & Mouse Spotlight Illumination
- * 3. Dynamic Role Typewriter Engine (Resilient Selector)
+ * 3. Dynamic Role Typewriter Engine (Bilingual Support)
  * 4. Animated Number Counters (Viewport Triggered)
  * 5. Animated Skill Progress Bars
  * 6. Floating Back-to-Top with Circular Progress Ring
  * 7. Interactive Project Category Filtering
  * 8. Scroll Reveal Observer
  * 9. Navbar Scroll Visual Effect
- * 10. Lo-Fi Ambient Audio Player & Equalizer
+ * 10. Lo-Fi Ambient Audio Player & Equalizer with Autoplay
  * 11. Interactive Project Cost & Timeline Estimator (Alpine Helper)
  * 12. Instant Copy-to-Clipboard with Toast Notification
+ * 13. Global Alpine Multi-Language Store (ID / EN)
  */
+
+// Global Alpine Multi-Language Store
+document.addEventListener('alpine:init', () => {
+    Alpine.store('lang', {
+        current: localStorage.getItem('portofoliome_lang') || 'id',
+        toggle() {
+            this.current = this.current === 'id' ? 'en' : 'id';
+            localStorage.setItem('portofoliome_lang', this.current);
+            window.dispatchEvent(new CustomEvent('lang-changed', { detail: this.current }));
+        },
+        set(lang) {
+            this.current = lang;
+            localStorage.setItem('portofoliome_lang', lang);
+            window.dispatchEvent(new CustomEvent('lang-changed', { detail: lang }));
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     initConstellationCanvas();
@@ -68,33 +86,19 @@ function initConstellationCanvas() {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.6;
-            this.vy = (Math.random() - 0.5) * 0.6;
-            this.radius = Math.random() * 2 + 1;
-            const colors = ['#6366f1', '#06b6d4', '#a855f7', '#ec4899', '#38bdf8'];
-            this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.alpha = Math.random() * 0.5 + 0.2;
+            this.vx = (Math.random() - 0.5) * 0.45;
+            this.vy = (Math.random() - 0.5) * 0.45;
+            this.radius = Math.random() * 1.5 + 0.8;
+            this.color = Math.random() > 0.5 ? '#6366f1' : '#06b6d4';
+            this.alpha = Math.random() * 0.5 + 0.3;
         }
 
         update() {
             this.x += this.vx;
             this.y += this.vy;
 
-            if (this.x < 0 || this.x > width) this.vx = -this.vx;
-            if (this.y < 0 || this.y > height) this.vy = -this.vy;
-
-            if (mouse.x !== null && mouse.y !== null) {
-                const dx = mouse.x - this.x;
-                const dy = mouse.y - this.y;
-                const distance = Math.hypot(dx, dy);
-
-                if (distance < mouse.radius) {
-                    const force = (1 - distance / mouse.radius) * 0.8;
-                    const angle = Math.atan2(dy, dx);
-                    this.x += Math.cos(angle) * force * 1.2;
-                    this.y += Math.sin(angle) * force * 1.2;
-                }
-            }
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
         }
 
         draw() {
@@ -192,7 +196,8 @@ function initSpotlightAndTilt() {
                 const centerY = rect.height / 2;
                 const rotateX = ((y - centerY) / centerY) * -6;
                 const rotateY = ((x - centerX) / centerX) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
             }
         });
 
@@ -204,12 +209,15 @@ function initSpotlightAndTilt() {
     });
 }
 
-/* ── 3. Dynamic Role Typewriter Engine ───────────────────── */
+/* ── 3. Dynamic Role Typewriter Engine (Bilingual) ───────── */
 function initTypewriter() {
     const typewriterEl = document.getElementById('role-typewriter') || document.getElementById('typewriter-role') || document.querySelector('.typewriter-text');
     if (!typewriterEl) return;
 
-    let roles = ['Full Stack Web Developer', 'Creative UI/UX Enthusiast', 'Mobile App Engineer', 'Modern Tech Architect'];
+    const rolesID = ['Full Stack Web Developer', 'Creative UI/UX Enthusiast', 'Mobile App Engineer', 'Modern Tech Architect'];
+    const rolesEN = ['Full Stack Web Developer', 'Creative UI/UX Enthusiast', 'Mobile App Engineer', 'Modern Tech Architect'];
+
+    let roles = rolesID;
 
     try {
         const rawRoles = typewriterEl.getAttribute('data-roles');
@@ -261,84 +269,87 @@ function initNumberCounters() {
     const counters = document.querySelectorAll('.stat-counter');
     if (!counters.length) return;
 
-    const observer = new IntersectionObserver((entries, obs) => {
+    let animated = false;
+
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                const target = parseInt(entry.target.getAttribute('data-target') || '0', 10);
-                animateValue(entry.target, 0, target, 1600);
-                obs.unobserve(entry.target);
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                counters.forEach((counter) => {
+                    const target = parseInt(counter.getAttribute('data-target') || counter.innerText, 10) || 0;
+                    const duration = 1600;
+                    const startTime = performance.now();
+
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const easeOutQuad = (t) => t * (2 - t);
+                        const currentVal = Math.floor(easeOutQuad(progress) * target);
+
+                        counter.innerText = currentVal;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    }
+
+                    requestAnimationFrame(updateCounter);
+                });
             }
         });
     }, { threshold: 0.2 });
 
     counters.forEach((counter) => observer.observe(counter));
-
-    function animateValue(obj, start, end, duration) {
-        if (start === end) {
-            obj.textContent = end;
-            return;
-        }
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            // Ease out quad
-            const easeProgress = 1 - (1 - progress) * (1 - progress);
-            obj.textContent = Math.floor(easeProgress * (end - start) + start);
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                obj.textContent = end;
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
 }
 
 /* ── 5. Animated Skill Progress Bars ─────────────────────── */
 function initSkillProgressBars() {
-    const progressBars = document.querySelectorAll('.skill-progress-bar');
-    if (!progressBars.length) return;
+    const skillBars = document.querySelectorAll('.skill-progress-bar');
+    if (!skillBars.length) return;
 
-    const observer = new IntersectionObserver((entries, obs) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                const target = entry.target.getAttribute('data-progress') || '0';
-                entry.target.style.width = `${target}%`;
-                obs.unobserve(entry.target);
+                const target = entry.target;
+                const progress = target.getAttribute('data-progress') || '0';
+                target.style.width = `${progress}%`;
+                observer.unobserve(target);
             }
         });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.15 });
 
-    progressBars.forEach((bar) => observer.observe(bar));
+    skillBars.forEach((bar) => observer.observe(bar));
 }
 
-/* ── 6. Floating Back to Top Button with Circular Progress ── */
+/* ── 6. Floating Back-to-Top with Circular Progress Ring ─── */
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
-    const circle = document.getElementById('progress-ring-circle');
+    const progressCircle = document.getElementById('progress-ring-circle');
     if (!backToTopBtn) return;
 
-    const circumference = 2 * Math.PI * 22; // r=22 -> ~138.2
-    if (circle) {
-        circle.style.strokeDasharray = `${circumference}`;
-        circle.style.strokeDashoffset = `${circumference}`;
+    const circumference = 2 * Math.PI * 22; // r = 22
+
+    if (progressCircle) {
+        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        progressCircle.style.strokeDashoffset = circumference;
     }
 
     window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollProgress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
 
-        if (scrollTop > 300) {
+        if (scrollTop > 250) {
             backToTopBtn.classList.add('visible');
         } else {
             backToTopBtn.classList.remove('visible');
         }
 
-        if (circle) {
-            const offset = circumference - scrollProgress * circumference;
-            circle.style.strokeDashoffset = offset;
+        if (progressCircle) {
+            const offset = circumference - scrollPercent * circumference;
+            progressCircle.style.strokeDashoffset = offset;
         }
     });
 
@@ -352,32 +363,33 @@ function initBackToTop() {
 
 /* ── 7. Interactive Project Category Filtering ───────────── */
 function initProjectFilters() {
-    const filterButtons = document.querySelectorAll('[data-filter]');
-    const projectCards = document.querySelectorAll('[data-category]');
+    const filterBtns = document.querySelectorAll('.project-filter-btn');
+    const projectCards = document.querySelectorAll('.project-grid-item');
+    if (!filterBtns.length || !projectCards.length) return;
 
-    if (!filterButtons.length || !projectCards.length) return;
-
-    filterButtons.forEach((btn) => {
+    filterBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
-            filterButtons.forEach((b) => b.classList.remove('active'));
+            filterBtns.forEach((b) => b.classList.remove('active'));
             btn.classList.add('active');
 
             const filterValue = btn.getAttribute('data-filter');
 
             projectCards.forEach((card) => {
-                const categories = card.getAttribute('data-category').split(' ');
-                if (filterValue === 'all' || categories.includes(filterValue)) {
-                    card.style.display = 'flex';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, 50);
+                const cardCategory = card.getAttribute('data-category');
+                const isApk = card.getAttribute('data-is-apk') === 'true';
+
+                if (filterValue === 'all') {
+                    card.style.display = '';
+                    setTimeout(() => (card.style.opacity = '1'), 50);
+                } else if (filterValue === 'apk' && isApk) {
+                    card.style.display = '';
+                    setTimeout(() => (card.style.opacity = '1'), 50);
+                } else if (filterValue === cardCategory) {
+                    card.style.display = '';
+                    setTimeout(() => (card.style.opacity = '1'), 50);
                 } else {
                     card.style.opacity = '0';
-                    card.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 250);
+                    setTimeout(() => (card.style.display = 'none'), 200);
                 }
             });
         });
@@ -535,15 +547,15 @@ window.projectEstimator = function (phone = '') {
             mobile_app: {
                 name: 'Mobile App (Android APK / Flutter)',
                 baseCost: 8000000,
-                baseDays: 21,
+                baseDays: 20,
                 icon: 'bxl-android',
-                desc: 'Aplikasi mobile Android responsif dengan integrasi backend RESTful API.',
+                desc: 'Aplikasi mobile native/cross-platform Android siap rilis dan instal.',
             },
         },
 
         featureList: {
-            responsive: { name: 'Desain Responsif Mobile/Tablet', cost: 500000, days: 1, icon: 'bx-mobile-alt' },
-            seo: { name: 'Optimasi SEO & Google Search', cost: 750000, days: 2, icon: 'bx-search-alt' },
+            responsive: { name: 'Desain Responsif Semua Layar (Mobile/Tablet/PC)', cost: 500000, days: 2, icon: 'bx-devices' },
+            seo: { name: 'Optimasi SEO On-Page & Kecepatan Google PageSpeed', cost: 600000, days: 2, icon: 'bx-tachometer' },
             auth: { name: 'Sistem Login & Multi-Role Akun', cost: 1200000, days: 4, icon: 'bx-lock-alt' },
             payment: { name: 'Payment Gateway (QRIS, E-Wallet)', cost: 1800000, days: 4, icon: 'bx-credit-card' },
             whatsapp: { name: 'Integrasi Otomatisasi WhatsApp API', cost: 1000000, days: 3, icon: 'bxl-whatsapp' },
