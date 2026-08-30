@@ -76,195 +76,227 @@
          @scroll.window="scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100"
          :style="`width: ${scrollProgress}%`"></div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Header (Executive Glass Capsule Layout) -->
     <nav class="navbar" x-data="{ mobileMenuOpen: false }">
         <div class="container max-w-7xl flex justify-between items-center relative gap-4">
             
-            <!-- Brand Mark -->
-            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-2.5 flex-shrink-0" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
+            <!-- Brand Mark (Left) -->
+            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-3 flex-shrink-0" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
                     <div class="w-full h-full bg-[#060609] rounded-[10px] flex items-center justify-center font-black text-xs sm:text-sm tracking-wider">
                         <span class="text-gradient font-black">MSS</span>
                     </div>
                 </div>
-                <span class="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.02] transition-transform whitespace-nowrap">
-                    {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}
-                </span>
+                <div class="flex flex-col">
+                    <span class="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.01] transition-transform whitespace-nowrap leading-tight">
+                        {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}
+                    </span>
+                    <span class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 leading-none mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-slate-400">Software Engineer</span>
+                    </span>
+                </div>
             </a>
             
-            <!-- Desktop Navigation Links (Option 1: Modern Category Dropdowns) -->
-            <div class="nav-links hidden md:flex items-center gap-1.5 lg:gap-3 text-xs lg:text-sm whitespace-nowrap">
+            <!-- Desktop Unified Nav Capsule + Language Toggle (Right Aligned) -->
+            <div class="hidden md:flex items-center gap-3">
                 
-                <!-- Beranda -->
-                <a href="{{ route('home') }}" class="nav-link" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
-                    <span x-text="$store.lang?.current === 'en' ? 'Home' : 'Beranda'">Beranda</span>
-                </a>
-
-                <!-- Profil Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button @click="open = !open" 
-                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
-                            :class="{ 'text-white': open }">
-                        <span x-text="$store.lang?.current === 'en' ? 'Profile' : 'Profil'">Profil</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
+                <!-- Floating Glass Nav Capsule -->
+                <div class="glass-panel py-1.5 px-3 rounded-full border border-white/10 flex items-center gap-1 bg-[#0c0c14]/70 backdrop-blur-2xl shadow-[0_8px_25px_rgba(0,0,0,0.4)]">
                     
-                    <div x-show="open"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-                         @click.outside="open = false"
-                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
-                         style="display: none;">
-                        @if($profile->bio ?? true)
-                        <a href="{{ route('home') }}#about" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                                <i class='bx bx-user text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Bio, vision & code philosophy' : 'Bio, visi & dedikasi kode'">Bio, visi & dedikasi kode</div>
-                            </div>
-                        </a>
-                        @endif
-                        @if($profile->enable_skills ?? true)
-                        <a href="{{ route('home') }}#skills" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
-                                <i class='bx bx-layer text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300" x-text="$store.lang?.current === 'en' ? 'Skills & Stack' : 'Keahlian & Stack'">Keahlian & Stack</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Technologies & mastery' : 'Teknologi & penguasaan'">Teknologi & penguasaan</div>
-                            </div>
-                        </a>
-                        @endif
-                        <a href="{{ route('home') }}#timeline" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
-                                <i class='bx bx-time-five text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300" x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Journey & milestones' : 'Garis waktu pencapaian'">Garis waktu pencapaian</div>
-                            </div>
-                        </a>
+                    <!-- Beranda -->
+                    <a href="{{ route('home') }}" class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
+                        <span x-text="$store.lang?.current === 'en' ? 'Home' : 'Beranda'">Beranda</span>
+                    </a>
+
+                    <!-- Profil Dropdown -->
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button @click="open = !open" 
+                                class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full flex items-center gap-1 cursor-pointer focus:outline-none"
+                                :class="{ 'text-white bg-white/5': open }">
+                            <span x-text="$store.lang?.current === 'en' ? 'Profile' : 'Profil'">Profil</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                             @click.outside="open = false"
+                             class="absolute top-full left-0 mt-3 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                             style="display: none;">
+                            @if($profile->bio ?? true)
+                            <a href="{{ route('home') }}#about" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-user text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Bio, vision & code philosophy' : 'Bio, visi & dedikasi kode'">Bio, visi & dedikasi kode</div>
+                                </div>
+                            </a>
+                            @endif
+                            @if($profile->enable_skills ?? true)
+                            <a href="{{ route('home') }}#skills" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-layer text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300" x-text="$store.lang?.current === 'en' ? 'Skills & Stack' : 'Keahlian & Stack'">Keahlian & Stack</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Technologies & mastery' : 'Teknologi & penguasaan'">Teknologi & penguasaan</div>
+                                </div>
+                            </a>
+                            @endif
+                            <a href="{{ route('home') }}#timeline" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-time-five text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300" x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Journey & milestones' : 'Garis waktu pencapaian'">Garis waktu pencapaian</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
+
+                    <!-- Karya Dropdown -->
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button @click="open = !open" 
+                                class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full flex items-center gap-1 cursor-pointer focus:outline-none"
+                                :class="{ 'text-white bg-white/5': open, 'active': {{ request()->routeIs('projects.*') || request()->routeIs('certificates') ? 'true' : 'false' }} }">
+                            <span x-text="$store.lang?.current === 'en' ? 'Works' : 'Karya'">Karya</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                             @click.outside="open = false"
+                             class="absolute top-full left-0 mt-3 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                             style="display: none;">
+                            @if($profile->enable_projects ?? true)
+                            <a href="{{ route('projects.all') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-laptop text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'Project Catalog' : 'Katalog Projek'">Katalog Projek</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Web App, Systems & APK' : 'Web App, Sistem & APK'">Web App, Sistem & APK</div>
+                                </div>
+                            </a>
+                            @endif
+                            @if($profile->enable_certificates ?? true)
+                            <a href="{{ route('certificates') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-award text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300" x-text="$store.lang?.current === 'en' ? 'Certificates Gallery' : 'Galeri Sertifikat'">Galeri Sertifikat</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Official awards & licenses' : 'Lisensi & penghargaan resmi'">Lisensi & penghargaan resmi</div>
+                                </div>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Layanan Dropdown -->
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button @click="open = !open" 
+                                class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full flex items-center gap-1 cursor-pointer focus:outline-none"
+                                :class="{ 'text-white bg-white/5': open, 'active': {{ request()->routeIs('estimator') ? 'true' : 'false' }} }">
+                            <span x-text="$store.lang?.current === 'en' ? 'Services' : 'Layanan'">Layanan</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                             @click.outside="open = false"
+                             class="absolute top-full left-0 mt-3 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                             style="display: none;">
+                            <a href="{{ route('estimator') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-calculator text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300" x-text="$store.lang?.current === 'en' ? 'Cost & Time Estimator' : 'Kalkulator Estimasi'">Kalkulator Estimasi</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Estimate duration & investment' : 'Simulasi biaya & waktu projek'">Simulasi biaya & waktu projek</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('home') }}#faq" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-help-circle text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'FAQ & Policies' : 'Tanya Jawab (FAQ)'">Tanya Jawab (FAQ)</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Warranty, revisions & flow' : 'Garansi, revisi & proses kerja'">Garansi, revisi & proses kerja</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('home') }}#workspace" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                                    <i class='bx bx-message-square-dots text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300" x-text="$store.lang?.current === 'en' ? 'Public Workspace' : 'Workspace Publik'">Workspace Publik</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Digital notes & guestbook' : 'Buku tamu & catatan digital'">Buku tamu & catatan digital</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Kontak -->
+                    <a href="{{ route('home') }}#contact" class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full">
+                        <span x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</span>
+                    </a>
                 </div>
 
-                <!-- Karya Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button @click="open = !open" 
-                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
-                            :class="{ 'text-white': open, 'active': {{ request()->routeIs('projects.*') || request()->routeIs('certificates') ? 'true' : 'false' }} }">
-                        <span x-text="$store.lang?.current === 'en' ? 'Works' : 'Karya'">Karya</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                    
-                    <div x-show="open"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-                         @click.outside="open = false"
-                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
-                         style="display: none;">
-                        @if($profile->enable_projects ?? true)
-                        <a href="{{ route('projects.all') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                                <i class='bx bx-laptop text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'Project Catalog' : 'Katalog Projek'">Katalog Projek</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Web App, Systems & APK' : 'Web App, Sistem & APK'">Web App, Sistem & APK</div>
-                            </div>
-                        </a>
-                        @endif
-                        @if($profile->enable_certificates ?? true)
-                        <a href="{{ route('certificates') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
-                                <i class='bx bx-award text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300" x-text="$store.lang?.current === 'en' ? 'Certificates Gallery' : 'Galeri Sertifikat'">Galeri Sertifikat</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Official awards & licenses' : 'Lisensi & penghargaan resmi'">Lisensi & penghargaan resmi</div>
-                            </div>
-                        </a>
-                        @endif
-                    </div>
-                </div>
+                <!-- Subtle Vertical Separator -->
+                <div class="w-px h-6 bg-white/10"></div>
 
-                <!-- Layanan Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button @click="open = !open" 
-                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
-                            :class="{ 'text-white': open, 'active': {{ request()->routeIs('estimator') ? 'true' : 'false' }} }">
-                        <span x-text="$store.lang?.current === 'en' ? 'Services' : 'Layanan'">Layanan</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <!-- Sleek Segmented Language Switcher (Crisp ID | EN Pill) -->
+                <div class="glass-panel p-1 rounded-full border border-white/10 flex items-center bg-[#0c0c14]/70 backdrop-blur-2xl shadow-md">
+                    <button @click="$store.lang.set('id')" 
+                            class="px-2.5 py-1 rounded-full text-xs font-bold font-mono transition-all cursor-pointer select-none"
+                            :class="$store.lang?.current === 'id' ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-white'">
+                        ID
                     </button>
-                    
-                    <div x-show="open"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-                         @click.outside="open = false"
-                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
-                         style="display: none;">
-                        <a href="{{ route('estimator') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
-                                <i class='bx bx-calculator text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300" x-text="$store.lang?.current === 'en' ? 'Cost & Time Estimator' : 'Kalkulator Estimasi'">Kalkulator Estimasi</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Estimate duration & investment' : 'Simulasi biaya & waktu projek'">Simulasi biaya & waktu projek</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('home') }}#faq" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                                <i class='bx bx-help-circle text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'FAQ & Policies' : 'Tanya Jawab (FAQ)'">Tanya Jawab (FAQ)</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Warranty, revisions & flow' : 'Garansi, revisi & proses kerja'">Garansi, revisi & proses kerja</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('home') }}#workspace" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                                <i class='bx bx-message-square-dots text-base'></i>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300" x-text="$store.lang?.current === 'en' ? 'Public Workspace' : 'Workspace Publik'">Workspace Publik</div>
-                                <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Digital notes & guestbook' : 'Buku tamu & catatan digital'">Buku tamu & catatan digital</div>
-                            </div>
-                        </a>
-                    </div>
+                    <button @click="$store.lang.set('en')" 
+                            class="px-2.5 py-1 rounded-full text-xs font-bold font-mono transition-all cursor-pointer select-none"
+                            :class="$store.lang?.current === 'en' ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-white'">
+                        EN
+                    </button>
                 </div>
-
-                <!-- Kontak -->
-                <a href="{{ route('home') }}#contact" class="nav-link">
-                    <span x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</span>
-                </a>
             </div>
 
-            <!-- Right Controls: Language Switcher & Mobile Toggle -->
-            <div class="flex items-center gap-3 flex-shrink-0">
-                
-                <!-- Modern Interactive Language Switcher Toggle Pill -->
-                <button @click="$store.lang.toggle()" 
-                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/40 text-xs font-bold text-slate-300 hover:text-white transition-all shadow-sm cursor-pointer select-none"
-                        title="Ganti Bahasa / Switch Language">
-                    <span class="text-sm" x-text="$store.lang?.current === 'en' ? '🇬🇧' : '🇮🇩'">🇮🇩</span>
-                    <span class="font-mono text-[11px] uppercase tracking-wider" x-text="$store.lang?.current === 'en' ? 'EN' : 'ID'">ID</span>
-                </button>
+            <!-- Mobile Controls (Right) -->
+            <div class="flex items-center gap-2 md:hidden">
+                <!-- Mobile Segmented Language Pill -->
+                <div class="glass-panel p-0.5 rounded-full border border-white/10 flex items-center bg-white/5">
+                    <button @click="$store.lang.set('id')" 
+                            class="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono transition-all cursor-pointer"
+                            :class="$store.lang?.current === 'id' ? 'bg-indigo-600 text-white' : 'text-slate-400'">
+                        ID
+                    </button>
+                    <button @click="$store.lang.set('en')" 
+                            class="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono transition-all cursor-pointer"
+                            :class="$store.lang?.current === 'en' ? 'bg-indigo-600 text-white' : 'text-slate-400'">
+                        EN
+                    </button>
+                </div>
 
                 <!-- Mobile Menu Toggle Button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
                     <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                     <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
                 </button>
