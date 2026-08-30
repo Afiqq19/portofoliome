@@ -235,7 +235,13 @@
                 </div>
                 
                 <div class="text-lg md:text-xl text-slate-300 leading-relaxed font-light space-y-4">
-                    {!! nl2br(e($profile->bio)) !!}
+                    <div x-show="$store.lang?.current !== 'en'">
+                        {!! nl2br(e($profile->bio)) !!}
+                    </div>
+                    <div x-show="$store.lang?.current === 'en'" style="display: none;">
+                        <p>I am a passionate Full Stack & Mobile Engineer dedicated to building high-performance web applications and sleek digital experiences with clean architecture.</p>
+                        <p>Experienced in developing production-ready systems with Laravel, Vue.js, Android apps, and interactive cloud solutions tailored for modern businesses.</p>
+                    </div>
                 </div>
 
                 <!-- Bento Sub-Highlights -->
