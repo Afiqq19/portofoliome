@@ -210,7 +210,7 @@
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                         <button @click="open = !open" 
                                 class="nav-link text-xs lg:text-sm px-3.5 py-1.5 rounded-full flex items-center gap-1 cursor-pointer focus:outline-none"
-                                :class="{ 'text-white bg-white/5': open, 'active': {{ request()->routeIs('estimator') ? 'true' : 'false' }} }">
+                                :class="{ 'text-white bg-white/5': open, 'active': {{ request()->routeIs('estimator') || request()->routeIs('faq') ? 'true' : 'false' }} }">
                             <span x-text="$store.lang?.current === 'en' ? 'Services' : 'Layanan'">Layanan</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </button>
@@ -234,7 +234,7 @@
                                     <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Estimate duration & investment' : 'Simulasi biaya & waktu projek'">Simulasi biaya & waktu projek</div>
                                 </div>
                             </a>
-                            <a href="{{ route('home') }}#faq" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <a href="{{ route('faq') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
                                 <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
                                     <i class='bx bx-help-circle text-base'></i>
                                 </div>
@@ -350,7 +350,7 @@
             <a href="{{ route('estimator') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
                 <span x-text="$store.lang?.current === 'en' ? 'Cost & Time Estimator' : 'Kalkulator Estimasi Projek'">Kalkulator Estimasi Projek</span>
             </a>
-            <a href="{{ route('home') }}#faq" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
+            <a href="{{ route('faq') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
                 <span x-text="$store.lang?.current === 'en' ? 'FAQ (Frequently Asked Questions)' : 'Tanya Jawab (FAQ)'">Tanya Jawab (FAQ)</span>
             </a>
             <a href="{{ route('home') }}#workspace" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
@@ -396,7 +396,7 @@
                     <a href="{{ route('projects.all') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Projects' : 'Katalog Projek'">Katalog Projek</a>
                     <a href="{{ route('certificates') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Certificates' : 'Galeri Sertifikat'">Galeri Sertifikat</a>
                     <a href="{{ route('estimator') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Estimator' : 'Kalkulator Estimasi'">Kalkulator Estimasi</a>
-                    <a href="{{ route('home') }}#faq" class="hover:text-indigo-400 transition-colors">FAQ</a>
+                    <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
                 </div>
             </div>

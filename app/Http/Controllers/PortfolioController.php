@@ -51,6 +51,15 @@ class PortfolioController extends Controller
     }
 
     /**
+     * Dedicated Frequently Asked Questions (FAQ) Page
+     */
+    public function faq()
+    {
+        $profile = Profile::with('socialLinks')->first();
+        return view('portfolio.faq', compact('profile'));
+    }
+
+    /**
      * Dedicated All Certificates Gallery Page
      */
     public function certificates()

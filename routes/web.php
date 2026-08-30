@@ -23,6 +23,7 @@ Route::middleware(TrackVisitor::class)->group(function () {
     // Halaman Utama & Khusus
     Route::get('/', [PortfolioController::class, 'index'])->name('home');
     Route::get('/estimator', [PortfolioController::class, 'estimator'])->name('estimator');
+    Route::get('/faq', [PortfolioController::class, 'faq'])->name('faq');
     Route::get('/certificates', [PortfolioController::class, 'certificates'])->name('certificates');
     Route::get('/projects', [PortfolioController::class, 'projects'])->name('projects.all');
     Route::get('/project/{slug}', [PortfolioController::class, 'project'])->name('project.show');
