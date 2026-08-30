@@ -616,7 +616,7 @@
         <div class="reveal flex justify-center">
             <a href="{{ route('projects.all') }}" class="btn btn-outline py-3.5 px-8 rounded-full text-sm font-bold flex items-center gap-2 hover:border-indigo-500 hover:text-indigo-400 shadow-lg">
                 <i class='bx bx-grid-alt text-lg'></i>
-                <span x-text="$store.lang?.current === 'en' ? 'Browse All Projects ({{ $stats[\'projects\'] ?? 0 }})' : 'Jelajahi Seluruh Projek ({{ $stats[\'projects\'] ?? 0 }})'">Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Browse All Projects ({{ $stats['projects'] ?? 0 }})' : 'Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})'">Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})</span>
                 <i class='bx bx-right-arrow-alt text-lg'></i>
             </a>
         </div>
@@ -885,7 +885,7 @@
         <div class="reveal flex flex-col items-center mb-14 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Get in Touch' : 'Hubungi Langsung'">Hubungi Langsung</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                <span x-text="$store.lang?.current === 'en' ? 'Let\'s Start a' : 'Mari Mulai'">Mari Mulai</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Collaboration' : 'Kolaborasi'">Kolaborasi</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Start a' : 'Mari Mulai'">Mari Mulai</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Collaboration' : 'Kolaborasi'">Kolaborasi</span>
             </h2>
             <p class="text-slate-400 max-w-lg text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Have an exciting project idea, partnership inquiry, or just want to chat? Feel free to reach out.' : 'Punya ide projek menarik, tawaran kerjasama, atau sekadar ingin berdiskusi? Jangan ragu untuk menghubungi saya.'">Punya ide projek menarik, tawaran kerjasama, atau sekadar ingin berdiskusi? Jangan ragu untuk menghubungi saya.</p>
         </div>
