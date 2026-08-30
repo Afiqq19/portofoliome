@@ -13,16 +13,8 @@
 
     <div class="container relative z-10 max-w-5xl mx-auto flex flex-col items-center">
         
-        <!-- Live Status Pill Badge -->
-        <div class="reveal mb-8">
-            <div class="badge badge-pulse-green px-4 py-2 shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:scale-105 transition-transform cursor-default">
-                <span class="pulse-dot"></span>
-                <span class="font-medium text-xs md:text-sm tracking-wide">Tersedia untuk Projek Baru & Kolaborasi</span>
-            </div>
-        </div>
-
         <!-- 3D Hologram Avatar Frame with Floating Orbital Badges -->
-        <div class="reveal reveal-delay-1 mb-8 relative inline-block">
+        <div class="reveal mb-8 relative inline-block">
             <div class="avatar-hologram-wrapper tilt-card spotlight-card">
                 <!-- Rotating Conic Glow Aura -->
                 <div class="avatar-conic-ring"></div>

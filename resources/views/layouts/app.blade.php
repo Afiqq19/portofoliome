@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
-    <title>@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio Digital')</title>
+    <title>@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="alternate icon" href="{{ asset('favicon.svg') }}">
     
@@ -220,7 +220,7 @@
                 <p>&copy; {{ date('Y') }} <span class="text-slate-300 font-semibold">{{ $profile->name ?? 'MSyafiq Portofolio' }}</span>. Hak Cipta Dilindungi.</p>
                 <div class="flex items-center gap-2 text-slate-400">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Sistem Portofolio Aktif & Siap Kolaborasi</span>
+                    <span>Portofolio</span>
                 </div>
             </div>
         </div>
