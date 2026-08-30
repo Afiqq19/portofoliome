@@ -20,7 +20,7 @@
                     <tr>
                         <th width="90">Thumbnail</th>
                         <th>Detail Projek</th>
-                        <th>Kategori / Tag</th>
+                        <th>Kategori / Tech Stack</th>
                         <th>Status Publikasi</th>
                         <th>Unduhan</th>
                         <th width="140" class="text-right">Aksi</th>
@@ -61,7 +61,7 @@
                             <form action="{{ route('admin.projects.toggle-status', $project) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="cursor-pointer flex items-center gap-2 py-1 px-2.5 rounded-full border text-xs font-bold transition-all {{ $project->status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200' }}" title="Klik untuk ubah status">
+                                <button type="submit" class="cursor-pointer flex items-center gap-2 py-1 px-3 rounded-full border text-xs font-bold transition-all {{ $project->status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200' }}" title="Klik untuk ubah status">
                                     <span class="w-2 h-2 rounded-full {{ $project->status === 'published' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400' }}"></span>
                                     <span>{{ $project->status === 'published' ? 'Publik' : 'Draft' }}</span>
                                 </button>
@@ -87,7 +87,7 @@
                                 <form action="{{ route('admin.projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus projek ini?')" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition-colors" title="Hapus Projek">
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition-colors cursor-pointer" title="Hapus Projek">
                                         <i class='bx bx-trash'></i>
                                     </button>
                                 </form>

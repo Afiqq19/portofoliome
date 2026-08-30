@@ -38,7 +38,7 @@
                 
                 <!-- Cinematic Thumbnail Card -->
                 <div class="rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10 relative group max-h-[500px] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-70 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-70 z-10 pointer-events-none"></div>
                     
                     @if($project->thumbnail)
                         <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full max-h-[500px] object-contain transform group-hover:scale-105 transition-transform duration-1000 relative z-0">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <!-- Title & Meta -->
+                <!-- Title & Description -->
                 <div>
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 tracking-tight leading-tight mb-6">
                         {{ $project->title }}
@@ -77,9 +77,9 @@
                         <div class="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                             <i class='bx bx-key text-2xl'></i>
                         </div>
-                        <h3 class="text-2xl font-bold font-['Space_Grotesk'] text-slate-100">Panduan Login Aplikasi</h3>
+                        <h3 class="text-2xl font-bold font-['Space_Grotesk'] text-slate-100">Panduan Login Demo</h3>
                     </div>
-                    <p class="text-slate-400 mb-6 font-light text-sm">Gunakan akun berikut untuk menguji fitur aplikasi secara langsung setelah diunduh.</p>
+                    <p class="text-slate-400 mb-6 font-light text-sm">Gunakan akun berikut untuk menguji fitur aplikasi secara langsung setelah diunduh atau saat live demo.</p>
                     
                     <div class="overflow-x-auto rounded-2xl border border-white/5 bg-black/30">
                         <table class="w-full text-left border-collapse">
@@ -89,6 +89,7 @@
                                     <th class="p-4 font-bold">Username / Email</th>
                                     <th class="p-4 font-bold">Password</th>
                                     <th class="p-4 font-bold">Catatan</th>
+                                    <th class="p-4 font-bold text-right">Salin</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-white/5 text-sm">
@@ -97,7 +98,15 @@
                                     <td class="p-4"><span class="px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">{{ $cred['role'] ?? 'User' }}</span></td>
                                     <td class="p-4 font-bold text-slate-100">{{ $cred['username'] }}</td>
                                     <td class="p-4 font-mono font-bold text-accent-cyan">{{ $cred['password'] }}</td>
-                                    <td class="p-4 text-slate-400 text-xs">{{ $cred['note'] }}</td>
+                                    <td class="p-4 text-slate-400 text-xs">{{ $cred['note'] ?? '-' }}</td>
+                                    <td class="p-4 text-right">
+                                        <button type="button" 
+                                                onclick="copyToClipboard('{{ addslashes($cred['username'] . ' / ' . $cred['password']) }}', 'Akun demo berhasil disalin!')" 
+                                                class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-indigo-600 text-slate-200 hover:text-white text-xs font-semibold transition-colors inline-flex items-center gap-1">
+                                            <i class='bx bx-copy'></i>
+                                            <span>Salin</span>
+                                        </button>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -148,64 +157,33 @@
                         @if($project->zip_path)
                         <a href="{{ route('project.download', $project->id) }}" class="btn btn-primary btn-shimmer w-full rounded-2xl py-4 font-bold flex justify-center items-center gap-2 group shadow-xl">
                             <i class='bx bx-download text-xl group-hover:-translate-y-1 transition-transform'></i>
-                            <span>Download Source (ZIP)</span>
+                            <span>Unduh Source Code (.ZIP)</span>
                         </a>
                         @endif
 
                         <!-- Direct APK Download Button -->
                         @if($project->apk_path)
-                        <a href="{{ route('project.download-apk', $project->id) }}" class="btn w-full rounded-2xl py-4 font-bold flex justify-center items-center gap-3 border border-cyan-500/40 bg-cyan-950/30 text-cyan-300 hover:bg-cyan-500 hover:text-white transition-all duration-300">
-                            <i class='bx bxl-android text-2xl'></i>
-                            <div class="flex flex-col items-start leading-none text-left">
-                                <span class="text-sm">Download Aplikasi</span>
-                                <span class="text-[10px] uppercase tracking-wider opacity-75 mt-1">.APK (Android)</span>
-                            </div>
+                        <a href="{{ route('project.download-apk', $project->id) }}" class="btn w-full rounded-2xl py-4 font-bold flex justify-center items-center gap-2 group shadow-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white">
+                            <i class='bx bxl-android text-2xl group-hover:-translate-y-1 transition-transform'></i>
+                            <span>Unduh Aplikasi (.APK)</span>
                         </a>
                         @endif
+                    @endif
 
-                        <!-- Trakteer Button -->
-                        @if(!empty($profile->trakteer_url))
-                        <a href="{{ $profile->trakteer_url }}" target="_blank" rel="noopener noreferrer" class="w-full rounded-2xl py-3.5 font-bold flex justify-center items-center gap-2 group border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-600 hover:text-white transition-all duration-300 text-sm">
-                            <span class="text-lg group-hover:scale-125 transition-transform">☕</span>
-                            <span>Dukung / Traktir Kopi</span>
+                    <!-- Trakteer Coffee Support -->
+                    @if($profile && $profile->trakteer_url)
+                    <div class="pt-4 border-t border-white/10">
+                        <a href="{{ $profile->trakteer_url }}" target="_blank" rel="noopener noreferrer" class="btn w-full rounded-2xl py-3.5 font-bold flex justify-center items-center gap-2 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white shadow-lg shadow-rose-600/25">
+                            <span class="text-lg">☕</span>
+                            <span class="text-xs sm:text-sm">Dukung via Trakteer Kopi</span>
                         </a>
-                        @endif
-                    @else
-                        <div class="alert alert-error text-xs rounded-2xl">File unduhan belum tersedia untuk projek ini.</div>
+                    </div>
                     @endif
 
                 </div>
             </div>
 
         </div>
-        
-        <!-- Related Projects Section -->
-        @if(count($relatedProjects) > 0)
-        <div class="mt-28 pt-16 border-t border-white/10 relative">
-            <h3 class="text-2xl md:text-3xl mb-10 font-bold font-['Space_Grotesk'] text-center">
-                Projek <span class="text-gradient">Lainnya</span>
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @foreach($relatedProjects as $rel)
-                    <a href="{{ route('project.show', $rel->slug) }}" class="glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/5 hover:border-indigo-500/40 transition-all group flex flex-col">
-                        <div class="relative h-48 overflow-hidden bg-primary-dark/80">
-                            @if($rel->thumbnail)
-                                <img src="{{ asset('storage/' . $rel->thumbnail) }}" alt="{{ $rel->title }}" class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center text-slate-600">
-                                    <i class='bx bx-laptop text-4xl text-indigo-400/40'></i>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="p-6 bg-secondary-dark/60">
-                            <h4 class="text-lg font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{{ $rel->title }}</h4>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-        @endif
-
     </div>
 </div>
 @endsection

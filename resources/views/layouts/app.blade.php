@@ -33,9 +33,9 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        'primary-dark': '#08080c',
-                        'secondary-dark': '#0f0f17',
-                        'tertiary-dark': '#161622',
+                        'primary-dark': '#060609',
+                        'secondary-dark': '#0c0c14',
+                        'tertiary-dark': '#131320',
                         accent: {
                             primary: '#6366f1',
                             secondary: '#a855f7',
@@ -53,7 +53,7 @@
     <!-- AlpineJS for reactive interactions -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
-<body class="bg-primary-dark text-slate-100 antialiased relative selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="bg-[#060609] text-slate-100 antialiased relative selection:bg-indigo-500/30 selection:text-indigo-200">
 
     <!-- Interactive Background Canvas (Constellation Particles) -->
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full"></canvas>
@@ -70,7 +70,7 @@
     <div class="cyber-grid"></div>
 
     <!-- Scroll Progress Bar -->
-    <div class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-primary via-accent-cyan to-accent-secondary z-[9999] transition-all duration-100 shadow-[0_0_12px_rgba(99,102,241,0.8)]" 
+    <div class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-primary via-accent-cyan to-accent-secondary z-[9999] transition-all duration-100 shadow-[0_0_15px_rgba(99,102,241,0.8)]" 
          x-data="{ scrollProgress: 0 }" 
          @scroll.window="scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100"
          :style="`width: ${scrollProgress}%`"></div>
@@ -79,8 +79,8 @@
     <nav class="navbar" x-data="{ mobileMenuOpen: false }">
         <div class="container max-w-7xl flex justify-between items-center relative gap-4">
             <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-2.5 flex-shrink-0">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
-                    <div class="w-full h-full bg-primary-dark rounded-[10px] flex items-center justify-center font-black text-sm sm:text-base text-gradient">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
+                    <div class="w-full h-full bg-[#060609] rounded-[10px] flex items-center justify-center font-black text-sm sm:text-base text-gradient">
                         {{ substr($profile->name ?? 'MS', 0, 2) }}
                     </div>
                 </div>
@@ -90,7 +90,7 @@
             </a>
             
             <!-- Desktop Navigation Links -->
-            <div class="nav-links hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm whitespace-nowrap">
+            <div class="nav-links hidden lg:flex items-center gap-2.5 xl:gap-4 text-xs xl:text-sm whitespace-nowrap">
                 <a href="{{ route('home') }}#hero" class="nav-link">Beranda</a>
                 @if($profile->bio ?? true)
                     <a href="{{ route('home') }}#about" class="nav-link">Tentang</a>
@@ -116,12 +116,12 @@
             <!-- Action Button / Admin Link -->
             <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary btn-shimmer flex items-center gap-1.5 shadow-md px-3.5 py-2 text-xs">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary btn-shimmer flex items-center gap-1.5 shadow-md px-4 py-2 text-xs">
                         <i class='bx bxs-dashboard text-base'></i>
                         <span>Dashboard</span>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline flex items-center gap-1.5 hover:border-accent-primary px-3.5 py-2 text-xs">
+                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline flex items-center gap-1.5 hover:border-indigo-500 px-4 py-2 text-xs">
                         <i class='bx bx-log-in text-base'></i>
                         <span>Admin</span>
                     </a>
@@ -129,7 +129,7 @@
             </div>
             
             <!-- Mobile Menu Toggle Button -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-accent-primary transition-all">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
                 <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
             </button>
@@ -143,27 +143,27 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-4"
-             class="lg:hidden absolute top-full left-0 right-0 bg-secondary-dark/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-3 shadow-2xl z-50" 
+             class="lg:hidden absolute top-full left-0 right-0 bg-[#0c0c14]/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-2 shadow-2xl z-50" 
              style="display: none;">
-            <a href="{{ route('home') }}#hero" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Beranda</a>
+            <a href="{{ route('home') }}#hero" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Beranda</a>
             @if($profile->bio ?? true)
-                <a href="{{ route('home') }}#about" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Tentang Saya</a>
+                <a href="{{ route('home') }}#about" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Tentang Saya</a>
             @endif
             @if($profile->enable_skills ?? true)
-                <a href="{{ route('home') }}#skills" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Keahlian Teknis</a>
+                <a href="{{ route('home') }}#skills" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Keahlian Teknis</a>
             @endif
-            <a href="{{ route('home') }}#timeline" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Pengalaman & Karir</a>
+            <a href="{{ route('home') }}#timeline" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Pengalaman & Karir</a>
             @if($profile->enable_projects ?? true)
-                <a href="{{ route('projects.all') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Semua Projek</a>
+                <a href="{{ route('projects.all') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Semua Projek</a>
             @endif
             @if($profile->enable_certificates ?? true)
-                <a href="{{ route('certificates') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Galeri Sertifikat</a>
+                <a href="{{ route('certificates') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Galeri Sertifikat</a>
             @endif
-            <a href="{{ route('estimator') }}" class="text-indigo-400 hover:text-indigo-300 font-semibold py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Kalkulator Estimasi Projek</a>
-            <a href="{{ route('home') }}#workspace" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Workspace Publik</a>
-            <a href="{{ route('home') }}#contact" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Hubungi Saya</a>
+            <a href="{{ route('estimator') }}" class="text-indigo-400 hover:text-indigo-300 font-semibold py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Kalkulator Estimasi Projek</a>
+            <a href="{{ route('home') }}#workspace" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Workspace Publik</a>
+            <a href="{{ route('home') }}#contact" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Hubungi Saya</a>
             
-            <div class="pt-4 border-t border-white/10">
+            <div class="pt-4 border-t border-white/10 mt-2">
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-primary w-full text-center" @click="mobileMenuOpen = false">
                         <i class='bx bxs-dashboard mr-1'></i> Dashboard Admin
@@ -183,7 +183,7 @@
     </main>
 
     <!-- Modern Futuristic Footer -->
-    <footer class="py-16 mt-28 relative overflow-hidden border-t border-white/5 bg-secondary-dark/60 backdrop-blur-md">
+    <footer class="py-16 mt-28 relative overflow-hidden border-t border-white/5 bg-[#0c0c14]/80 backdrop-blur-md">
         <!-- Glowing Ambient Top Line -->
         <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-60"></div>
         
@@ -191,8 +191,8 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
                 <div class="text-center md:text-left">
                     <div class="flex items-center justify-center md:justify-start gap-3 mb-3">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-[1px]">
-                            <div class="w-full h-full bg-primary-dark rounded-[7px] flex items-center justify-center font-bold text-sm text-gradient">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-[1.5px]">
+                            <div class="w-full h-full bg-[#060609] rounded-[9px] flex items-center justify-center font-bold text-sm text-gradient">
                                 {{ substr($profile->name ?? 'MS', 0, 2) }}
                             </div>
                         </div>
@@ -237,7 +237,7 @@
             <source src="https://stream.zeno.fm/f3wvbbqmdg8uv" type="audio/mpeg">
         </audio>
         
-        <button id="lofi-toggle" class="w-8 h-8 rounded-full bg-indigo-600/80 hover:bg-indigo-600 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95" title="Putar Musik Santai (Lo-Fi)">
+        <button id="lofi-toggle" class="w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95" title="Putar Musik Santai (Lo-Fi)">
             <i class='bx bx-play text-xl'></i>
         </button>
         
@@ -259,15 +259,15 @@
 
     <!-- Floating Back to Top Button with Circular Scroll Progress -->
     <button id="back-to-top" class="back-to-top group" title="Kembali ke atas" aria-label="Kembali ke atas">
-        <svg class="progress-ring" width="50" height="50">
+        <svg class="progress-ring" width="48" height="48">
             <circle
                 id="progress-ring-circle"
                 class="progress-ring__circle"
                 stroke-width="3"
                 fill="transparent"
                 r="22"
-                cx="25"
-                cy="25"
+                cx="24"
+                cy="24"
             />
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-y-1 transition-transform relative z-10"><path d="m18 15-6-6-6 6"/></svg>

@@ -23,7 +23,7 @@
                 <!-- Avatar Upload Card -->
                 <div class="flex flex-col sm:flex-row items-center gap-6 p-6 mb-8 rounded-2xl bg-slate-50 border border-slate-200">
                     <div class="relative group cursor-pointer flex-shrink-0" onclick="document.getElementById('avatar-upload').click()">
-                        @if($profile->avatar)
+                        @if($profile && $profile->avatar)
                             <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" class="w-24 h-24 rounded-2xl object-cover border-2 border-indigo-500 shadow-md group-hover:scale-105 transition-transform">
                         @else
                             <div class="w-24 h-24 rounded-2xl bg-indigo-100 text-indigo-600 font-bold text-3xl flex items-center justify-center border-2 border-dashed border-indigo-300 group-hover:scale-105 transition-transform">
@@ -51,36 +51,34 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                     <div class="form-group mb-0">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $profile->name) }}" required placeholder="Nama Anda">
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $profile->name ?? '') }}" required placeholder="Nama Anda">
                     </div>
                     <div class="form-group mb-0">
-                        <label class="form-label">
-                            Profesi / Judul Keahlian
-                        </label>
-                        <input type="text" name="title" class="form-control" value="{{ old('title', $profile->title) }}" placeholder="Fullstack Developer, UI/UX Designer">
+                        <label class="form-label">Profesi / Judul Keahlian</label>
+                        <input type="text" name="title" class="form-control" value="{{ old('title', $profile->title ?? '') }}" placeholder="Fullstack Developer, UI/UX Designer">
                         <p class="text-[11px] text-slate-500 mt-1">💡 Pisahkan dengan koma <code>,</code> untuk teks mengetik otomatis</p>
                     </div>
                 </div>
 
                 <div class="form-group mb-5">
                     <label class="form-label">Bio / Tentang Saya</label>
-                    <textarea name="bio" class="form-control" rows="5" placeholder="Ceritakan latar belakang, fokus teknologi, dan pengalaman Anda...">{{ old('bio', $profile->bio) }}</textarea>
+                    <textarea name="bio" class="form-control" rows="5" placeholder="Ceritakan latar belakang, fokus teknologi, dan pengalaman Anda...">{{ old('bio', $profile->bio ?? '') }}</textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                     <div class="form-group mb-0">
                         <label class="form-label">Email Publik</label>
-                        <input type="email" name="email" class="form-control" value="{{ old('email', $profile->email) }}" placeholder="email@domain.com">
+                        <input type="email" name="email" class="form-control" value="{{ old('email', $profile->email ?? '') }}" placeholder="email@domain.com">
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label">Nomor Telepon / WhatsApp</label>
-                        <input type="text" name="phone" class="form-control" value="{{ old('phone', $profile->phone) }}" placeholder="+62 812 3456 7890">
+                        <input type="text" name="phone" class="form-control" value="{{ old('phone', $profile->phone ?? '') }}" placeholder="+62 812 3456 7890">
                     </div>
                 </div>
 
                 <div class="form-group mb-8">
                     <label class="form-label">Lokasi / Domisili</label>
-                    <input type="text" name="location" class="form-control" value="{{ old('location', $profile->location) }}" placeholder="Jakarta, Indonesia">
+                    <input type="text" name="location" class="form-control" value="{{ old('location', $profile->location ?? '') }}" placeholder="Jakarta, Indonesia">
                 </div>
 
                 <div class="flex justify-end pt-4 border-t border-slate-100">
@@ -98,84 +96,48 @@
         <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm sticky top-28">
             <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4 mb-6 flex items-center gap-2.5">
                 <i class='bx bx-share-alt text-2xl text-purple-600'></i>
-                <span>Tautan Sosial Media</span>
+                <span>Tautan Media Sosial</span>
             </h2>
-            
-            <form action="{{ route('admin.profile.social-links') }}" method="POST" x-data="socialLinksForm()">
+
+            <form action="{{ route('admin.profile.social-links') }}" method="POST">
                 @csrf
                 @method('PUT')
-                
-                <div class="space-y-4 mb-6">
-                    <template x-for="(link, index) in links" :key="index">
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 relative group">
-                            <button type="button" @click="removeLink(index)" class="absolute top-3 right-3 text-slate-400 hover:text-rose-600 transition-colors" title="Hapus Tautan">
-                                <i class='bx bx-trash text-lg'></i>
-                            </button>
-                            
-                            <div class="form-group mb-3">
-                                <label class="form-label text-xs">Platform / Nama</label>
-                                <input type="text" :name="`links[${index}][platform]`" x-model="link.platform" @input="autoFillIcon(index)" class="form-control text-xs py-2 px-3" placeholder="Contoh: GitHub, Instagram, LinkedIn" required>
-                            </div>
-                            
-                            <div class="form-group mb-3">
-                                <label class="form-label text-xs">URL Tautan</label>
-                                <input type="url" :name="`links[${index}][url]`" x-model="link.url" class="form-control text-xs py-2 px-3" placeholder="https://github.com/..." required>
-                            </div>
 
-                            <div class="form-group mb-0">
-                                <label class="form-label text-xs">Class Icon BoxIcons (Opsional)</label>
-                                <input type="text" :name="`links[${index}][icon]`" x-model="link.icon" class="form-control text-xs py-2 px-3 font-mono text-slate-500" placeholder="bx bxl-github">
-                            </div>
+                @php
+                    $platforms = [
+                        ['name' => 'GitHub', 'icon' => 'bx bxl-github', 'key' => 'github'],
+                        ['name' => 'LinkedIn', 'icon' => 'bx bxl-linkedin', 'key' => 'linkedin'],
+                        ['name' => 'Instagram', 'icon' => 'bx bxl-instagram', 'key' => 'instagram'],
+                        ['name' => 'WhatsApp', 'icon' => 'bx bxl-whatsapp', 'key' => 'whatsapp'],
+                        ['name' => 'YouTube', 'icon' => 'bx bxl-youtube', 'key' => 'youtube'],
+                    ];
+                    $socialLinks = $profile && $profile->socialLinks ? $profile->socialLinks->keyBy('platform') : collect();
+                @endphp
+
+                <div class="space-y-4 mb-6">
+                    @foreach($platforms as $p)
+                        @php
+                            $link = $socialLinks->get($p['name']);
+                        @endphp
+                        <div>
+                            <label class="form-label text-xs flex items-center gap-1.5">
+                                <i class="{{ $p['icon'] }} text-base text-indigo-600"></i>
+                                <span>{{ $p['name'] }}</span>
+                            </label>
+                            <input type="hidden" name="platforms[]" value="{{ $p['name'] }}">
+                            <input type="hidden" name="icons[]" value="{{ $p['icon'] }}">
+                            <input type="url" name="urls[]" class="form-control text-xs py-2 px-3" value="{{ $link ? $link->url : '' }}" placeholder="https://{{ strtolower($p['name']) }}.com/username">
                         </div>
-                    </template>
+                    @endforeach
                 </div>
-                
-                <button type="button" @click="addLink()" class="btn btn-outline w-full py-2.5 text-xs font-bold border-dashed mb-6 flex items-center justify-center gap-2 hover:border-indigo-500 hover:text-indigo-600">
-                    <i class='bx bx-plus'></i>
-                    <span>Tambah Tautan Baru</span>
-                </button>
-                
+
                 <button type="submit" class="btn btn-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md">
-                    <i class='bx bx-check-circle text-lg'></i>
-                    <span>Simpan Media Sosial</span>
+                    <i class='bx bx-save text-lg'></i>
+                    <span>Perbarui Tautan Sosmed</span>
                 </button>
             </form>
         </div>
     </div>
 
 </div>
-
-<script>
-function socialLinksForm() {
-    return {
-        links: {!! json_encode($profile->socialLinks->count() > 0 ? $profile->socialLinks->map(fn($l) => ['platform' => $l->platform, 'url' => $l->url, 'icon' => $l->icon]) : [['platform' => 'GitHub', 'url' => '', 'icon' => 'bx bxl-github']]) !!},
-        addLink() {
-            this.links.push({ platform: '', url: '', icon: '' });
-        },
-        removeLink(index) {
-            this.links.splice(index, 1);
-        },
-        autoFillIcon(index) {
-            const platform = this.links[index].platform.toLowerCase().trim();
-            const iconMap = {
-                'github': 'bx bxl-github',
-                'instagram': 'bx bxl-instagram',
-                'linkedin': 'bx bxl-linkedin',
-                'facebook': 'bx bxl-facebook',
-                'twitter': 'bx bxl-twitter',
-                'x': 'bx bxl-twitter',
-                'youtube': 'bx bxl-youtube',
-                'whatsapp': 'bx bxl-whatsapp',
-                'tiktok': 'bx bxl-tiktok',
-                'discord': 'bx bxl-discord',
-                'telegram': 'bx bxl-telegram'
-            };
-            
-            if (iconMap[platform]) {
-                this.links[index].icon = iconMap[platform];
-            }
-        }
-    }
-}
-</script>
 @endsection

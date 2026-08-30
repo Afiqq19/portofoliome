@@ -3,7 +3,7 @@
 @section('content')
 <div class="mb-8">
     <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Dashboard</h1>
-    <p class="text-slate-500 text-sm">Selamat datang kembali! Berikut adalah ringkasan aktivitas portofolio Anda.</p>
+    <p class="text-slate-500 text-sm">Selamat datang kembali! Berikut adalah ringkasan performa dan aktivitas portofolio Anda.</p>
 </div>
 
 <!-- Stats Overview (Bento Grid) -->
@@ -14,7 +14,7 @@
         <div class="flex justify-between items-start mb-4">
             <div>
                 <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Projek</p>
-                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900">{{ $stats['total_projects'] }}</h3>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900">{{ $stats['total_projects'] ?? 0 }}</h3>
             </div>
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl">
                 <i class='bx bx-folder'></i>
@@ -22,9 +22,9 @@
         </div>
         <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">
-                {{ $stats['published_projects'] }} Publik
+                {{ $stats['published_projects'] ?? 0 }} Publik
             </span>
-            <span>dari total projek</span>
+            <span>dari total karya</span>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
         <div class="flex justify-between items-start mb-4">
             <div>
                 <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Unduhan</p>
-                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-emerald-600">{{ $stats['total_downloads'] }}</h3>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-emerald-600">{{ $stats['total_downloads'] ?? 0 }}</h3>
             </div>
             <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl">
                 <i class='bx bx-download'></i>
@@ -50,14 +50,14 @@
         <div class="flex justify-between items-start mb-4">
             <div>
                 <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pesan Masuk</p>
-                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-indigo-600">{{ $stats['total_messages'] }}</h3>
+                <h3 class="text-3xl font-black font-['Space_Grotesk'] text-indigo-600">{{ $stats['total_messages'] ?? 0 }}</h3>
             </div>
             <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
                 <i class='bx bx-envelope'></i>
             </div>
         </div>
         <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
-            @if($stats['unread_messages'] > 0)
+            @if(($stats['unread_messages'] ?? 0) > 0)
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700">
                     {{ $stats['unread_messages'] }} Belum Dibaca
                 </span>
@@ -80,7 +80,7 @@
         </div>
         <div class="text-xs text-slate-500 flex items-center gap-1.5 pt-3 border-t border-slate-100">
             <span class="text-sky-600 font-semibold">IP Unik</span>
-            <span>tercatat di sistem</span>
+            <span>tercatat di database</span>
         </div>
     </div>
 
@@ -122,7 +122,7 @@
                 <a href="{{ route('admin.profile.edit') }}" class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition-colors">
                     <span class="flex items-center gap-2.5">
                         <i class='bx bx-user-circle text-lg text-purple-600'></i>
-                        <span>Edit Profil & Keahlian</span>
+                        <span>Edit Profil & Sosmed</span>
                     </span>
                     <i class='bx bx-chevron-right text-slate-400'></i>
                 </a>
@@ -148,47 +148,55 @@
                 </div>
                 <a href="{{ route('admin.messages.index') }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
                     <span>Lihat Semua</span>
-                    <i class='bx bx-chevron-right'></i>
+                    <i class='bx bx-right-arrow-alt'></i>
                 </a>
             </div>
-            
-            <div class="flex-1">
-                @if(count($recentMessages) > 0)
-                    <div class="divide-y divide-slate-100">
-                        @foreach($recentMessages as $msg)
-                            <div class="p-5 flex items-start gap-4 hover:bg-slate-50 transition-colors {{ !$msg->is_read ? 'bg-indigo-50/40' : '' }}">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-bold text-sm flex items-center justify-center shadow-sm flex-shrink-0">
-                                    {{ strtoupper(substr($msg->name, 0, 1)) }}
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between gap-2 mb-1">
-                                        <div class="flex items-center gap-2">
-                                            <h4 class="font-bold text-sm text-slate-900 truncate">{{ $msg->name }}</h4>
-                                            @if(!$msg->is_read)
-                                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
-                                            @endif
-                                        </div>
-                                        <span class="text-[11px] text-slate-400 font-mono">{{ $msg->created_at->diffForHumans() }}</span>
-                                    </div>
-                                    <p class="text-xs text-slate-600 line-clamp-1 mb-1">{{ $msg->subject ?? '(Tanpa Subjek)' }}</p>
-                                    <p class="text-xs text-slate-400 truncate">{{ $msg->message }}</p>
-                                </div>
-                                <a href="{{ route('admin.messages.show', $msg) }}" class="btn btn-outline btn-sm py-1.5 px-3 text-xs self-center flex-shrink-0 hover:border-indigo-500 hover:text-indigo-600">
-                                    Buka
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
+
+            <div class="table-container border-0 rounded-none shadow-none flex-1">
+                @if(isset($recent_messages) && count($recent_messages) > 0)
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pengirim</th>
+                                <th>Subjek & Pesan</th>
+                                <th>Waktu</th>
+                                <th width="80" class="text-right">Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @foreach($recent_messages as $msg)
+                            <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.location='{{ route('admin.messages.show', $msg) }}'">
+                                <td>
+                                    <div class="font-bold text-sm text-slate-900">{{ $msg->name }}</div>
+                                    <div class="text-xs text-slate-400">{{ $msg->email }}</div>
+                                </td>
+                                <td>
+                                    <div class="font-semibold text-xs text-slate-800 mb-0.5">{{ $msg->subject ?? '(Tanpa Subjek)' }}</div>
+                                    <div class="text-xs text-slate-500 truncate max-w-xs">{{ Str::limit($msg->message, 50) }}</div>
+                                </td>
+                                <td class="text-xs text-slate-400 whitespace-nowrap">
+                                    {{ $msg->created_at->diffForHumans() }}
+                                </td>
+                                <td class="text-right" onclick="event.stopPropagation()">
+                                    <a href="{{ route('admin.messages.show', $msg) }}" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white inline-flex items-center justify-center transition-colors" title="Buka Pesan">
+                                        <i class='bx bx-chevron-right text-lg'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @else
                     <div class="p-12 text-center text-slate-400">
                         <i class='bx bx-envelope-open text-4xl text-slate-300 mb-2'></i>
-                        <p class="text-sm font-medium">Belum ada pesan yang masuk.</p>
+                        <p class="text-xs">Belum ada pesan baru yang masuk.</p>
                     </div>
                 @endif
             </div>
 
-            <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
-                <span class="text-xs text-slate-400 font-medium">Portofolio Live & Realtime Tracking</span>
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center text-xs text-slate-500">
+                <span>Total data tersimpan di sistem</span>
+                <span class="font-semibold text-slate-700">{{ $stats['total_messages'] ?? 0 }} Percakapan</span>
             </div>
         </div>
     </div>

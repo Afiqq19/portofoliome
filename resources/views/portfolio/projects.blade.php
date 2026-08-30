@@ -31,29 +31,29 @@
             <!-- Category Filter Pills -->
             <div class="flex flex-wrap gap-2 justify-center md:justify-start">
                 <button @click="activeFilter = 'all'" 
-                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all"
+                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all cursor-pointer"
                         :class="activeFilter === 'all' ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/25' : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'">
                     Semua ({{ $projects->count() }})
                 </button>
                 <button @click="activeFilter = 'web'" 
-                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all"
+                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all cursor-pointer"
                         :class="activeFilter === 'web' ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/25' : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'">
                     Web App
                 </button>
                 <button @click="activeFilter = 'mobile'" 
-                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all"
+                        class="px-4 py-2 rounded-full text-xs font-bold border transition-all cursor-pointer"
                         :class="activeFilter === 'mobile' ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/25' : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white'">
                     Mobile (APK)
                 </button>
             </div>
 
             <!-- Search Input -->
-            <div class="relative w-full md:w-72">
+            <div class="relative w-full md:w-80">
                 <input type="text" 
                        x-model="searchQuery" 
-                       placeholder="Cari projek atau teknologi..." 
-                       class="form-control rounded-full pl-10 pr-4 py-2.5 bg-white/5 border-white/10 focus:border-indigo-500 text-xs text-white placeholder-slate-500 w-full">
-                <i class='bx bx-search absolute left-3.5 top-1/2 -translate-y-1/2 text-lg text-slate-400'></i>
+                       placeholder="Cari nama projek atau teknologi..." 
+                       class="form-control rounded-full pl-11 pr-4 py-3 bg-white/5 border-white/10 focus:border-indigo-500 text-xs text-white placeholder-slate-500 w-full shadow-lg">
+                <i class='bx bx-search absolute left-4 top-1/2 -translate-y-1/2 text-lg text-slate-400'></i>
             </div>
 
         </div>
@@ -67,11 +67,11 @@
                     $techString = strtolower(implode(' ', $techArray) . ' ' . $project->title . ' ' . $project->description);
                 @endphp
                 <div class="glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/10 hover:border-indigo-500/40 flex flex-col justify-between group"
-                     x-show="(activeFilter === 'all' || (activeFilter === 'mobile' && {{ $isMobile ? 'true' : 'false' }}) || (activeFilter === 'web' && {{ !$isMobile ? 'true' : 'false' }})) && (searchQuery === '' || '{{ $techString }}'.includes(searchQuery.toLowerCase()))">
+                     x-show="(activeFilter === 'all' || (activeFilter === 'mobile' && {{ $isMobile ? 'true' : 'false' }}) || (activeFilter === 'web' && {{ !$isMobile ? 'true' : 'false' }})) && (searchQuery === '' || '{{ addslashes($techString) }}'.includes(searchQuery.toLowerCase()))">
                     
                     <div>
                         <!-- Thumbnail Box -->
-                        <div class="relative h-52 overflow-hidden bg-primary-dark/80">
+                        <div class="relative h-52 overflow-hidden bg-[#0c0c14]">
                             @if($project->thumbnail)
                                 <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                             @else
@@ -80,7 +80,7 @@
                                     <span class="text-xs uppercase tracking-widest font-mono">Pratinjau Projek</span>
                                 </div>
                             @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-80 pointer-events-none"></div>
                             
                             <!-- Download count badge -->
                             <div class="absolute top-4 right-4 z-20">
@@ -103,7 +103,7 @@
                         </div>
 
                         <!-- Content Details -->
-                        <div class="p-6">
+                        <div class="p-6 md:p-7">
                             <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2 line-clamp-1">
                                 {{ $project->title }}
                             </h2>

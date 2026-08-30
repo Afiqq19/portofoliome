@@ -53,11 +53,11 @@
                     ];
                 @endphp
                 <div class="glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/10 hover:border-purple-500/40 flex flex-col justify-between group"
-                     x-show="searchQuery === '' || '{{ strtolower($cert->title . ' ' . $cert->issuer) }}'.includes(searchQuery.toLowerCase())">
+                     x-show="searchQuery === '' || '{{ addslashes(strtolower($cert->title . ' ' . $cert->issuer)) }}'.includes(searchQuery.toLowerCase())">
                     
                     <div>
                         <!-- Certificate Image Preview Box -->
-                        <div class="relative h-56 overflow-hidden bg-primary-dark/80 cursor-pointer" 
+                        <div class="relative h-56 overflow-hidden bg-[#0c0c14] cursor-pointer" 
                              @click="activeCert = {{ json_encode($certData) }}; previewModal = true;">
                             @if($cert->image)
                                 <img src="{{ asset('storage/' . $cert->image) }}" alt="{{ $cert->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
@@ -71,7 +71,7 @@
                                     <span class="text-xs uppercase tracking-widest font-mono">Dokumen Sertifikat</span>
                                 </div>
                             @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-80 pointer-events-none"></div>
                         </div>
 
                         <!-- Details -->
@@ -124,11 +124,11 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
          @click.self="previewModal = false"
          style="display: none;">
         
-        <div class="glass-panel p-6 rounded-3xl max-w-3xl w-full border border-white/20 shadow-2xl relative">
+        <div class="glass-panel p-6 rounded-3xl max-w-3xl w-full border border-white/20 shadow-2xl relative bg-[#0c0c14]/95">
             <button @click="previewModal = false" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-rose-500 text-white flex items-center justify-center transition-colors z-10">
                 ✕
             </button>
@@ -138,7 +138,7 @@
                     <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 mb-1" x-text="activeCert.title"></h2>
                     <p class="text-xs text-purple-400 font-mono mb-4" x-text="activeCert.issuer + ' • ' + activeCert.date"></p>
                     
-                    <div class="rounded-2xl overflow-hidden border border-white/10 mb-4 max-h-[65vh] flex items-center justify-center bg-black/50">
+                    <div class="rounded-2xl overflow-hidden border border-white/10 mb-4 max-h-[65vh] flex items-center justify-center bg-black/60">
                         <template x-if="activeCert.image">
                             <img :src="activeCert.image" :alt="activeCert.title" class="w-full h-auto max-h-[60vh] object-contain">
                         </template>
@@ -150,11 +150,18 @@
                         </template>
                     </div>
 
-                    <div class="flex justify-end gap-3" x-show="activeCert.credential_url">
-                        <a :href="activeCert.credential_url" target="_blank" class="btn btn-primary btn-sm flex items-center gap-2 shadow-md">
-                            <span>Buka Tautan Kredensial</span>
-                            <i class='bx bx-link-external'></i>
-                        </a>
+                    <p class="text-xs text-slate-300 mb-4 font-light leading-relaxed" x-text="activeCert.description"></p>
+
+                    <div class="flex justify-end gap-3">
+                        <template x-if="activeCert.credential_url">
+                            <a :href="activeCert.credential_url" target="_blank" class="btn btn-primary btn-sm rounded-xl flex items-center gap-1 text-xs">
+                                <span>Buka Halaman Verifikasi</span>
+                                <i class='bx bx-link-external'></i>
+                            </a>
+                        </template>
+                        <button @click="previewModal = false" class="btn btn-outline btn-sm rounded-xl text-xs">
+                            Tutup
+                        </button>
                     </div>
                 </div>
             </template>

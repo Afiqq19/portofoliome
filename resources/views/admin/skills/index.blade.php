@@ -35,7 +35,7 @@
                             <form action="{{ route('admin.skills.destroy', $skill) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus keahlian ini?')" class="inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-slate-400 hover:text-rose-600 p-1 transition-colors" title="Hapus Skill">
+                                <button type="submit" class="text-slate-400 hover:text-rose-600 p-1 transition-colors cursor-pointer" title="Hapus Skill">
                                     <i class='bx bx-trash text-sm'></i>
                                 </button>
                             </form>
@@ -43,7 +43,7 @@
                     </div>
                     
                     <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
-                        <div class="h-full rounded-full bg-indigo-600 transition-all duration-500" style="width: {{ $skill->proficiency }}%"></div>
+                        <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 transition-all duration-500" style="width: {{ $skill->proficiency }}%"></div>
                     </div>
                 </div>
                 @endforeach
@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md">
+                <button type="submit" class="btn btn-primary w-full py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md cursor-pointer">
                     <i class='bx bx-plus-circle text-lg'></i>
                     <span>Simpan Keahlian</span>
                 </button>

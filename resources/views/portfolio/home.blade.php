@@ -478,9 +478,9 @@
                         
                         <div>
                             <!-- Thumbnail Box -->
-                            <div class="relative h-52 overflow-hidden bg-primary-dark/80">
+                            <div class="relative h-52 overflow-hidden bg-[#0c0c14]">
                                 @if($project->thumbnail)
-                                    <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700">
+                                    <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                                 @else
                                     <div class="w-full h-full flex flex-col items-center justify-center text-slate-600 group-hover:scale-105 transition-transform duration-700">
                                         <i class='bx bx-laptop text-5xl mb-2 text-indigo-400/50'></i>
@@ -488,7 +488,7 @@
                                     </div>
                                 @endif
                                 
-                                <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-80 z-10"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-80 z-10 pointer-events-none"></div>
                                 
                                 <div class="absolute top-4 right-4 z-20">
                                     @if($project->zip_path || $project->apk_path)
@@ -513,7 +513,7 @@
                             <div class="p-6 md:p-7">
                                 <div class="flex gap-1.5 flex-wrap mb-3">
                                     @foreach(array_slice($project->tech_stack ?? [], 0, 3) as $tech)
-                                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-white/5 text-slate-300 border border-white/5">{{ $tech }}</span>
+                                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-white/5 text-slate-300 border border-white/5">{{ $tech }}</span>
                                     @endforeach
                                 </div>
 
@@ -557,7 +557,7 @@
         <div class="reveal flex justify-center">
             <a href="{{ route('projects.all') }}" class="btn btn-outline py-3.5 px-8 rounded-full text-sm font-bold flex items-center gap-2 hover:border-indigo-500 hover:text-indigo-400 shadow-lg">
                 <i class='bx bx-grid-alt text-lg'></i>
-                <span>Jelajahi Seluruh Projek ({{ $stats['projects'] }})</span>
+                <span>Jelajahi Seluruh Projek ({{ $stats['projects'] ?? 0 }})</span>
                 <i class='bx bx-right-arrow-alt text-lg'></i>
             </a>
         </div>
@@ -584,9 +584,9 @@
                 <div class="reveal glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition-all group flex flex-col justify-between">
                     <div>
                         @if($cert->image)
-                            <div class="h-48 overflow-hidden relative bg-primary-dark/60">
-                                <img src="{{ asset('storage/' . $cert->image) }}" alt="{{ $cert->title }}" class="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-70"></div>
+                            <div class="h-48 overflow-hidden relative bg-[#0c0c14]">
+                                <img src="{{ asset('storage/' . $cert->image) }}" alt="{{ $cert->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-70"></div>
                             </div>
                         @endif
                         
@@ -630,7 +630,7 @@
         <div class="reveal flex justify-center">
             <a href="{{ route('certificates') }}" class="btn btn-outline py-3.5 px-8 rounded-full text-sm font-bold flex items-center gap-2 hover:border-purple-500 hover:text-purple-400 shadow-lg">
                 <i class='bx bx-award text-lg'></i>
-                <span>Buka Galeri Seluruh Sertifikat ({{ $totalCertificates }})</span>
+                <span>Buka Galeri Seluruh Sertifikat ({{ $totalCertificates ?? count($certificates) }})</span>
                 <i class='bx bx-right-arrow-alt text-lg'></i>
             </a>
         </div>
@@ -718,7 +718,7 @@
             
             <!-- Daftar Catatan -->
             <div class="reveal reveal-delay-1 lg:col-span-2">
-                @if($notes->count() > 0)
+                @if(isset($notes) && $notes->count() > 0)
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-h-[580px] overflow-y-auto pr-2" style="scrollbar-width: thin; scrollbar-color: rgba(99, 102, 241, 0.5) transparent;">
                         @foreach($notes as $note)
                             <div class="glass-card p-6 rounded-2xl border border-white/5 hover:border-indigo-500/30 transition-all hover:-translate-y-1 group">

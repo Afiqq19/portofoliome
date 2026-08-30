@@ -59,7 +59,7 @@
                     <div class="space-y-4 mb-4">
                         <template x-for="(cred, index) in credentials" :key="index">
                             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 relative group">
-                                <button type="button" @click="removeCred(index)" class="absolute top-3 right-3 text-slate-400 hover:text-rose-600 transition-colors">
+                                <button type="button" @click="removeCred(index)" class="absolute top-3 right-3 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer">
                                     <i class='bx bx-trash text-lg'></i>
                                 </button>
                                 
@@ -87,7 +87,7 @@
                         </template>
                     </div>
                     
-                    <button type="button" @click="addCred()" class="btn btn-outline btn-sm w-full border-dashed py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 hover:border-indigo-500 hover:text-indigo-600">
+                    <button type="button" @click="addCred()" class="btn btn-outline btn-sm w-full border-dashed py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 hover:border-indigo-500 hover:text-indigo-600 cursor-pointer">
                         <i class='bx bx-plus'></i>
                         <span>Tambah Akun Demo Baru</span>
                     </button>
@@ -100,103 +100,92 @@
             
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                 <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4">
-                    Publikasi & File
+                    Status & Publikasi
                 </h2>
                 
                 <div class="form-group mb-0">
-                    <label class="form-label text-xs">Status Publikasi</label>
+                    <label class="form-label text-xs">Status Rilis</label>
                     <select name="status" class="form-select text-sm">
-                        <option value="published">Publik (Tampilkan di Web)</option>
-                        <option value="draft">Draft (Sembunyikan)</option>
+                        <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Publik (Tampilkan di Web)</option>
+                        <option value="draft" {{ old('status') === 'draft' ? 'selected' : '' }}>Draft (Sembunyikan)</option>
                     </select>
                 </div>
                 
-                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="pt-2">
                     <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_featured" value="1" class="w-4 h-4 rounded text-indigo-600 accent-indigo-600">
-                        <div>
-                            <span class="block text-xs font-bold text-slate-900">Projek Unggulan (Featured)</span>
-                            <span class="block text-[11px] text-slate-500">Tampil dengan badge sorotan</span>
-                        </div>
+                        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} class="w-4 h-4 rounded text-indigo-600 accent-indigo-600">
+                        <span class="text-xs font-bold text-slate-700">Tampilkan di Projek Unggulan Beranda</span>
                     </label>
-                </div>
-                
-                <!-- Thumbnail -->
-                <div class="form-group mb-0">
-                    <label class="form-label text-xs">Thumbnail Gambar</label>
-                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
-                        <input type="file" name="thumbnail" class="w-full text-xs" accept="image/*">
-                        <p class="text-[11px] text-slate-500 mt-2">Disarankan format lanskap (16:9 / 1280x720).</p>
-                    </div>
-                </div>
-                
-                <!-- ZIP Source -->
-                <div class="form-group mb-0">
-                    <label class="form-label text-xs text-emerald-700 font-bold flex items-center gap-1.5">
-                        <i class='bx bx-file-blank text-base'></i>
-                        <span>Source Code (ZIP/RAR)</span>
-                    </label>
-                    <div class="border-2 border-dashed border-emerald-300 rounded-xl p-4 text-center bg-emerald-50/50">
-                        <input type="file" name="zip_file" class="w-full text-xs" accept=".zip,.rar,.7z">
-                        <p class="text-[11px] text-slate-500 mt-1.5">Pengunjung dapat mengunduh source code ini.</p>
-                    </div>
-                </div>
-
-                <!-- APK Android -->
-                <div class="form-group mb-0">
-                    <label class="form-label text-xs text-cyan-700 font-bold flex items-center gap-1.5">
-                        <i class='bx bxl-android text-base'></i>
-                        <span>Aplikasi Android (.APK)</span>
-                    </label>
-                    <div class="border-2 border-dashed border-cyan-300 rounded-xl p-4 text-center bg-cyan-50/50">
-                        <input type="file" name="apk_file" class="w-full text-xs" accept=".apk">
-                        <p class="text-[11px] text-slate-500 mt-1.5">Khusus rilis aplikasi Android.</p>
-                    </div>
                 </div>
             </div>
-            
-            <!-- External Links -->
-            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
                 <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4">
-                    Tautan Luar
+                    Tautan Eksternal
                 </h2>
                 
-                <div class="form-group mb-0">
-                    <label class="form-label text-xs flex items-center gap-1.5">
-                        <i class='bx bx-link-external text-indigo-600'></i>
-                        <span>URL Live Demo</span>
-                    </label>
-                    <input type="url" name="demo_url" class="form-control text-xs py-2 px-3" value="{{ old('demo_url') }}" placeholder="https://demo.example.com">
+                <div>
+                    <label class="form-label text-xs">Live Demo URL</label>
+                    <input type="url" name="demo_url" class="form-control text-xs py-2 px-3" value="{{ old('demo_url') }}" placeholder="https://demo-projek.com">
                 </div>
                 
-                <div class="form-group mb-0">
-                    <label class="form-label text-xs flex items-center gap-1.5">
-                        <i class='bx bxl-github text-slate-700'></i>
-                        <span>URL GitHub Repository</span>
-                    </label>
+                <div>
+                    <label class="form-label text-xs">GitHub Repository URL</label>
                     <input type="url" name="github_url" class="form-control text-xs py-2 px-3" value="{{ old('github_url') }}" placeholder="https://github.com/user/repo">
                 </div>
             </div>
-            
-            <button type="submit" class="btn btn-primary w-full py-4 text-base font-bold shadow-lg flex items-center justify-center gap-2">
+
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4">
+                    File & Media
+                </h2>
+                
+                <div>
+                    <label class="form-label text-xs">Thumbnail / Cover Gambar</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
+                        <input type="file" name="thumbnail" class="w-full text-xs" accept="image/*">
+                        <p class="text-[11px] text-slate-500 mt-2">Format JPG/PNG, maksimal 5MB.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label text-xs">File Source Code (.ZIP)</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
+                        <input type="file" name="zip_file" class="w-full text-xs" accept=".zip,.rar,.tar,.gz">
+                        <p class="text-[11px] text-slate-500 mt-2">Ukuran file maksimal 100MB.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label text-xs">File Aplikasi Mobile Android (.APK)</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
+                        <input type="file" name="apk_file" class="w-full text-xs" accept=".apk">
+                        <p class="text-[11px] text-slate-500 mt-2">Format file .apk untuk instalasi Android.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full py-4 text-base font-bold shadow-lg flex items-center justify-center gap-2 cursor-pointer">
                 <i class='bx bx-check-circle text-xl'></i>
-                <span>Simpan & Rilis Projek</span>
+                <span>Publikasikan Projek</span>
             </button>
+            
         </div>
+        
     </div>
 </form>
 
 <script>
-function credentialsForm() {
-    return {
-        credentials: [],
-        addCred() {
-            this.credentials.push({ username: '', password: '', role: 'Admin', note: '' });
-        },
-        removeCred(index) {
-            this.credentials.splice(index, 1);
+    function credentialsForm() {
+        return {
+            credentials: [],
+            addCred() {
+                this.credentials.push({ username: '', password: '', role: '', note: '' });
+            },
+            removeCred(index) {
+                this.credentials.splice(index, 1);
+            }
         }
     }
-}
 </script>
 @endsection

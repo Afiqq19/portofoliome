@@ -84,7 +84,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full py-4 text-base font-bold shadow-lg flex items-center justify-center gap-2">
+            <button type="submit" class="btn btn-primary w-full py-4 text-base font-bold shadow-lg flex items-center justify-center gap-2 cursor-pointer">
                 <i class='bx bx-check-circle text-xl'></i>
                 <span>Simpan Sertifikat</span>
             </button>

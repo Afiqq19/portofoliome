@@ -50,7 +50,7 @@
                             <form action="{{ route('admin.certificates.toggle-status', $cert) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="cursor-pointer flex items-center gap-2 py-1 px-2.5 rounded-full border text-xs font-bold transition-all {{ $cert->status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200' }}">
+                                <button type="submit" class="cursor-pointer flex items-center gap-2 py-1 px-3 rounded-full border text-xs font-bold transition-all {{ $cert->status === 'published' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200' }}">
                                     <span class="w-2 h-2 rounded-full {{ $cert->status === 'published' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400' }}"></span>
                                     <span>{{ $cert->status === 'published' ? 'Publik' : 'Draft' }}</span>
                                 </button>
@@ -64,7 +64,7 @@
                                 <form action="{{ route('admin.certificates.destroy', $cert) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus sertifikat ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition-colors" title="Hapus">
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition-colors cursor-pointer" title="Hapus">
                                         <i class='bx bx-trash'></i>
                                     </button>
                                 </form>

@@ -12,7 +12,7 @@
         <span>Visibilitas Section Portofolio</span>
     </h2>
     <p class="text-xs text-slate-500 mb-6 leading-relaxed">
-        Pilih bagian mana saja yang ingin dimunculkan ke pengunjung. Jika toggle dinonaktifkan, section tersebut akan disembunyikan otomatis dari halaman depan.
+        Pilih bagian mana saja yang ingin dimunculkan ke pengunjung. Jika toggle dinonaktifkan, section tersebut akan disembunyikan otomatis dari halaman depan dan menu navigasi.
     </p>
     
     <form action="{{ route('admin.settings.update') }}" method="POST">
@@ -28,7 +28,7 @@
                     <span class="text-xs text-slate-500">Menampilkan grafik bar penguasaan teknologi Anda.</span>
                 </div>
                 <div class="relative inline-flex items-center flex-shrink-0">
-                    <input type="checkbox" name="enable_skills" value="1" {{ $profile->enable_skills ?? true ? 'checked' : '' }} class="sr-only peer">
+                    <input type="checkbox" name="enable_skills" value="1" {{ ($profile->enable_skills ?? true) ? 'checked' : '' }} class="sr-only peer">
                     <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 shadow-inner"></div>
                 </div>
             </label>
@@ -40,7 +40,7 @@
                     <span class="text-xs text-slate-500">Menampilkan showcase projek, download ZIP/APK, dan link demo.</span>
                 </div>
                 <div class="relative inline-flex items-center flex-shrink-0">
-                    <input type="checkbox" name="enable_projects" value="1" {{ $profile->enable_projects ?? true ? 'checked' : '' }} class="sr-only peer">
+                    <input type="checkbox" name="enable_projects" value="1" {{ ($profile->enable_projects ?? true) ? 'checked' : '' }} class="sr-only peer">
                     <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 shadow-inner"></div>
                 </div>
             </label>
@@ -52,7 +52,7 @@
                     <span class="text-xs text-slate-500">Menampilkan lisensi, sertifikasi, dan penghargaan Anda.</span>
                 </div>
                 <div class="relative inline-flex items-center flex-shrink-0">
-                    <input type="checkbox" name="enable_certificates" value="1" {{ $profile->enable_certificates ?? true ? 'checked' : '' }} class="sr-only peer">
+                    <input type="checkbox" name="enable_certificates" value="1" {{ ($profile->enable_certificates ?? true) ? 'checked' : '' }} class="sr-only peer">
                     <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 shadow-inner"></div>
                 </div>
             </label>
@@ -60,7 +60,7 @@
         </div>
         
         <div class="flex justify-end pt-4 border-t border-slate-100">
-            <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2">
+            <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2 cursor-pointer">
                 <i class='bx bx-save text-lg'></i>
                 <span>Simpan Pengaturan Visibilitas</span>
             </button>

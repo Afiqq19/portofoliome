@@ -37,7 +37,7 @@
             @error('backup_file')
                 <span class="text-rose-600 text-xs block">{{ $message }}</span>
             @enderror
-            <button type="submit" class="btn btn-outline w-full py-3 text-sm font-bold flex items-center justify-center gap-2 hover:border-emerald-500 hover:text-emerald-600">
+            <button type="submit" class="btn btn-outline w-full py-3 text-sm font-bold flex items-center justify-center gap-2 hover:border-emerald-500 hover:text-emerald-600 cursor-pointer">
                 <i class='bx bx-cloud-upload text-lg'></i>
                 <span>Upload File SQL</span>
             </button>
@@ -89,7 +89,7 @@
                                 <form action="{{ route('admin.backup.restore') }}" method="POST" onsubmit="return confirm('⚠️ PERINGATAN: Tindakan ini akan menimpa data database saat ini dengan data dari file backup ini!\n\nLanjutkan restore?')">
                                     @csrf
                                     <input type="hidden" name="filename" value="{{ $backup['name'] }}">
-                                    <button type="submit" class="btn btn-sm btn-outline text-amber-600 border-amber-200 hover:bg-amber-500 hover:text-white" title="Restore Data">
+                                    <button type="submit" class="btn btn-sm btn-outline text-amber-600 border-amber-200 hover:bg-amber-500 hover:text-white cursor-pointer" title="Restore Data">
                                         <i class='bx bx-refresh'></i>
                                         <span>Restore</span>
                                     </button>
@@ -98,8 +98,8 @@
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="filename" value="{{ $backup['name'] }}">
-                                    <button type="submit" class="btn btn-sm btn-danger px-2.5" title="Hapus File">
-                                        <i class='bx bx-trash text-sm'></i>
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white inline-flex items-center justify-center transition-colors cursor-pointer" title="Hapus File">
+                                        <i class='bx bx-trash text-base'></i>
                                     </button>
                                 </form>
                             </div>

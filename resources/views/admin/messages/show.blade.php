@@ -15,7 +15,7 @@
     <form action="{{ route('admin.messages.destroy', $message) }}" method="POST" onsubmit="return confirm('Hapus pesan ini?')">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm shadow-sm flex items-center gap-1.5">
+        <button type="submit" class="btn btn-danger btn-sm shadow-sm flex items-center gap-1.5 cursor-pointer">
             <i class='bx bx-trash text-base'></i>
             <span>Hapus Tiket</span>
         </button>
@@ -93,7 +93,7 @@
             </div>
             
             <div class="flex justify-end">
-                <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2">
+                <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2 cursor-pointer">
                     <i class='bx bx-send text-base'></i>
                     <span>Kirim Balasan</span>
                 </button>

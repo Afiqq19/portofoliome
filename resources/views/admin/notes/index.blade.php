@@ -60,7 +60,7 @@
                             <form action="{{ route('admin.notes.destroy', $note->id) }}" method="POST" onsubmit="return confirm('Hapus catatan dari {{ $note->name }}?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white inline-flex items-center justify-center transition-colors" title="Hapus Catatan">
+                                <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white inline-flex items-center justify-center transition-colors cursor-pointer" title="Hapus Catatan">
                                     <i class='bx bx-trash text-base'></i>
                                 </button>
                             </form>

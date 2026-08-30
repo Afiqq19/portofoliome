@@ -58,7 +58,7 @@
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
              @click="sidebarOpen = false" 
-             class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 md:hidden"
+             class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
              style="display: none;"></div>
 
         <!-- Sidebar Toggle Mobile -->
@@ -77,7 +77,7 @@
                 </div>
                 <div>
                     <h2 class="font-bold text-base font-['Space_Grotesk'] text-slate-900 leading-tight">Admin Panel</h2>
-                    <p class="text-xs text-slate-500 font-medium">{{ $profile->name ?? 'Portofolio' }}</p>
+                    <p class="text-xs text-slate-500 font-medium truncate max-w-[140px]">{{ $profile->name ?? 'Portofolio' }}</p>
                 </div>
             </div>
             
@@ -145,7 +145,7 @@
             <div class="p-4 border-t border-slate-100 bg-slate-50/50">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/60 transition-colors">
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/60 transition-colors cursor-pointer">
                         <i class='bx bx-log-out text-base'></i>
                         <span>Keluar (Logout)</span>
                     </button>
@@ -176,7 +176,7 @@
                     <div class="alert alert-success shadow-lg" x-data="{ show: true }" x-show="show">
                         <i class='bx bx-check-circle text-xl mr-2 text-emerald-600'></i>
                         <span class="flex-1 font-medium text-emerald-900">{{ session('success') }}</span>
-                        <button @click="show = false" class="text-emerald-700 hover:text-emerald-900 text-lg leading-none">&times;</button>
+                        <button @click="show = false" class="text-emerald-700 hover:text-emerald-900 text-lg leading-none cursor-pointer">&times;</button>
                     </div>
                 @endif
             
@@ -195,7 +195,7 @@
                                 </ul>
                             @endif
                         </div>
-                        <button @click="show = false" class="text-rose-700 hover:text-rose-900 text-lg leading-none">&times;</button>
+                        <button @click="show = false" class="text-rose-700 hover:text-rose-900 text-lg leading-none cursor-pointer">&times;</button>
                     </div>
                 @endif
             </div>

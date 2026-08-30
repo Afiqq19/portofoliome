@@ -3,7 +3,7 @@
  * Features:
  * 1. Constellation Particle Canvas with Mouse Interactivity
  * 2. 3D Tilt Cards & Mouse Spotlight Illumination
- * 3. Dynamic Role Typewriter Engine
+ * 3. Dynamic Role Typewriter Engine (Resilient Selector)
  * 4. Animated Number Counters (Viewport Triggered)
  * 5. Animated Skill Progress Bars
  * 6. Floating Back-to-Top with Circular Progress Ring
@@ -12,6 +12,7 @@
  * 9. Navbar Scroll Visual Effect
  * 10. Lo-Fi Ambient Audio Player & Equalizer
  * 11. Interactive Project Cost & Timeline Estimator (Alpine Helper)
+ * 12. Instant Copy-to-Clipboard with Toast Notification
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initNavbarScroll();
     initLofiPlayer();
+    initClipboardHelper();
 });
 
 /* ── 1. Constellation Particle Canvas ─────────────────────── */
@@ -37,14 +39,14 @@ function initConstellationCanvas() {
     let height = (canvas.height = window.innerHeight);
 
     let particles = [];
-    const particleCount = Math.min(Math.floor((width * height) / 14000), 75);
+    const particleCount = Math.min(Math.floor((width * height) / 13000), 80);
     const connectionDistance = 140;
     const mouseConnectionDistance = 180;
 
     let mouse = {
         x: null,
         y: null,
-        radius: 150,
+        radius: 160,
     };
 
     window.addEventListener('mousemove', (e) => {
@@ -188,8 +190,8 @@ function initSpotlightAndTilt() {
             if (card.classList.contains('tilt-card')) {
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -7;
-                const rotateY = ((x - centerX) / centerX) * 7;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
             }
         });
@@ -204,10 +206,10 @@ function initSpotlightAndTilt() {
 
 /* ── 3. Dynamic Role Typewriter Engine ───────────────────── */
 function initTypewriter() {
-    const typewriterEl = document.getElementById('typewriter-role');
+    const typewriterEl = document.getElementById('role-typewriter') || document.getElementById('typewriter-role') || document.querySelector('.typewriter-text');
     if (!typewriterEl) return;
 
-    let roles = ['Fullstack Developer', 'UI/UX Enthusiast', 'Modern Tech Explorer'];
+    let roles = ['Full Stack Web Developer', 'Creative UI/UX Enthusiast', 'Mobile App Engineer', 'Modern Tech Architect'];
 
     try {
         const rawRoles = typewriterEl.getAttribute('data-roles');
@@ -236,7 +238,7 @@ function initTypewriter() {
         } else {
             typewriterEl.textContent = currentRole.substring(0, charIndex + 1);
             charIndex++;
-            typingSpeed = 90;
+            typingSpeed = 85;
         }
 
         if (!isDeleting && charIndex === currentRole.length) {
@@ -251,7 +253,7 @@ function initTypewriter() {
         setTimeout(type, typingSpeed);
     }
 
-    setTimeout(type, 800);
+    type();
 }
 
 /* ── 4. Animated Number Counters ─────────────────────────── */
@@ -259,81 +261,74 @@ function initNumberCounters() {
     const counters = document.querySelectorAll('.stat-counter');
     if (!counters.length) return;
 
-    const observer = new IntersectionObserver(
-        (entries, obs) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const counter = entry.target;
-                    const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
-                    const duration = 1600;
-                    const startTime = performance.now();
-
-                    function updateNumber(currentTime) {
-                        const elapsed = currentTime - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        const easeProgress = 1 - Math.pow(1 - progress, 3);
-                        const current = Math.floor(easeProgress * target);
-
-                        counter.textContent = current;
-
-                        if (progress < 1) {
-                            requestAnimationFrame(updateNumber);
-                        } else {
-                            counter.textContent = target;
-                        }
-                    }
-
-                    requestAnimationFrame(updateNumber);
-                    obs.unobserve(counter);
-                }
-            });
-        },
-        { threshold: 0.5 }
-    );
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-target') || '0', 10);
+                animateValue(entry.target, 0, target, 1600);
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
 
     counters.forEach((counter) => observer.observe(counter));
+
+    function animateValue(obj, start, end, duration) {
+        if (start === end) {
+            obj.textContent = end;
+            return;
+        }
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            // Ease out quad
+            const easeProgress = 1 - (1 - progress) * (1 - progress);
+            obj.textContent = Math.floor(easeProgress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                obj.textContent = end;
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
 }
 
 /* ── 5. Animated Skill Progress Bars ─────────────────────── */
 function initSkillProgressBars() {
-    const bars = document.querySelectorAll('.skill-progress-bar');
-    if (!bars.length) return;
+    const progressBars = document.querySelectorAll('.skill-progress-bar');
+    if (!progressBars.length) return;
 
-    const observer = new IntersectionObserver(
-        (entries, obs) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const bar = entry.target;
-                    const progress = bar.getAttribute('data-progress') || '0';
-                    bar.style.width = `${progress}%`;
-                    obs.unobserve(bar);
-                }
-            });
-        },
-        { threshold: 0.3 }
-    );
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const target = entry.target.getAttribute('data-progress') || '0';
+                entry.target.style.width = `${target}%`;
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
 
-    bars.forEach((bar) => observer.observe(bar));
+    progressBars.forEach((bar) => observer.observe(bar));
 }
 
-/* ── 6. Floating Back-to-Top with Circular Progress Ring ─── */
+/* ── 6. Floating Back to Top Button with Circular Progress ── */
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
-    const progressCircle = document.getElementById('progress-ring-circle');
+    const circle = document.getElementById('progress-ring-circle');
     if (!backToTopBtn) return;
 
-    const radius = 22;
-    const circumference = 2 * Math.PI * radius;
-
-    if (progressCircle) {
-        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
-        progressCircle.style.strokeDashoffset = circumference;
+    const circumference = 2 * Math.PI * 22; // r=22 -> ~138.2
+    if (circle) {
+        circle.style.strokeDasharray = `${circumference}`;
+        circle.style.strokeDashoffset = `${circumference}`;
     }
 
-    function onScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollFraction = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+        const scrollProgress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
 
         if (scrollTop > 300) {
             backToTopBtn.classList.add('visible');
@@ -341,13 +336,11 @@ function initBackToTop() {
             backToTopBtn.classList.remove('visible');
         }
 
-        if (progressCircle) {
-            const offset = circumference - scrollFraction * circumference;
-            progressCircle.style.strokeDashoffset = offset;
+        if (circle) {
+            const offset = circumference - scrollProgress * circumference;
+            circle.style.strokeDashoffset = offset;
         }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
+    });
 
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({
@@ -359,24 +352,22 @@ function initBackToTop() {
 
 /* ── 7. Interactive Project Category Filtering ───────────── */
 function initProjectFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card-item');
-    if (!filterBtns.length) return;
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const projectCards = document.querySelectorAll('[data-category]');
 
-    filterBtns.forEach((btn) => {
+    if (!filterButtons.length || !projectCards.length) return;
+
+    filterButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
-            filterBtns.forEach((b) => b.classList.remove('active'));
+            filterButtons.forEach((b) => b.classList.remove('active'));
             btn.classList.add('active');
 
-            const filter = btn.getAttribute('data-filter');
+            const filterValue = btn.getAttribute('data-filter');
 
             projectCards.forEach((card) => {
-                const category = card.getAttribute('data-category') || '';
-                const tags = card.getAttribute('data-tags') || '';
-                const combined = (category + ' ' + tags).toLowerCase();
-
-                if (filter === 'all' || combined.includes(filter.toLowerCase())) {
-                    card.style.display = 'block';
+                const categories = card.getAttribute('data-category').split(' ');
+                if (filterValue === 'all' || categories.includes(filterValue)) {
+                    card.style.display = 'flex';
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'scale(1)';
@@ -386,7 +377,7 @@ function initProjectFilters() {
                     card.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         card.style.display = 'none';
-                    }, 300);
+                    }, 250);
                 }
             });
         });
@@ -398,17 +389,16 @@ function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
     if (!reveals.length) return;
 
-    const observer = new IntersectionObserver(
-        (entries, obs) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    obs.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+    });
 
     reveals.forEach((el) => observer.observe(el));
 }
@@ -424,156 +414,195 @@ function initNavbarScroll() {
         } else {
             navbar.classList.remove('scrolled');
         }
-    }, { passive: true });
+    });
 }
 
-/* ── 10. Lo-Fi Ambient Audio Player Engine ───────────────── */
+/* ── 10. Lo-Fi Ambient Audio Player & Equalizer ───────────── */
 function initLofiPlayer() {
-    const playerWidget = document.getElementById('lofi-widget');
-    const playBtn = document.getElementById('lofi-toggle');
+    const toggleBtn = document.getElementById('lofi-toggle');
     const audio = document.getElementById('lofi-audio');
-    if (!playerWidget || !playBtn) return;
+    const widget = document.getElementById('lofi-widget');
+    if (!toggleBtn || !audio || !widget) return;
 
     let isPlaying = false;
 
-    playBtn.addEventListener('click', () => {
-        if (!isPlaying) {
-            if (audio) {
-                audio.volume = 0.4;
-                audio.play().then(() => {
-                    isPlaying = true;
-                    playerWidget.classList.add('playing');
-                    playBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
-                }).catch(() => {
-                    startAmbientSynth();
-                    isPlaying = true;
-                    playerWidget.classList.add('playing');
-                    playBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
-                });
-            } else {
-                startAmbientSynth();
-                isPlaying = true;
-                playerWidget.classList.add('playing');
-                playBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
-            }
-        } else {
-            if (audio) audio.pause();
-            stopAmbientSynth();
+    toggleBtn.addEventListener('click', () => {
+        if (isPlaying) {
+            audio.pause();
             isPlaying = false;
-            playerWidget.classList.remove('playing');
-            playBtn.innerHTML = "<i class='bx bx-play text-xl'></i>";
+            widget.classList.remove('lofi-playing');
+            toggleBtn.innerHTML = "<i class='bx bx-play text-xl'></i>";
+            toggleBtn.classList.remove('bg-emerald-600');
+            toggleBtn.classList.add('bg-indigo-600');
+        } else {
+            audio.play().then(() => {
+                isPlaying = true;
+                widget.classList.add('lofi-playing');
+                toggleBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
+                toggleBtn.classList.remove('bg-indigo-600');
+                toggleBtn.classList.add('bg-emerald-600');
+            }).catch((err) => {
+                console.log('Audio playback error:', err);
+            });
         }
     });
-
-    let audioCtx = null;
-    let synthInterval = null;
-
-    function startAmbientSynth() {
-        try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const chords = [
-                [261.63, 329.63, 392.00, 493.88],
-                [220.00, 261.63, 329.63, 392.00],
-                [174.61, 220.00, 261.63, 329.63],
-                [196.00, 246.94, 293.66, 349.23],
-            ];
-            let chordIdx = 0;
-
-            function playChord(notes) {
-                if (!audioCtx || audioCtx.state === 'suspended') audioCtx.resume();
-                notes.forEach((freq) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.04, audioCtx.currentTime + 1.5);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4.5);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 5);
-                });
-            }
-
-            playChord(chords[chordIdx]);
-            synthInterval = setInterval(() => {
-                chordIdx = (chordIdx + 1) % chords.length;
-                playChord(chords[chordIdx]);
-            }, 4000);
-        } catch (e) {
-            console.log('Audio context not supported');
-        }
-    }
-
-    function stopAmbientSynth() {
-        if (synthInterval) clearInterval(synthInterval);
-        if (audioCtx) {
-            audioCtx.close();
-            audioCtx = null;
-        }
-    }
 }
 
-/* ── 11. Project Cost & Timeline Estimator (Alpine.js helper) */
-window.projectEstimator = function(whatsappNumber) {
+/* ── 11. Interactive Project Cost & Timeline Estimator (Alpine Helper) ── */
+window.projectEstimator = function (phone = '') {
     return {
-        projectType: 'web',
-        features: ['auth', 'seo'],
-        timeline: 14,
-        cost: 3500000,
+        phone: phone,
+        projectType: 'web_company',
+        features: ['responsive', 'seo'],
+        urgency: 'normal',
+        
         types: {
-            landing: { name: 'Landing Page & Company Profile', baseCost: 1500000, baseDays: 5, icon: 'bx-layout' },
-            web: { name: 'Web Application & Dashboard', baseCost: 3500000, baseDays: 14, icon: 'bx-code-alt' },
-            ecommerce: { name: 'E-Commerce & Toko Online', baseCost: 5000000, baseDays: 20, icon: 'bx-shopping-bag' },
-            mobile: { name: 'Aplikasi Mobile Android (APK)', baseCost: 4500000, baseDays: 18, icon: 'bxl-android' }
+            landing_page: {
+                name: 'Landing Page / Promosi',
+                baseCost: 1500000,
+                baseDays: 5,
+                icon: 'bx-layout',
+                desc: 'Halaman promosi tunggal dengan konversi tinggi & desain modern.',
+            },
+            web_company: {
+                name: 'Company Profile & Bisnis',
+                baseCost: 3500000,
+                baseDays: 10,
+                icon: 'bx-buildings',
+                desc: 'Website representasi perusahaan dengan halaman profil, layanan & kontak.',
+            },
+            e_commerce: {
+                name: 'Toko Online & E-Commerce',
+                baseCost: 6500000,
+                baseDays: 18,
+                icon: 'bx-cart-alt',
+                desc: 'Katalog produk, keranjang belanja, checkout & integrasi payment gateway.',
+            },
+            web_app: {
+                name: 'Custom Web Application / SaaS',
+                baseCost: 9000000,
+                baseDays: 25,
+                icon: 'bx-laptop',
+                desc: 'Sistem manajemen custom, database kompleks, otentikasi role & API.',
+            },
+            mobile_app: {
+                name: 'Mobile App (Android APK / Flutter)',
+                baseCost: 8000000,
+                baseDays: 21,
+                icon: 'bxl-android',
+                desc: 'Aplikasi mobile Android responsif dengan integrasi backend RESTful API.',
+            },
         },
+
         featureList: {
-            auth: { name: 'Autentikasi & Multi-Role Akun', cost: 750000, days: 3, icon: 'bx-user-check' },
-            payment: { name: 'Payment Gateway / QRIS / Donasi', cost: 1200000, days: 4, icon: 'bx-credit-card' },
-            whatsapp_api: { name: 'Integrasi Notifikasi WhatsApp', cost: 800000, days: 3, icon: 'bxl-whatsapp' },
-            seo: { name: 'Optimasi SEO & Kecepatan Super', cost: 500000, days: 2, icon: 'bx-rocket' },
-            ui_custom: { name: 'Desain UI/UX Khusus & Animasi 3D', cost: 1000000, days: 4, icon: 'bx-palette' },
-            rest_api: { name: 'RESTful API & Cloud Database', cost: 1200000, days: 4, icon: 'bx-data' }
+            responsive: { name: 'Desain Responsif Mobile/Tablet', cost: 500000, days: 1, icon: 'bx-mobile-alt' },
+            seo: { name: 'Optimasi SEO & Google Search', cost: 750000, days: 2, icon: 'bx-search-alt' },
+            auth: { name: 'Sistem Login & Multi-Role Akun', cost: 1200000, days: 4, icon: 'bx-lock-alt' },
+            payment: { name: 'Payment Gateway (QRIS, E-Wallet)', cost: 1800000, days: 4, icon: 'bx-credit-card' },
+            whatsapp: { name: 'Integrasi Otomatisasi WhatsApp API', cost: 1000000, days: 3, icon: 'bxl-whatsapp' },
+            admin_panel: { name: 'Admin Dashboard Pengelolaan Konten', cost: 2000000, days: 5, icon: 'bx-slider' },
+            dark_mode: { name: 'Tema Gelap / Terang (Dark Mode)', cost: 400000, days: 1, icon: 'bx-moon' },
+            multilingual: { name: 'Dukungan Multi-Bahasa (ID/EN)', cost: 800000, days: 2, icon: 'bx-globe' },
         },
+
+        totalCost: 0,
+        totalDays: 0,
+
+        init() {
+            this.calculate();
+        },
+
         toggleFeature(key) {
             if (this.features.includes(key)) {
-                this.features = this.features.filter(f => f !== key);
+                this.features = this.features.filter((f) => f !== key);
             } else {
                 this.features.push(key);
             }
             this.calculate();
         },
+
         calculate() {
-            let selected = this.types[this.projectType];
-            let totalCost = selected.baseCost;
-            let totalDays = selected.baseDays;
-            
-            this.features.forEach(f => {
-                if (this.featureList[f]) {
-                    totalCost += this.featureList[f].cost;
-                    totalDays += this.featureList[f].days;
+            const currentType = this.types[this.projectType] || this.types.web_company;
+            let cost = currentType.baseCost;
+            let days = currentType.baseDays;
+
+            this.features.forEach((fKey) => {
+                if (this.featureList[fKey]) {
+                    cost += this.featureList[fKey].cost;
+                    days += this.featureList[fKey].days;
                 }
             });
-            this.cost = totalCost;
-            this.timeline = totalDays;
+
+            if (this.urgency === 'express') {
+                cost *= 1.25;
+                days = Math.max(Math.round(days * 0.65), 3);
+            }
+
+            this.totalCost = Math.round(cost);
+            this.totalDays = days;
         },
-        formatRupiah(num) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+
+        formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0,
+            }).format(amount);
         },
-        getWhatsAppLink() {
-            let typeName = this.types[this.projectType].name;
-            let featureNames = this.features.map(f => this.featureList[f]?.name).filter(Boolean).join(', ');
-            let text = `Halo Syafiq! Saya tertarik untuk bekerjasama membuat projek melalui website portofolio Anda:\n\n` +
-                       `📌 *Jenis Projek:* ${typeName}\n` +
-                       `✨ *Fitur Dipilih:* ${featureNames || 'Standar'}\n` +
-                       `⏱️ *Estimasi Waktu:* ±${this.timeline} Hari Kerja\n` +
-                       `💰 *Estimasi Investasi:* ${this.formatRupiah(this.cost)}\n\n` +
-                       `Bisa kita diskusikan lebih lanjut? Terima kasih!`;
-            let cleanPhone = (whatsappNumber || '').replace(/[^0-9]/g, '');
-            if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
-            if (!cleanPhone) cleanPhone = '6281234567890';
-            return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+
+        getWhatsAppUrl() {
+            const cleanPhone = this.phone.replace(/[^0-9]/g, '');
+            const targetPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : (cleanPhone.startsWith('62') ? cleanPhone : '6281234567890');
+            
+            const typeName = this.types[this.projectType]?.name || 'Custom Project';
+            const selectedFeaturesNames = this.features.map((f) => this.featureList[f]?.name).filter(Boolean).join(', ');
+            
+            const message = `Halo MSyafiq! 👋\n\nSaya ingin berkonsultasi mengenai pembuatan projek dengan estimasi berikut:\n\n` +
+                `📌 *Kategori Projek:* ${typeName}\n` +
+                `⚙️ *Fitur yang Dibutuhkan:* ${selectedFeaturesNames || '-'}\n` +
+                `⏱️ *Perkiraan Waktu:* ± ${this.totalDays} Hari Kerja (${this.urgency === 'express' ? 'Prioritas Express' : 'Reguler'})\n` +
+                `💰 *Estimasi Investasi:* ${this.formatRupiah(this.totalCost)}\n\n` +
+                `Apakah kita bisa berdiskusi lebih lanjut mengenai jadwal pengerjaannya? Terima kasih!`;
+
+            return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
         }
     };
 };
+
+/* ── 12. Instant Copy-to-Clipboard with Toast Notification ── */
+function initClipboardHelper() {
+    window.copyToClipboard = function (text, message = 'Teks berhasil disalin!') {
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(message);
+        }).catch(() => {
+            // Fallback
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast(message);
+        });
+    };
+
+    function showToast(msg) {
+        let toast = document.getElementById('global-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'global-toast';
+            toast.className = 'fixed bottom-6 right-6 z-[9999] bg-indigo-600 text-white font-bold text-xs py-3 px-5 rounded-2xl shadow-2xl flex items-center gap-2 border border-white/20 transform transition-all duration-300 translate-y-10 opacity-0';
+            document.body.appendChild(toast);
+        }
+
+        toast.innerHTML = `<i class='bx bx-check-circle text-lg text-emerald-300'></i><span>${msg}</span>`;
+        toast.classList.remove('translate-y-10', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-10', 'opacity-0');
+        }, 2800);
+    }
+}

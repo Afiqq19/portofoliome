@@ -33,7 +33,7 @@
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed">Tautan ini otomatis aktif pada tombol <strong>"☕ Traktir Kopi"</strong> di setiap detail halaman projek.</p>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 shadow-md">
+            <button type="submit" class="btn btn-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 shadow-md cursor-pointer">
                 <i class='bx bx-save text-lg'></i>
                 <span>Simpan Pengaturan Donasi</span>
             </button>

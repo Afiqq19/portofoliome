@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Tiket Dukungan - ' . config('app.name'))
+@section('title', 'Tiket Percakapan #' . ($message->ticket_id ?? '') . ' - ' . config('app.name'))
 
 @section('content')
-<div class="container max-w-4xl mx-auto px-4 pt-32 pb-24 relative">
+<div class="container max-w-4xl mx-auto px-4 pt-36 pb-24 relative">
     
     <!-- Ambient Glow -->
     <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
@@ -34,12 +34,16 @@
         <div class="border-b border-white/10 pb-6 mb-8 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
             <div>
                 <h2 class="text-2xl font-bold font-['Space_Grotesk'] text-slate-100 mb-1">{{ $message->subject ?? '(Tanpa Subjek)' }}</h2>
-                <div class="text-xs font-mono text-slate-400 flex items-center gap-2">
+                <div class="text-xs font-mono text-slate-400 flex items-center gap-2 flex-wrap">
                     <span>ID TIKET:</span>
-                    <span class="px-2 py-0.5 rounded-md bg-white/10 text-indigo-300 font-bold">{{ $message->ticket_id }}</span>
+                    <span class="px-2.5 py-0.5 rounded-md bg-white/10 text-indigo-300 font-bold">{{ $message->ticket_id }}</span>
+                    <button type="button" onclick="copyToClipboard('{{ $message->ticket_id }}', 'ID Tiket berhasil disalin!')" class="text-slate-400 hover:text-white inline-flex items-center gap-1 text-[11px] underline">
+                        <i class='bx bx-copy'></i>
+                        <span>Salin ID</span>
+                    </button>
                 </div>
             </div>
-            <div class="text-xs font-medium text-slate-400 bg-white/5 px-3 py-1.5 rounded-full self-start border border-white/5">
+            <div class="text-xs font-medium text-slate-400 bg-white/5 px-3.5 py-1.5 rounded-full self-start border border-white/5">
                 Dibuat {{ $message->created_at->format('d M Y, H:i') }}
             </div>
         </div>
@@ -62,7 +66,7 @@
             @foreach($message->replies as $reply)
                 @if($reply->sender_type === 'admin')
                     <div class="flex justify-start">
-                        <div class="bg-secondary-dark/80 rounded-3xl rounded-tl-sm px-6 py-4 max-w-[85%] border border-white/10 shadow-lg">
+                        <div class="bg-[#0c0c14] rounded-3xl rounded-tl-sm px-6 py-4 max-w-[85%] border border-white/10 shadow-lg">
                             <div class="text-xs font-bold mb-1 text-emerald-400 flex items-center gap-1.5">
                                 <i class='bx bx-shield-quarter'></i>
                                 <span>Admin / Pengelola</span>
@@ -92,7 +96,7 @@
                 @csrf
                 <div class="form-group mb-4">
                     <label class="form-label text-xs">Balasan Anda</label>
-                    <textarea name="reply_body" class="form-control rounded-2xl" rows="4" placeholder="Ketik balasan Anda di sini..." required></textarea>
+                    <textarea name="reply_body" class="form-control rounded-2xl min-h-[110px]" rows="4" placeholder="Ketik balasan Anda di sini..." required></textarea>
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-primary btn-shimmer rounded-xl px-6 py-3 font-bold text-sm flex items-center gap-2">

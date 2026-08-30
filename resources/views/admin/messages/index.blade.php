@@ -21,10 +21,10 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @foreach($messages as $msg)
-                    <tr class="cursor-pointer transition-colors hover:bg-slate-50 {{ !$msg->is_read ? 'bg-indigo-50/40' : '' }}" onclick="window.location='{{ route('admin.messages.show', $msg) }}'">
+                    <tr class="cursor-pointer transition-colors hover:bg-slate-50 {{ !$msg->is_read ? 'bg-indigo-50/30' : '' }}" onclick="window.location='{{ route('admin.messages.show', $msg) }}'">
                         <td class="text-center" onclick="event.stopPropagation()">
                             @if(!$msg->is_read)
-                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block shadow-sm"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block shadow-sm animate-pulse"></span>
                             @else
                                 <i class='bx bx-check text-slate-400 text-base'></i>
                             @endif
@@ -44,7 +44,7 @@
                             <form action="{{ route('admin.messages.destroy', $msg) }}" method="POST" onsubmit="return confirm('Hapus pesan ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white inline-flex items-center justify-center transition-colors" title="Hapus Pesan">
+                                <button type="submit" class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white inline-flex items-center justify-center transition-colors cursor-pointer" title="Hapus Pesan">
                                     <i class='bx bx-trash text-base'></i>
                                 </button>
                             </form>

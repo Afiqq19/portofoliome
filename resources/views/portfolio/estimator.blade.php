@@ -55,6 +55,7 @@
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-sm text-slate-100 mb-1" x-text="data.name"></h3>
+                                    <p class="text-xs text-slate-400 font-light mb-2 line-clamp-2" x-text="data.desc"></p>
                                     <p class="text-xs text-indigo-400 font-mono font-semibold" x-text="'Mulai ' + formatRupiah(data.baseCost)"></p>
                                 </div>
                             </div>
@@ -94,6 +95,39 @@
                     </div>
                 </div>
 
+                <!-- Step 3: Prioritas Pengerjaan -->
+                <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-2xl">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                        <span class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 font-bold text-sm flex items-center justify-center border border-cyan-500/30">3</span>
+                        <div>
+                            <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100">Prioritas & Kecepatan Pengerjaan</h2>
+                            <p class="text-xs text-slate-400">Pilih kecepatan timeline proyek sesuai target rilis Anda</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div @click="urgency = 'normal'; calculate();" 
+                             class="estimator-option p-4 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-between"
+                             :class="{ 'active': urgency === 'normal' }">
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-100">Standar / Reguler</h3>
+                                <p class="text-xs text-slate-400">Jadwal kerja normal dan terstruktur</p>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">Biaya Normal</span>
+                        </div>
+
+                        <div @click="urgency = 'express'; calculate();" 
+                             class="estimator-option p-4 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-between"
+                             :class="{ 'active': urgency === 'express' }">
+                            <div>
+                                <h3 class="font-bold text-sm text-accent-amber">Express Prioritas ⚡</h3>
+                                <p class="text-xs text-slate-400">Pengerjaan intensif & rilis lebih cepat</p>
+                            </div>
+                            <span class="text-xs font-bold text-accent-amber">+25% Biaya</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- FAQ Section -->
                 <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-2xl">
                     <h2 class="text-lg font-bold font-['Space_Grotesk'] text-slate-100 mb-6 flex items-center gap-2">
@@ -117,48 +151,49 @@
 
             <!-- Calculation Sticky Summary Card (1 Col) -->
             <div class="lg:col-span-1">
-                <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 sticky top-28 shadow-2xl space-y-6">
-                    <div class="flex items-center gap-3 pb-4 border-b border-white/10">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg">
-                            <i class='bx bx-calculator'></i>
+                <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 sticky top-28 shadow-2xl space-y-6 bg-gradient-to-b from-indigo-950/40 via-secondary-dark to-primary-dark">
+                    <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 border-b border-white/10 pb-4 flex items-center gap-2">
+                        <i class='bx bx-receipt text-indigo-400'></i>
+                        <span>Ringkasan Estimasi</span>
+                    </h2>
+
+                    <!-- Selected Type -->
+                    <div>
+                        <div class="text-[11px] text-slate-400 font-bold uppercase tracking-wider mb-1">Kategori Terpilih</div>
+                        <div class="text-sm font-bold text-slate-100" x-text="types[projectType]?.name || '-'"></div>
+                    </div>
+
+                    <!-- Selected Features Count -->
+                    <div>
+                        <div class="text-[11px] text-slate-400 font-bold uppercase tracking-wider mb-1">Fitur Tambahan</div>
+                        <div class="text-sm font-semibold text-accent-cyan" x-text="features.length + ' fitur dipilih'"></div>
+                    </div>
+
+                    <!-- Estimated Timeline -->
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                            <i class='bx bx-time-five text-lg text-cyan-400'></i>
+                            <span>Estimasi Durasi</span>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-bold font-['Space_Grotesk'] text-slate-100">Ringkasan Estimasi</h3>
-                            <p class="text-xs text-slate-400">Hasil kalkulasi otomatis</p>
-                        </div>
+                        <div class="font-mono font-bold text-base text-cyan-300" x-text="'± ' + totalDays + ' Hari'"></div>
                     </div>
 
-                    <!-- Live Cost -->
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
-                        <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block mb-1">Perkiraan Investasi</span>
-                        <div class="text-2xl sm:text-3xl font-black font-['Space_Grotesk'] text-gradient-cyan" x-text="formatRupiah(cost)"></div>
+                    <!-- Total Cost Box -->
+                    <div class="p-5 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 text-center">
+                        <div class="text-xs text-indigo-300 font-bold uppercase tracking-wider mb-1">Perkiraan Investasi</div>
+                        <div class="text-2xl sm:text-3xl font-black font-['Space_Grotesk'] text-white" x-text="formatRupiah(totalCost)"></div>
+                        <div class="text-[10px] text-slate-400 mt-1">*Belum termasuk domain/server jika belum ada</div>
                     </div>
 
-                    <!-- Live Timeline -->
-                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
-                            <i class='bx bx-time-five text-xl text-amber-400'></i>
-                            <span class="text-xs font-semibold text-slate-300">Estimasi Waktu</span>
-                        </div>
-                        <span class="font-mono font-bold text-sm text-amber-400" x-text="'± ' + timeline + ' Hari Kerja'"></span>
-                    </div>
-
-                    <div class="text-xs text-slate-400 leading-relaxed bg-black/20 p-4 rounded-2xl border border-white/5 space-y-1.5">
-                        <p class="text-slate-300 font-semibold flex items-center gap-1.5">
-                            <i class='bx bx-check-circle text-emerald-400'></i>
-                            <span>Keuntungan Bekerjasama:</span>
-                        </p>
-                        <p>• Source code bersih, modern & terstruktur</p>
-                        <p>• Desain responsive mobile & desktop</p>
-                        <p>• Pendampingan deployment ke server cloud</p>
-                        <p>• Garansi maintenance & perbaikan bug</p>
-                    </div>
-
-                    <!-- Direct WhatsApp Consultation CTA -->
-                    <a :href="getWhatsAppLink()" target="_blank" class="btn btn-primary btn-shimmer w-full py-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-xl hover:scale-[1.02] transition-transform">
-                        <i class='bx bxl-whatsapp text-2xl text-emerald-400'></i>
+                    <!-- WhatsApp CTA -->
+                    <a :href="getWhatsAppUrl()" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-shimmer w-full rounded-2xl py-4 font-bold flex items-center justify-center gap-2 group shadow-xl">
+                        <i class='bx bxl-whatsapp text-2xl group-hover:scale-110 transition-transform text-emerald-300'></i>
                         <span>Konsultasikan via WhatsApp</span>
                     </a>
+
+                    <p class="text-center text-[11px] text-slate-500 font-light">
+                        Klik tombol di atas untuk mengirim rincian estimasi langsung ke WhatsApp saya.
+                    </p>
                 </div>
             </div>
 
