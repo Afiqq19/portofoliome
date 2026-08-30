@@ -90,44 +90,152 @@
                 </span>
             </a>
             
-            <!-- Desktop Navigation Links -->
-            <div class="nav-links hidden lg:flex items-center gap-2.5 xl:gap-4 text-xs xl:text-sm whitespace-nowrap">
+            <!-- Desktop Navigation Links (Option 1: Modern Category Dropdowns) -->
+            <div class="nav-links hidden md:flex items-center gap-1.5 lg:gap-3 text-xs lg:text-sm whitespace-nowrap">
                 <a href="{{ route('home') }}#hero" class="nav-link">Beranda</a>
-                @if($profile->bio ?? true)
-                    <a href="{{ route('home') }}#about" class="nav-link">Tentang</a>
-                @endif
-                @if($profile->enable_skills ?? true)
-                    <a href="{{ route('home') }}#skills" class="nav-link">Keahlian</a>
-                @endif
-                <a href="{{ route('home') }}#timeline" class="nav-link">Pengalaman</a>
-                @if($profile->enable_projects ?? true)
-                    <a href="{{ route('projects.all') }}" class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}">Projek</a>
-                @endif
-                @if($profile->enable_certificates ?? true)
-                    <a href="{{ route('certificates') }}" class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}">Sertifikat</a>
-                @endif
-                <a href="{{ route('estimator') }}" class="nav-link {{ request()->routeIs('estimator') ? 'active' : '' }}">Estimasi</a>
-                <a href="{{ route('home') }}#workspace" class="nav-link">Workspace</a>
-                <a href="{{ route('home') }}#contact" class="nav-link">Kontak</a>
-            </div>
 
-            <!-- Action Button / Admin Link -->
-            <div class="hidden lg:flex items-center gap-3 flex-shrink-0">
-                @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-primary btn-shimmer flex items-center gap-1.5 shadow-md px-4 py-2 text-xs">
-                        <i class='bx bxs-dashboard text-base'></i>
-                        <span>Dashboard</span>
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline flex items-center gap-1.5 hover:border-indigo-500 px-4 py-2 text-xs">
-                        <i class='bx bx-log-in text-base'></i>
-                        <span>Admin</span>
-                    </a>
-                @endauth
+                <!-- Profil Dropdown -->
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button @click="open = !open" 
+                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
+                            :class="{ 'text-white': open }">
+                        <span>Profil</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                         @click.outside="open = false"
+                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                         style="display: none;">
+                        @if($profile->bio ?? true)
+                        <a href="{{ route('home') }}#about" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                                <i class='bx bx-user text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300">Tentang Saya</div>
+                                <div class="text-[10px] text-slate-400">Bio, visi & dedikasi kode</div>
+                            </div>
+                        </a>
+                        @endif
+                        @if($profile->enable_skills ?? true)
+                        <a href="{{ route('home') }}#skills" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                <i class='bx bx-layer text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300">Keahlian & Stack</div>
+                                <div class="text-[10px] text-slate-400">Teknologi & penguasaan</div>
+                            </div>
+                        </a>
+                        @endif
+                        <a href="{{ route('home') }}#timeline" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                                <i class='bx bx-time-five text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300">Pengalaman & Karir</div>
+                                <div class="text-[10px] text-slate-400">Garis waktu pencapaian</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Karya Dropdown -->
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button @click="open = !open" 
+                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
+                            :class="{ 'text-white': open, 'active': {{ request()->routeIs('projects.*') || request()->routeIs('certificates') ? 'true' : 'false' }} }">
+                        <span>Karya</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                         @click.outside="open = false"
+                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                         style="display: none;">
+                        @if($profile->enable_projects ?? true)
+                        <a href="{{ route('projects.all') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                                <i class='bx bx-laptop text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300">Katalog Projek</div>
+                                <div class="text-[10px] text-slate-400">Web App, Sistem & APK</div>
+                            </div>
+                        </a>
+                        @endif
+                        @if($profile->enable_certificates ?? true)
+                        <a href="{{ route('certificates') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                                <i class='bx bx-award text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-purple-300">Galeri Sertifikat</div>
+                                <div class="text-[10px] text-slate-400">Lisensi & penghargaan resmi</div>
+                            </div>
+                        </a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Layanan Dropdown -->
+                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button @click="open = !open" 
+                            class="nav-link flex items-center gap-1 cursor-pointer focus:outline-none"
+                            :class="{ 'text-white': open, 'active': {{ request()->routeIs('estimator') ? 'true' : 'false' }} }">
+                        <span>Layanan</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200" :class="{ 'rotate-180 text-indigo-400': open }"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                         @click.outside="open = false"
+                         class="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
+                         style="display: none;">
+                        <a href="{{ route('estimator') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                <i class='bx bx-calculator text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300">Kalkulator Estimasi</div>
+                                <div class="text-[10px] text-slate-400">Simulasi biaya & waktu projek</div>
+                            </div>
+                        </a>
+                        <a href="{{ route('home') }}#workspace" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                                <i class='bx bx-message-square-dots text-base'></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 group-hover:text-emerald-300">Workspace Publik</div>
+                                <div class="text-[10px] text-slate-400">Buku tamu & catatan digital</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="{{ route('home') }}#contact" class="nav-link">Kontak</a>
             </div>
             
             <!-- Mobile Menu Toggle Button -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
                 <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
             </button>
@@ -141,9 +249,13 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-4"
-             class="lg:hidden absolute top-full left-0 right-0 bg-[#0c0c14]/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-2 shadow-2xl z-50" 
+             class="md:hidden absolute top-full left-0 right-0 bg-[#0c0c14]/95 backdrop-blur-2xl border-b border-white/10 p-6 flex flex-col gap-2 shadow-2xl z-50 max-h-[80vh] overflow-y-auto" 
              style="display: none;">
+            
+            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3">Utama</div>
             <a href="{{ route('home') }}#hero" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Beranda</a>
+            
+            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3 mt-2">Profil</div>
             @if($profile->bio ?? true)
                 <a href="{{ route('home') }}#about" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Tentang Saya</a>
             @endif
@@ -151,27 +263,19 @@
                 <a href="{{ route('home') }}#skills" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Keahlian Teknis</a>
             @endif
             <a href="{{ route('home') }}#timeline" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Pengalaman & Karir</a>
+            
+            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3 mt-2">Karya</div>
             @if($profile->enable_projects ?? true)
-                <a href="{{ route('projects.all') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Semua Projek</a>
+                <a href="{{ route('projects.all') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Katalog Projek</a>
             @endif
             @if($profile->enable_certificates ?? true)
                 <a href="{{ route('certificates') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Galeri Sertifikat</a>
             @endif
+
+            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3 mt-2">Layanan & Interaksi</div>
             <a href="{{ route('estimator') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Kalkulator Estimasi Projek</a>
             <a href="{{ route('home') }}#workspace" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Workspace Publik</a>
             <a href="{{ route('home') }}#contact" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Hubungi Saya</a>
-            
-            <div class="pt-4 border-t border-white/10 mt-2">
-                @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary w-full text-center" @click="mobileMenuOpen = false">
-                        <i class='bx bxs-dashboard mr-1'></i> Dashboard Admin
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-outline w-full text-center" @click="mobileMenuOpen = false">
-                        <i class='bx bx-log-in mr-1'></i> Login Admin
-                    </a>
-                @endauth
-            </div>
         </div>
     </nav>
 

@@ -795,11 +795,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div class="form-group mb-0">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control rounded-xl" required placeholder="Contoh: Alex Pratama">
+                        <input type="text" name="name" class="form-control rounded-xl" required placeholder="Contoh: Xie Syahmi">
                     </div>
                     <div class="form-group mb-0">
                         <label class="form-label">Alamat Email</label>
-                        <input type="email" name="email" class="form-control rounded-xl" required placeholder="alex@example.com">
+                        <input type="email" name="email" class="form-control rounded-xl" required placeholder="xie@example.com">
                     </div>
                 </div>
                 
