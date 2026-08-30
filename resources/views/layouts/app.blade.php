@@ -80,8 +80,8 @@
         <div class="container max-w-7xl flex justify-between items-center relative gap-4">
             <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-2.5 flex-shrink-0">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
-                    <div class="w-full h-full bg-[#060609] rounded-[10px] flex items-center justify-center font-black text-sm sm:text-base text-gradient">
-                        {{ substr($profile->name ?? 'MS', 0, 2) }}
+                    <div class="w-full h-full bg-[#060609] rounded-[10px] flex items-center justify-center font-black text-xs sm:text-sm tracking-wider">
+                        <span class="text-gradient font-black">MSS</span>
                     </div>
                 </div>
                 <span class="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.02] transition-transform whitespace-nowrap">
@@ -105,10 +105,7 @@
                 @if($profile->enable_certificates ?? true)
                     <a href="{{ route('certificates') }}" class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}">Sertifikat</a>
                 @endif
-                <a href="{{ route('estimator') }}" class="nav-link text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 {{ request()->routeIs('estimator') ? 'active' : '' }}">
-                    <i class='bx bx-calculator text-base'></i>
-                    <span>Estimasi</span>
-                </a>
+                <a href="{{ route('estimator') }}" class="nav-link {{ request()->routeIs('estimator') ? 'active' : '' }}">Estimasi</a>
                 <a href="{{ route('home') }}#workspace" class="nav-link">Workspace</a>
                 <a href="{{ route('home') }}#contact" class="nav-link">Kontak</a>
             </div>
@@ -159,7 +156,7 @@
             @if($profile->enable_certificates ?? true)
                 <a href="{{ route('certificates') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Galeri Sertifikat</a>
             @endif
-            <a href="{{ route('estimator') }}" class="text-indigo-400 hover:text-indigo-300 font-semibold py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Kalkulator Estimasi Projek</a>
+            <a href="{{ route('estimator') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Kalkulator Estimasi Projek</a>
             <a href="{{ route('home') }}#workspace" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Workspace Publik</a>
             <a href="{{ route('home') }}#contact" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">Hubungi Saya</a>
             
@@ -192,8 +189,8 @@
                 <div class="text-center md:text-left">
                     <div class="flex items-center justify-center md:justify-start gap-3 mb-3">
                         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-[1.5px]">
-                            <div class="w-full h-full bg-[#060609] rounded-[9px] flex items-center justify-center font-bold text-sm text-gradient">
-                                {{ substr($profile->name ?? 'MS', 0, 2) }}
+                            <div class="w-full h-full bg-[#060609] rounded-[9px] flex items-center justify-center font-bold text-xs text-gradient tracking-wider">
+                                MSS
                             </div>
                         </div>
                         <h3 class="text-2xl font-bold font-['Space_Grotesk'] text-gradient">{{ $profile->name ?? 'MSyafiq Portofolio' }}</h3>

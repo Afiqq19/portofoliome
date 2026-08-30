@@ -33,8 +33,8 @@
                     @if($profile && $profile->avatar)
                         <img src="{{ asset('storage/' . $profile->avatar) }}" alt="{{ $profile->name }}" class="w-full h-full object-cover">
                     @else
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/60 to-purple-900/60 text-indigo-300 font-black text-6xl">
-                            {{ substr($profile->name ?? 'MS', 0, 2) }}
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-900/60 to-purple-900/60 text-indigo-300 font-black text-5xl tracking-wider">
+                            MSS
                         </div>
                     @endif
                 </div>

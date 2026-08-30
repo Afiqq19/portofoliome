@@ -72,8 +72,8 @@
             
             <!-- Sidebar Header / Brand -->
             <div class="p-6 border-b border-slate-100 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-indigo-500/20">
-                    {{ substr($profile->name ?? 'A', 0, 1) }}
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-xs tracking-wider shadow-md shadow-indigo-500/20">
+                    MSS
                 </div>
                 <div>
                     <h2 class="font-bold text-base font-['Space_Grotesk'] text-slate-900 leading-tight">Admin Panel</h2>

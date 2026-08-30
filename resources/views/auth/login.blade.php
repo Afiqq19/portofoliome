@@ -59,8 +59,8 @@
         
         <div class="text-center mb-8">
             <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 text-white font-black text-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-indigo-500/25 p-[2px]">
-                <div class="w-full h-full bg-[#060609] rounded-[14px] flex items-center justify-center">
-                    <i class='bx bx-lock-alt text-3xl text-gradient'></i>
+                <div class="w-full h-full bg-[#060609] rounded-[14px] flex items-center justify-center font-black text-gradient tracking-wider text-xl">
+                    MSS
                 </div>
             </div>
             <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-100 mb-1">Admin Portal</h1>
