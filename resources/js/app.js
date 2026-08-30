@@ -426,21 +426,68 @@ function initLofiPlayer() {
 
     let isPlaying = false;
 
-    toggleBtn.addEventListener('click', () => {
+    function setPlayingState() {
+        isPlaying = true;
+        widget.classList.add('lofi-playing');
+        toggleBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
+        toggleBtn.classList.remove('bg-indigo-600');
+        toggleBtn.classList.add('bg-emerald-600');
+    }
+
+    function setPausedState() {
+        isPlaying = false;
+        widget.classList.remove('lofi-playing');
+        toggleBtn.innerHTML = "<i class='bx bx-play text-xl'></i>";
+        toggleBtn.classList.remove('bg-emerald-600');
+        toggleBtn.classList.add('bg-indigo-600');
+    }
+
+    function playAudio() {
+        if (isPlaying) return;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                setPlayingState();
+                removeAutoPlayListeners();
+            }).catch(() => {
+                // Browser prevented unmuted auto-playback until first gesture
+                setPausedState();
+            });
+        }
+    }
+
+    // 1. Attempt immediate autoplay on page load
+    playAudio();
+
+    // 2. Fallback: play instantly on first user interaction anywhere on the screen
+    function onFirstInteraction() {
+        if (!isPlaying) {
+            playAudio();
+        }
+        removeAutoPlayListeners();
+    }
+
+    const interactionEvents = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
+    function removeAutoPlayListeners() {
+        interactionEvents.forEach((evt) => {
+            window.removeEventListener(evt, onFirstInteraction);
+            document.removeEventListener(evt, onFirstInteraction);
+        });
+    }
+
+    interactionEvents.forEach((evt) => {
+        window.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+        document.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+    });
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (isPlaying) {
             audio.pause();
-            isPlaying = false;
-            widget.classList.remove('lofi-playing');
-            toggleBtn.innerHTML = "<i class='bx bx-play text-xl'></i>";
-            toggleBtn.classList.remove('bg-emerald-600');
-            toggleBtn.classList.add('bg-indigo-600');
+            setPausedState();
         } else {
             audio.play().then(() => {
-                isPlaying = true;
-                widget.classList.add('lofi-playing');
-                toggleBtn.innerHTML = "<i class='bx bx-pause text-xl'></i>";
-                toggleBtn.classList.remove('bg-indigo-600');
-                toggleBtn.classList.add('bg-emerald-600');
+                setPlayingState();
             }).catch((err) => {
                 console.log('Audio playback error:', err);
             });

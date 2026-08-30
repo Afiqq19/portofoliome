@@ -230,12 +230,12 @@
 
     <!-- Floating Lo-Fi Coding Beats Audio Player Widget -->
     <div id="lofi-widget" class="lofi-widget">
-        <audio id="lofi-audio" preload="none">
+        <audio id="lofi-audio" preload="auto" autoplay loop>
             <source src="https://stream.zeno.fm/f3wvbbqmdg8uv" type="audio/mpeg">
         </audio>
         
-        <button id="lofi-toggle" class="w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95" title="Putar Musik Santai (Lo-Fi)">
-            <i class='bx bx-play text-xl'></i>
+        <button id="lofi-toggle" class="w-8 h-8 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95" title="Putar / Jeda Musik Santai (Lo-Fi)">
+            <i class='bx bx-pause text-xl'></i>
         </button>
         
         <div class="flex flex-col">
