@@ -2,7 +2,7 @@ version: '3.8'
 services:
   web_portofolio:
     build: .
-    container_name: web_portofolio
+    container_name: syafiq_portofolio
     restart: always
     ports:
       - "9001:80"
