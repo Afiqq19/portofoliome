@@ -74,9 +74,11 @@ LANGKAH 4: HUBUNGKAN KONEKSI DATABASE (.ENV)
    nano .env
 3. Sesuaikan konfigurasi database agar terhubung langsung ke wadah mss-db:
 
+
    DB_CONNECTION=mysql
    DB_HOST=mss-db
    DB_PORT=3306
+   DB_EXTERNAL_PORT=3307
    DB_DATABASE=db_portofolio
    DB_USERNAME=root
    DB_PASSWORD=root_secret_pass
