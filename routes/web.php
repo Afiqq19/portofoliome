@@ -106,9 +106,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // 4. AUTO DEPLOY WEBHOOK (Production Server & Local Sync)
 // ═══════════════════════════════════════════════════════
 Route::get('/update-rahasia-portofolio', function () {
+    // 1. Mencegah Timeout saat proses berjalan lama
+    set_time_limit(0); 
+
     $repoDir = base_path();
 
-    // Auto-patch .env untuk server production jika perlu
+    // 2. Auto-patch .env untuk server production
     $envFile = base_path('.env');
     if (file_exists($envFile)) {
         $env = file_get_contents($envFile);
@@ -121,36 +124,23 @@ Route::get('/update-rahasia-portofolio', function () {
         file_put_contents($envFile, $env);
     }
 
-    // Mendukung eksekusi di Windows (Laragon) maupun Linux Server
+    // Path Git standar untuk Ubuntu/Linux
     $gitPath = 'git';
-    if (file_exists('D:\laragon\bin\git\cmd\git.exe')) {
-        $gitPath = 'D:\laragon\bin\git\cmd\git.exe';
-    } elseif (file_exists('C:\laragon\bin\git\cmd\git.exe')) {
-        $gitPath = 'C:\laragon\bin\git\cmd\git.exe';
-    }
-
     putenv('GIT_TERMINAL_PROMPT=0');
     putenv('GCM_INTERACTIVE=false');
 
-    // 1. Bypass Dubious Ownership
+    // 3. Eksekusi Perintah
     $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
-    
-    // 2. Tarik update terbaru dari GitHub
     $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
     $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
-    
-    // 3. Update dependensi Composer & Database
     $output3 = shell_exec("cd \"$repoDir\" && composer install --no-interaction --prefer-dist --optimize-autoloader 2>&1");
     $output4 = shell_exec("cd \"$repoDir\" && php artisan migrate --force 2>&1");
-    
-    // 4. Bersihkan Cache & Link Storage
     $output_clear = shell_exec("cd \"$repoDir\" && php artisan optimize:clear 2>&1");
-    $output_link = shell_exec("cd \"$repoDir\" && php artisan storage:link --force 2>&1");
+    $output_link = shell_exec("cd \"$repoDir\" && php artisan storage:link 2>&1");
     
-    // 5. Build Asset Frontend (Vite)
-    $output5 = shell_exec("cd \"$repoDir\" && npm install 2>&1");
-    $output6 = shell_exec("cd \"$repoDir\" && npm run build 2>&1");
-    
+    // CATATAN: npm build ditiadakan untuk mengurangi beban server.
+    // Pastikan Bapak sudah menjalankan 'npm run build' di lokal sebelum di-push ke GitHub.
+
     return "<div style='font-family: monospace; background: #0f172a; color: #38bdf8; padding: 2rem; border-radius: 1rem; max-width: 900px; margin: 2rem auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5);'>
                 <h1 style='color: #4ade80; margin-bottom: 0.5rem;'>🚀 Auto-Deploy Portofolio Berhasil!</h1>
                 <p style='color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem;'>Sistem portofolio telah disinkronkan dengan repositori GitHub terbaru.</p>
@@ -171,10 +161,6 @@ Route::get('/update-rahasia-portofolio', function () {
 [OPTIMIZE CLEAR & STORAGE LINK]
 " . htmlspecialchars((string) $output_clear) . "
 " . htmlspecialchars((string) $output_link) . "
-
-[NPM BUILD]
-" . htmlspecialchars((string) $output5) . "
-" . htmlspecialchars((string) $output6) . "
                 </pre>
                 <div style='margin-top: 1.5rem;'>
                     <a href='/' style='background: #6366f1; color: white; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: bold; font-size: 0.85rem;'>Lihat Website</a>
