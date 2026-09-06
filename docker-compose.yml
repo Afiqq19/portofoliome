@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  web_portofolio:
+    build: .
+    container_name: web_portofolio
+    restart: always
+    ports:
+      - "9001:80"
