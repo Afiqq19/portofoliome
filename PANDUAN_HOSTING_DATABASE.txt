@@ -1,43 +1,47 @@
 ========================================================================
-PANDUAN HOSTING PROYEK (MODE DOCKER) & KONEKSI DATABASE DI MSS SERVER
+PANDUAN LENGKAP HOSTING PROYEK (MODE DOCKER) & KONEKSI DATABASE MSS SERVER
 ========================================================================
-Diperbarui pada: v1.1.8 (Mode Docker Compose Terintegrasi Panel)
+Diperbarui pada: v1.1.9 (Disempurnakan sesuai praktik langsung di server)
 
-Jika Bapak ingin meng-hosting proyek dari Github (misalnya: https://github.com/Afiqq19/portofoliome.git) ke dalam server Linux Toshiba ini menggunakan DOCKER (agar terdeteksi di Portainer dan MSS Panel), ikuti panduan lengkap berikut!
+Panduan ini mencakup langkah demi langkah meng-hosting proyek Laravel dari GitHub
+(https://github.com/Afiqq19/portofoliome.git) ke server Linux Toshiba menggunakan DOCKER,
+terhubung ke Database Panel (mss-db), dan di-onlinekan via Cloudflare Tunnel.
 
 ------------------------------------------------------------------------
 LANGKAH 1: SIAPKAN DATABASE KOSONG DI PANEL
 ------------------------------------------------------------------------
-1. Buka MSS Server Panel Bapak di browser (https://panel.xie.my.id).
+1. Buka MSS Server Panel di browser:
+   https://panel.xie.my.id
 2. Masuk ke menu "Database Manager" di sebelah kiri.
 3. Di tab "Visual Explorer", klik tombol bulat warna biru dengan tanda Plus (+).
-4. Masukkan nama database untuk proyek portofolio Bapak (contoh: db_portofolio).
-5. Pada pilihan Mesin Database, pilih wadah yang Bapak inginkan (misal: mss-db).
+4. Masukkan nama database untuk proyek portofolio:
+   Nama DB: db_portofolio
+5. Pada pilihan Mesin Database, pilih wadah yang diinginkan:
+   Mesin: mss-db
 6. Selesai! Database kosong sudah siap digunakan.
 
 ------------------------------------------------------------------------
 LANGKAH 2: MASUK KE SERVER & CLONE PROYEK
 ------------------------------------------------------------------------
-1. Masuk via SSH ke server Linux Toshiba Bapak:
+1. Masuk via SSH atau Terminal Web MSS Panel ke server Linux Toshiba:
    ssh mss@192.168.1.100
-2. Masuk ke folder penampung web Bapak (folder yang sejajar dengan panel):
+2. Masuk ke direktori web server:
    cd /var/www/
-3. Lakukan perintah `git clone`:
+3. Unduh repositori dari GitHub:
    git clone https://github.com/Afiqq19/portofoliome.git
-4. Masuk ke dalam folder proyek baru tersebut:
+4. Masuk ke folder proyek:
    cd portofoliome
 
 ------------------------------------------------------------------------
-LANGKAH 3: BUAT KONFIGURASI DOCKER (DOCKERFILE & DOCKER-COMPOSE)
+LANGKAH 3: KONFIGURASI DOCKER (DOCKERFILE & DOCKER-COMPOSE)
 ------------------------------------------------------------------------
-Di dalam terminal (di dalam folder proyek Bapak), kita perlu membuat 2 file "sakti" agar proyek Laravel Bapak berubah menjadi wadah (Container) Docker.
+Di dalam folder proyek (/var/www/portofoliome), pastikan kedua file ini ada:
 
-1. Buat file `Dockerfile`:
-   nano Dockerfile
-   
-   (Lalu Copy-Paste kode di bawah ini persis apa adanya):
-   FROM php:8.2-apache
-   RUN apt-get update && apt-get install -y libzip-dev zip git && docker-php-ext-install pdo_mysql zip
+1. File `Dockerfile`:
+   (Gunakan PHP versi 8.3 Apache sesuai standar Laravel terbaru)
+
+   FROM php:8.3-apache
+   RUN apt-get update && apt-get install -y libzip-dev zip git libpq-dev && docker-php-ext-install pdo_mysql pdo_pgsql zip
    RUN a2enmod rewrite
    ENV APACHE_DOCUMENT_ROOT /var/www/html/public
    RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -45,61 +49,77 @@ Di dalam terminal (di dalam folder proyek Bapak), kita perlu membuat 2 file "sak
    COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
    COPY . /var/www/html
    RUN chown -R www-data:www-data /var/www/html
-   
-   (Simpan: tekan CTRL+X, lalu Y, lalu ENTER)
 
-2. Buat file `docker-compose.yml`:
-   nano docker-compose.yml
-   
-   (Lalu Copy-Paste kode di bawah ini. Ganti angka port 9001 jika sudah terpakai):
+2. File `docker-compose.yml`:
+   (Mengarahkan Port 9001 host ke Port 80 Apache container)
+
    version: '3.8'
    services:
      web_portofolio:
        build: .
-       container_name: web_portofolio
+       container_name: syafiq_portofolio
        restart: always
        ports:
          - "9001:80"
-   
-   (Simpan: tekan CTRL+X, lalu Y, lalu ENTER)
+       volumes:
+         - .:/var/www/html
 
 ------------------------------------------------------------------------
 LANGKAH 4: HUBUNGKAN KONEKSI DATABASE (.ENV)
 ------------------------------------------------------------------------
-1. Gandakan file konfigurasi bawaan proyek Bapak menjadi .env aktif:
+1. Buat file .env dari template:
    cp .env.example .env
-2. Buka dan edit file `.env`:
+2. Edit file .env:
    nano .env
-3. Cari bagian konfigurasi database, dan gunakan PENGATURAN SAKTI ini untuk menyambungkannya ke wadah `mss-db`:
-   
+3. Sesuaikan konfigurasi database agar terhubung langsung ke wadah mss-db:
+
    DB_CONNECTION=mysql
-   DB_HOST=172.17.0.1      <--- (PENTING! Ini IP Gateway Tembus Pandang Docker)
+   DB_HOST=mss-db
    DB_PORT=3306
    DB_DATABASE=db_portofolio
    DB_USERNAME=root
-   DB_PASSWORD=rahasia123  <--- (Sesuai password ROOT Bapak di panel)
+   DB_PASSWORD=root_secret_pass
 
-4. Simpan perubahan: tekan CTRL+X, lalu Y, lalu ENTER.
-
-------------------------------------------------------------------------
-LANGKAH 5: JALANKAN DOCKER & MIGRATE DATABASE
-------------------------------------------------------------------------
-1. Perintahkan Docker untuk merakit proyek Bapak dan menghidupkannya sebagai Container:
-   docker compose up -d --build
-
-(Tunggu proses instalasinya sampai selesai. Mulai detik ini, container `web_portofolio` sudah hidup dan OTOMATIS TERDETEKSI di layar MSS Panel / Portainer Bapak!)
-
-2. Lakukan instalasi framework Laravel Bapak dari *dalam* container yang baru saja hidup itu dengan tiga perintah ini:
-   docker compose exec web_portofolio composer install
-   docker compose exec web_portofolio php artisan key:generate
-   docker compose exec web_portofolio php artisan migrate
+   (Catatan: Jika menggunakan PostgreSQL, ganti DB_CONNECTION=pgsql, DB_PORT=5432, dan DB_USERNAME=postgres)
+4. Simpan perubahan: Tekan CTRL+O, Enter, lalu CTRL+X.
 
 ------------------------------------------------------------------------
-SELESAI! BAGAIMANA CARA MENGAKSESNYA?
+LANGKAH 5: JALANKAN DOCKER, KUNCI AKSES, & MIGRATE
 ------------------------------------------------------------------------
-Website portofolio Bapak sekarang sudah hidup dengan teknologi Docker secara profesional!
-Buka browser Bapak dan ketik alamat IP Toshiba beserta port-nya:
-http://192.168.1.100:9001
+1. Bangun dan hidupkan container Docker:
+   sudo docker compose up -d --build
 
-*Catatan: Jika Bapak ingin menghosting proyek ke-2 (misal: Toko Online), lakukan langkah yang sama dari awal, namun pada `docker-compose.yml` ganti `web_portofolio` menjadi `web_toko` dan `9001:80` menjadi `9002:80`.*
+2. Gabungkan jaringan container ke jaringan panel MSS (agar mss-db terbaca):
+   docker network connect mss-server-panel_mss-network syafiq_portofolio
+
+3. Berikan hak akses file .env dan storage agar tidak terjadi permission denied:
+   docker exec -u root -it syafiq_portofolio chown www-data:www-data /var/www/html/.env
+   docker exec -u root -it syafiq_portofolio chmod 777 /var/www/html/.env
+   docker exec -u root -it syafiq_portofolio chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+
+4. Jalankan dependensi, pembuatan App Key, dan migrasi database:
+   docker exec -it syafiq_portofolio composer install
+   docker exec -it syafiq_portofolio php artisan key:generate
+   docker exec -it syafiq_portofolio php artisan config:clear
+   docker exec -it syafiq_portofolio php artisan migrate
+   docker exec -it syafiq_portofolio php artisan storage:link
+
+------------------------------------------------------------------------
+LANGKAH 6: AKSES WEBSITE (LOKAL & DOMAIN ONLINE)
+------------------------------------------------------------------------
+1. Akses Lokal Server:
+   Buka browser di jaringan lokal:
+   http://192.168.1.100:9001
+
+2. Online ke Domain Publik (via Cloudflare Zero Trust Tunnel):
+   - Buka Cloudflare Zero Trust Dashboard (Networks > Tunnels).
+   - Masuk ke tunnel server Toshiba Anda.
+   - Tambahkan Public Hostname baru:
+       Domain: mhdsyafiqsyahmi.my.id
+       Service Type: HTTP
+       URL: 192.168.1.100:9001
+   - Klik Save Hostname.
+
+========================================================================
+SELESAI! Website portofolio Anda telah sukses online di https://mhdsyafiqsyahmi.my.id
 ========================================================================
