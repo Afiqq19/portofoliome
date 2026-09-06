@@ -123,6 +123,77 @@ LANGKAH 6: AKSES WEBSITE (LOKAL & DOMAIN ONLINE)
        URL: 192.168.1.100:9001
    - Klik Save Hostname.
 
+------------------------------------------------------------------------
+LANGKAH 7: FITUR SAKTI DI ROUTES/WEB.PHP (AUTO-DEPLOY & AKUN ADMIN)
+------------------------------------------------------------------------
+Agar Bapak bisa mengupdate website otomatis tanpa SSH setiap kali ada kodingan baru di GitHub, dan bisa membuat akun admin instan di database baru, selalu tambahkan kode sakti ini di paling bawah file `routes/web.php`:
+
+// A. AUTO-DEPLOY WEBHOOK (Update website otomatis lewat browser)
+Route::get('/update-rahasia-(terserah-apa-saja)', function () {
+    set_time_limit(0); 
+
+    $repoDir = base_path();
+
+    // Auto-patch .env untuk URL domain & timezone
+    $envFile = base_path('.env');
+    if (file_exists($envFile)) {
+        $env = file_get_contents($envFile);
+        $env = preg_replace('/^APP_URL=.*/m', 'APP_URL=https://namadomainmu.my.id', $env);
+        if (!str_contains($env, 'APP_TIMEZONE=')) {
+            $env .= "\nAPP_TIMEZONE=Asia/Jakarta\n";
+        } else {
+            $env = preg_replace('/^APP_TIMEZONE=.*/m', 'APP_TIMEZONE=Asia/Jakarta', $env);
+        }
+        file_put_contents($envFile, $env);
+    }
+
+    $gitPath = 'git';
+    putenv('GIT_TERMINAL_PROMPT=0');
+    putenv('GCM_INTERACTIVE=false');
+
+    $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
+    $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
+    $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
+    $output3 = shell_exec("cd \"$repoDir\" && composer install --no-interaction --prefer-dist --optimize-autoloader 2>&1");
+    $output4 = shell_exec("cd \"$repoDir\" && php artisan migrate --force 2>&1");
+    $output_clear = shell_exec("cd \"$repoDir\" && php artisan optimize:clear 2>&1");
+    $output_link = shell_exec("cd \"$repoDir\" && php artisan storage:link 2>&1");
+    
+    return "<div style='font-family: monospace; background: #0f172a; color: #38bdf8; padding: 2rem; border-radius: 1rem; max-width: 900px; margin: 2rem auto;'>
+                <h1 style='color: #4ade80;'>🚀 Auto-Deploy Berhasil!</h1>
+                <pre style='background: #020617; color: #a3e635; padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto;'>
+[GIT FETCH & PULL]
+" . htmlspecialchars((string) $output1) . "
+" . htmlspecialchars((string) $output2) . "
+
+[COMPOSER INSTALL]
+" . htmlspecialchars((string) $output3) . "
+
+[DATABASE MIGRATE]
+" . htmlspecialchars((string) $output4) . "
+                </pre>
+                <a href='/' style='background: #6366f1; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold;'>Buka Website</a>
+            </div>";
+});
+
+// B. TOMBOL RAHASIA PEMBUAT AKUN ADMIN
+Route::get('/buat-akun-admin-mss', function () {
+    \App\Models\User::updateOrCreate(
+        ['email' => 'projek.msyafiq19@gmail.com'],
+        [
+            'name' => 'Admin Portofolio',
+            'password' => bcrypt('rahasia123'),
+            'role' => 'admin'
+        ]
+    );
+    return "<div style='font-family: sans-serif; text-align: center; padding: 3rem;'>
+                <h1 style='color: #4f46e5;'>Akun Admin Berhasil Dibuat!</h1>
+                <p>Email: <b>projek.msyafiq19@gmail.com</b></p>
+                <p>Password: <b>rahasia123</b></p>
+                <a href='/login' style='background: #4f46e5; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-weight: bold;'>Buka Halaman Login</a>
+            </div>";
+});
+
 ========================================================================
-SELESAI! Website portofolio Anda telah sukses online di https://mhdsyafiqsyahmi.my.id
+SELESAI! Proyek Anda sudah siap online, aman, dan mudah di-update selamanya!
 ========================================================================
