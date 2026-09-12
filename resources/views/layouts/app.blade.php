@@ -11,6 +11,20 @@
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="RKZ6qgPEUEpVfljmxyis7hAxPPHd589Vhe0A25k0PyI" />
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', ($profile->name ?? 'Portofolio'))">
+    <meta property="og:description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
+    <meta property="og:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title', ($profile->name ?? 'Portofolio'))">
+    <meta property="twitter:description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
+    <meta property="twitter:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
