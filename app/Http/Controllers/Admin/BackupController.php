@@ -54,7 +54,7 @@ class BackupController extends Controller
 
         // Build mysqldump command
         $command = sprintf(
-            'mysqldump --user=%s %s --host=%s --port=%s %s > %s',
+            'mysqldump --user=%s %s --host=%s --port=%s %s > %s 2>&1',
             escapeshellarg($dbUser),
             $passwordArg,
             escapeshellarg($dbHost),
@@ -66,8 +66,10 @@ class BackupController extends Controller
         exec($command, $output, $returnCode);
 
         if ($returnCode !== 0) {
+            $errorDetails = implode(" ", $output);
+            Storage::disk('local')->delete('backups/' . $filename); // Hapus file 0kb
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Gagal membuat backup database. Pastikan mysqldump tersedia di sistem (Return Code: ' . $returnCode . ').');
+                ->with('error', "Gagal backup (Code: {$returnCode}). Pesan: " . $errorDetails);
         }
 
         return response()->download($backupPath)->deleteFileAfterSend(false);
@@ -109,7 +111,7 @@ class BackupController extends Controller
         $passwordArg = !empty($dbPass) ? '--password=' . escapeshellarg($dbPass) : '';
 
         $command = sprintf(
-            'mysql --user=%s %s --host=%s --port=%s %s < %s',
+            'mysql --user=%s %s --host=%s --port=%s %s < %s 2>&1',
             escapeshellarg($dbUser),
             $passwordArg,
             escapeshellarg($dbHost),
@@ -121,8 +123,9 @@ class BackupController extends Controller
         exec($command, $output, $returnCode);
 
         if ($returnCode !== 0) {
+            $errorDetails = implode(" ", $output);
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Gagal me-restore database. Pastikan file SQL valid (Return Code: ' . $returnCode . ').');
+                ->with('error', "Gagal me-restore database (Code: {$returnCode}). Pesan: " . $errorDetails);
         }
 
         return redirect()->route('admin.backup.index')
