@@ -77,6 +77,25 @@
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed">Isi dengan link Trakteer Anda untuk menampilkan tombol donasi <strong>"☕ Traktir Kopi"</strong>. Jika dikosongkan, tombol donasi akan disembunyikan otomatis.</p>
             </div>
         </div>
+
+        <div class="border-t border-slate-100 pt-6 mb-8">
+            <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 mb-4 flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                    <i class='bx bx-line-chart'></i>
+                </div>
+                <span>Google Analytics (SEO & Tracking)</span>
+            </h2>
+            <div class="form-group mb-0">
+                <label class="form-label text-xs">Measurement ID (G-XXXXXXXXXX)</label>
+                <div class="relative">
+                    <input type="text" name="google_analytics_id" class="form-control text-sm py-3 px-4 border border-slate-200 rounded-xl w-full bg-slate-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all outline-none" value="{{ old('google_analytics_id', $profile->google_analytics_id ?? '') }}" placeholder="G-ABC123XYZ9">
+                </div>
+                @error('google_analytics_id')
+                    <div class="text-rose-600 text-xs mt-1">{{ $message }}</div>
+                @enderror
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Isi dengan ID Pengukuran Google Analytics Anda untuk melacak statistik pengunjung. Jika dikosongkan, script tracking tidak akan dimuat.</p>
+            </div>
+        </div>
         
         <div class="flex justify-end pt-4 border-t border-slate-100">
             <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2 cursor-pointer">

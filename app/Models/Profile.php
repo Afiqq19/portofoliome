@@ -20,6 +20,7 @@ class Profile extends Model
         'enable_skills',
         'enable_projects',
         'enable_certificates',
+        'google_analytics_id',
     ];
 
     protected $casts = [

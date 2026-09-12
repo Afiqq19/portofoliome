@@ -108,6 +108,7 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'trakteer_url' => 'nullable|url|max:255',
+            'google_analytics_id' => 'nullable|string|max:50',
         ]);
 
         $profile = Profile::first();
@@ -117,6 +118,7 @@ class ProfileController extends Controller
             'enable_projects' => $request->has('enable_projects'),
             'enable_certificates' => $request->has('enable_certificates'),
             'trakteer_url' => $validated['trakteer_url'],
+            'google_analytics_id' => $validated['google_analytics_id'],
         ]);
 
         return back()->with('success', 'Pengaturan tampilan berhasil diperbarui! 🎨');
