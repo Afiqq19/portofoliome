@@ -30,7 +30,7 @@ class ProfileController extends Controller
             'phone' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:255',
             'avatar' => 'nullable|image|max:10240',
-            'resume' => 'nullable|file|mimes:pdf|max:5120',
+            'resume' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
         $profile = Profile::first();
@@ -105,5 +105,19 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'Pengaturan tampilan berhasil diperbarui! 🎨');
+    }
+
+    public function deleteResume()
+    {
+        $profile = Profile::first();
+
+        if ($profile && $profile->resume_path) {
+            if (Storage::disk('public')->exists($profile->resume_path)) {
+                Storage::disk('public')->delete($profile->resume_path);
+            }
+            $profile->update(['resume_path' => null]);
+        }
+
+        return back()->with('success', 'File CV berhasil dihapus! 🗑️');
     }
 }

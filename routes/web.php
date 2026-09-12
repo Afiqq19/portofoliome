@@ -28,9 +28,11 @@ Route::middleware(TrackVisitor::class)->group(function () {
     Route::get('/projects', [PortfolioController::class, 'projects'])->name('projects.all');
     Route::get('/project/{slug}', [PortfolioController::class, 'project'])->name('project.show');
     
-    // Unduhan File Projek
+    // Unduhan File Projek & Dokumen
     Route::get('/project/{project}/download', [PortfolioController::class, 'downloadProject'])->name('project.download');
     Route::get('/project/{project}/download-apk', [PortfolioController::class, 'downloadApk'])->name('project.download-apk');
+    Route::get('/cv', [PortfolioController::class, 'downloadCv'])->name('cv.download');
+    Route::get('/resume', [PortfolioController::class, 'downloadCv'])->name('resume.download');
     
     // Interaksi & Formulir Publik
     Route::post('/donate', [PortfolioController::class, 'donate'])->name('donate');
@@ -60,6 +62,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Profil & Media Sosial
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/resume', [ProfileController::class, 'deleteResume'])->name('profile.delete-resume');
     Route::put('/profile/social-links', [ProfileController::class, 'updateSocialLinks'])->name('profile.social-links');
     
     // Pengaturan Tampilan

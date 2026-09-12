@@ -113,6 +113,12 @@
                 <span x-text="$store.lang?.current === 'en' ? 'Explore Projects' : 'Eksplorasi Projek'">Eksplorasi Projek</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
+            @if($profile && $profile->resume_path)
+            <a href="{{ route('cv.download') }}" class="btn btn-outline btn-lg group border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-600/10 shadow-lg">
+                <i class='bx bxs-file-pdf text-xl text-rose-400 group-hover:scale-110 transition-transform'></i>
+                <span x-text="$store.lang?.current === 'en' ? 'Download CV' : 'Unduh CV'">Unduh CV</span>
+            </a>
+            @endif
             <a href="#contact" class="btn btn-outline btn-lg group">
                 <i class='bx bx-paper-plane text-xl group-hover:rotate-12 transition-transform text-accent-cyan'></i>
                 <span x-text="$store.lang?.current === 'en' ? 'Get in Touch' : 'Hubungi Saya'">Hubungi Saya</span>
@@ -274,6 +280,28 @@
                         </div>
                     </div>
                 </div>
+
+                @if($profile && $profile->resume_path)
+                <!-- Curriculum Vitae (CV) Executive Download Banner -->
+                <div class="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3.5 text-center sm:text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-md flex-shrink-0">
+                            <i class='bx bxs-file-pdf text-3xl text-rose-400'></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-100 flex items-center gap-2 justify-center sm:justify-start">
+                                <span>Curriculum Vitae (CV)</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+                            </div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Download verified official resume in PDF format.' : 'Unduh dokumen resume resmi dan riwayat kualifikasi lengkap (PDF).'">Unduh dokumen resume resmi dan riwayat kualifikasi lengkap (PDF).</div>
+                        </div>
+                    </div>
+                    <a href="{{ route('cv.download') }}" class="btn btn-primary btn-shimmer btn-sm shadow-xl flex items-center gap-2 group whitespace-nowrap">
+                        <i class='bx bx-download text-lg group-hover:translate-y-0.5 transition-transform'></i>
+                        <span x-text="$store.lang?.current === 'en' ? 'Download Resume (PDF)' : 'Unduh Dokumen CV'">Unduh Dokumen CV</span>
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
     </div>

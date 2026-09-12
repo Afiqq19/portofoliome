@@ -12,6 +12,7 @@ use App\Models\Visitor;
 use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PortfolioController extends Controller
 {
@@ -122,6 +123,27 @@ class PortfolioController extends Controller
         return Storage::disk('public')->download(
             $project->apk_path,
             $project->slug . '.apk'
+        );
+    }
+
+    /**
+     * Download profile CV / Resume
+     */
+    public function downloadCv()
+    {
+        $profile = Profile::first();
+
+        if (!$profile || !$profile->resume_path || !Storage::disk('public')->exists($profile->resume_path)) {
+            return back()->with('error', 'File CV / Resume belum diunggah atau tidak ditemukan.');
+        }
+
+        $extension = pathinfo($profile->resume_path, PATHINFO_EXTENSION) ?: 'pdf';
+        $safeName = Str::slug($profile->name ?? 'Portofolio');
+        $filename = 'CV_' . $safeName . '.' . $extension;
+
+        return Storage::disk('public')->download(
+            $profile->resume_path,
+            $filename
         );
     }
 

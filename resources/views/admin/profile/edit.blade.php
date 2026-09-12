@@ -20,31 +20,79 @@
                 @csrf
                 @method('PUT')
                 
-                <!-- Avatar Upload Card -->
-                <div class="flex flex-col sm:flex-row items-center gap-6 p-6 mb-8 rounded-2xl bg-slate-50 border border-slate-200">
-                    <div class="relative group cursor-pointer flex-shrink-0" onclick="document.getElementById('avatar-upload').click()">
-                        @if($profile && $profile->avatar)
-                            <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" class="w-24 h-24 rounded-2xl object-cover border-2 border-indigo-500 shadow-md group-hover:scale-105 transition-transform">
-                        @else
-                            <div class="w-24 h-24 rounded-2xl bg-indigo-100 text-indigo-600 font-bold text-3xl flex items-center justify-center border-2 border-dashed border-indigo-300 group-hover:scale-105 transition-transform">
-                                {{ substr($profile->name ?? 'A', 0, 1) }}
+                <!-- Upload Cards (Foto Profil & Dokumen CV) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                    <!-- Foto Profil -->
+                    <div class="flex flex-col sm:flex-row items-center gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="relative group cursor-pointer flex-shrink-0" onclick="document.getElementById('avatar-upload').click()">
+                            @if($profile && $profile->avatar)
+                                <img src="{{ asset('storage/' . $profile->avatar) }}" alt="Avatar" class="w-20 h-20 rounded-2xl object-cover border-2 border-indigo-500 shadow-md group-hover:scale-105 transition-transform">
+                            @else
+                                <div class="w-20 h-20 rounded-2xl bg-indigo-100 text-indigo-600 font-bold text-2xl flex items-center justify-center border-2 border-dashed border-indigo-300 group-hover:scale-105 transition-transform">
+                                    {{ substr($profile->name ?? 'A', 0, 1) }}
+                                </div>
+                            @endif
+                            <div class="absolute inset-0 bg-slate-900/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class='bx bx-camera text-xl text-white'></i>
                             </div>
-                        @endif
-                        <div class="absolute inset-0 bg-slate-900/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <i class='bx bx-camera text-2xl text-white'></i>
+                        </div>
+                        <div class="text-center sm:text-left flex-1 min-w-0">
+                            <label class="block font-bold text-slate-900 text-sm mb-1">Foto Profil</label>
+                            <p class="text-[11px] text-slate-500 mb-3">Format JPG/PNG, maks 10MB.</p>
+                            <div class="flex items-center justify-center sm:justify-start gap-2">
+                                <button type="button" onclick="document.getElementById('avatar-upload').click()" class="btn btn-outline btn-xs shadow-sm hover:border-indigo-500 hover:text-indigo-600">
+                                    <i class='bx bx-upload'></i>
+                                    <span>Pilih Foto</span>
+                                </button>
+                                <span class="text-[11px] text-indigo-600 font-semibold truncate avatar-filename"></span>
+                            </div>
+                            <input type="file" id="avatar-upload" name="avatar" class="hidden" accept="image/*" onchange="this.parentElement.querySelector('.avatar-filename').innerText = this.files[0] ? this.files[0].name : ''">
                         </div>
                     </div>
-                    <div class="text-center sm:text-left">
-                        <label class="block font-bold text-slate-900 text-base mb-1">Foto Profil</label>
-                        <p class="text-xs text-slate-500 mb-3">Format JPG/PNG, ukuran maksimal 10MB. Foto akan ditampilkan di hero portofolio.</p>
-                        <div class="flex items-center justify-center sm:justify-start gap-3">
-                            <button type="button" onclick="document.getElementById('avatar-upload').click()" class="btn btn-outline btn-sm shadow-sm hover:border-indigo-500 hover:text-indigo-600">
-                                <i class='bx bx-upload'></i>
-                                <span>Pilih Foto</span>
-                            </button>
-                            <span class="text-xs text-indigo-600 font-semibold upload-filename"></span>
+
+                    <!-- Dokumen CV / Resume -->
+                    <div class="flex flex-col sm:flex-row items-center gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="relative group cursor-pointer flex-shrink-0" onclick="document.getElementById('resume-upload').click()">
+                            <div class="w-20 h-20 rounded-2xl {{ ($profile && $profile->resume_path) ? 'bg-emerald-50 text-emerald-600 border-emerald-300' : 'bg-slate-100 text-slate-400 border-slate-300' }} border-2 border-dashed flex flex-col items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                <i class='bx bxs-file-pdf text-3xl {{ ($profile && $profile->resume_path) ? 'text-emerald-500' : 'text-slate-400' }}'></i>
+                                <span class="text-[9px] font-extrabold uppercase mt-0.5">PDF</span>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class='bx bx-upload text-xl text-white'></i>
+                            </div>
                         </div>
-                        <input type="file" id="avatar-upload" name="avatar" class="hidden" accept="image/*" onchange="this.parentElement.querySelector('.upload-filename').innerText = 'File: ' + this.files[0].name">
+                        <div class="text-center sm:text-left flex-1 min-w-0">
+                            <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                                <label class="block font-bold text-slate-900 text-sm">Dokumen CV (PDF)</label>
+                                @if($profile && $profile->resume_path)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
+                                        <i class='bx bx-check-circle'></i> Aktif
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-200 text-slate-600">
+                                        Belum Ada
+                                    </span>
+                                @endif
+                            </div>
+                            <p class="text-[11px] text-slate-500 mb-3">Format PDF, maks 10MB.</p>
+                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                <button type="button" onclick="document.getElementById('resume-upload').click()" class="btn btn-outline btn-xs shadow-sm hover:border-indigo-500 hover:text-indigo-600">
+                                    <i class='bx bx-upload'></i>
+                                    <span>{{ ($profile && $profile->resume_path) ? 'Ganti CV' : 'Pilih File CV' }}</span>
+                                </button>
+                                @if($profile && $profile->resume_path)
+                                    <a href="{{ route('cv.download') }}" target="_blank" class="btn btn-outline btn-xs shadow-sm text-indigo-600 hover:bg-indigo-50 flex items-center gap-1" title="Unduh / Cek file CV saat ini">
+                                        <i class='bx bx-download'></i>
+                                        <span>Unduh</span>
+                                    </a>
+                                    <button type="button" onclick="if(confirm('Yakin ingin menghapus file CV saat ini?')) document.getElementById('delete-resume-form').submit();" class="text-rose-500 hover:text-rose-700 text-xs font-semibold p-1 hover:bg-rose-50 rounded" title="Hapus file CV">
+                                        <i class='bx bx-trash text-base'></i>
+                                    </button>
+                                @endif
+                            </div>
+                            <span class="text-[11px] text-indigo-600 font-semibold truncate block mt-1 resume-filename"></span>
+                            <input type="file" id="resume-upload" name="resume" class="hidden" accept=".pdf,application/pdf" onchange="this.parentElement.querySelector('.resume-filename').innerText = this.files[0] ? ('File: ' + this.files[0].name) : ''">
+                        </div>
                     </div>
                 </div>
 
@@ -140,4 +188,9 @@
     </div>
 
 </div>
+
+<form id="delete-resume-form" action="{{ route('admin.profile.delete-resume') }}" method="POST" class="hidden">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection

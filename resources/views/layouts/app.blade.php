@@ -159,6 +159,18 @@
                                     <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Journey & milestones' : 'Garis waktu pencapaian'">Garis waktu pencapaian</div>
                                 </div>
                             </a>
+                            @if($profile && $profile->resume_path)
+                            <div class="h-px bg-white/10 my-1"></div>
+                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                                <div class="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all">
+                                    <i class='bx bxs-file-pdf text-base'></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-rose-300" x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh CV / Resume'">Unduh CV / Resume</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified PDF Document' : 'Dokumen PDF Resmi'">Dokumen PDF Resmi</div>
+                                </div>
+                            </a>
+                            @endif
                         </div>
                     </div>
 
@@ -333,6 +345,12 @@
             <a href="{{ route('home') }}#timeline" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
                 <span x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</span>
             </a>
+            @if($profile && $profile->resume_path)
+                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2" @click="mobileMenuOpen = false">
+                    <i class='bx bxs-file-pdf text-lg text-rose-400'></i>
+                    <span x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh CV / Resume (PDF)'">Unduh CV / Resume (PDF)</span>
+                </a>
+            @endif
             
             <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3 mt-2" x-text="$store.lang?.current === 'en' ? 'Works' : 'Karya'">Karya</div>
             @if($profile->enable_projects ?? true)
@@ -398,6 +416,12 @@
                     <a href="{{ route('estimator') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Estimator' : 'Kalkulator Estimasi'">Kalkulator Estimasi</a>
                     <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
+                    @if($profile && $profile->resume_path)
+                        <a href="{{ route('cv.download') }}" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300">
+                            <i class='bx bxs-file-pdf text-rose-400'></i>
+                            <span x-text="$store.lang?.current === 'en' ? 'CV (PDF)' : 'Unduh CV'">Unduh CV</span>
+                        </a>
+                    @endif
                 </div>
             </div>
 
