@@ -56,24 +56,39 @@ class ProfileController extends Controller
 
     public function updateSocialLinks(Request $request)
     {
-        $validated = $request->validate([
-            'links' => 'array',
-            'links.*.platform' => 'required|string|max:50',
-            'links.*.url' => 'required|url|max:500',
-            'links.*.icon' => 'nullable|string|max:100',
+        $request->validate([
+            'platforms' => 'array',
+            'platforms.*' => 'required|string|max:50',
+            'urls' => 'array',
+            'urls.*' => 'nullable|url|max:500',
+            'icons' => 'array',
+            'icons.*' => 'nullable|string|max:100',
         ]);
 
         $profile = Profile::first();
 
+        $platforms = $request->input('platforms', []);
+        $urls = $request->input('urls', []);
+        $icons = $request->input('icons', []);
+
         // Delete existing and recreate
         $profile->socialLinks()->delete();
 
-        foreach ($validated['links'] ?? [] as $index => $link) {
+        $order = 0;
+        foreach ($platforms as $index => $platform) {
+            $url = $urls[$index] ?? '';
+            $icon = $icons[$index] ?? null;
+
+            // Skip entries with empty URL
+            if (empty(trim($url))) {
+                continue;
+            }
+
             $profile->socialLinks()->create([
-                'platform' => $link['platform'],
-                'url' => $link['url'],
-                'icon' => $link['icon'] ?? null,
-                'order' => $index,
+                'platform' => $platform,
+                'url' => $url,
+                'icon' => $icon,
+                'order' => $order++,
             ]);
         }
 
