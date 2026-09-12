@@ -126,6 +126,8 @@ Route::get('/update-rahasia-portofolio', function () {
     $gitPath = 'git';
     putenv('GIT_TERMINAL_PROMPT=0');
     putenv('GCM_INTERACTIVE=false');
+    putenv('HOME=/tmp');
+    putenv('COMPOSER_HOME=/tmp');
 
     // 3. Eksekusi Perintah
     $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
