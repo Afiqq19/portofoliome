@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\NoteController;
 use App\Http\Controllers\Admin\CertificateController;
+use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\TrackVisitor;
 use App\Models\User;
@@ -82,6 +83,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/skills', [SkillController::class, 'store'])->name('skills.store');
     Route::put('/skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
     Route::delete('/skills/{skill}', [SkillController::class, 'destroy'])->name('skills.destroy');
+
+    // Manajemen Pengalaman (Experiences)
+    Route::patch('experiences/{experience}/toggle-status', [ExperienceController::class, 'toggleStatus'])->name('experiences.toggle-status');
+    Route::resource('experiences', ExperienceController::class);
 
 
 

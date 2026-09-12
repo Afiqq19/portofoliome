@@ -22,12 +22,14 @@ class PortfolioController extends Controller
     public function index()
     {
         $profile = Profile::with('socialLinks')->first();
-        $skills = Skill::orderBy('order')->get()->groupBy('category');
-        $featuredProjects = Project::published()->featured()->orderBy('order')->take(6)->get();
-        // Fallback if no featured project is set, take latest published
+        $skills = Skill::orderBy('order')->get();
+        
+        $featuredProjects = Project::published()->where('is_featured', true)->orderBy('order')->take(6)->get();
+        // Fallback jika tidak ada featured project
         if ($featuredProjects->isEmpty()) {
             $featuredProjects = Project::published()->orderBy('order')->take(6)->get();
         }
+        
         $certificates = Certificate::published()->orderBy('order')->take(3)->get();
         $totalCertificates = Certificate::published()->count();
 
@@ -38,8 +40,10 @@ class PortfolioController extends Controller
         ];
 
         $notes = Note::latest()->get();
+        
+        $experiences = \App\Models\Experience::published()->orderBy('order')->orderBy('created_at', 'desc')->get();
 
-        return view('portfolio.home', compact('profile', 'skills', 'featuredProjects', 'certificates', 'totalCertificates', 'stats', 'notes'));
+        return view('portfolio.home', compact('profile', 'skills', 'featuredProjects', 'certificates', 'totalCertificates', 'stats', 'notes', 'experiences'));
     }
 
     /**

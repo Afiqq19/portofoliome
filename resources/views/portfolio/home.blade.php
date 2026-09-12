@@ -460,90 +460,88 @@
             <div class="timeline-connector-mobile md:hidden"></div>
 
             <div class="space-y-12 md:space-y-16">
-                <!-- Milestone 1 -->
-                <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 shadow-[0_0_15px_#6366f1]"></div>
-                    <div class="md:hidden timeline-dot left-[6px] top-6 shadow-[0_0_15px_#6366f1]"></div>
+                @forelse($experiences as $index => $exp)
+                    @php
+                        $isEven = $index % 2 == 0;
+                        // Map colors to hex for glow effects
+                        $colorHex = match($exp->color) {
+                            'indigo' => '#6366f1',
+                            'cyan' => '#06b6d4',
+                            'purple' => '#a855f7',
+                            'emerald' => '#10b981',
+                            'rose' => '#f43f5e',
+                            'amber' => '#f59e0b',
+                            default => '#6366f1',
+                        };
+                    @endphp
+                    
+                    <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
+                        <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-{{ $exp->color }}-400 shadow-[0_0_15px_{{ $colorHex }}]"></div>
+                        <div class="md:hidden timeline-dot left-[6px] top-6 bg-{{ $exp->color }}-400 shadow-[0_0_15px_{{ $colorHex }}]"></div>
 
-                    <div class="w-full md:w-1/2 md:pr-12 md:text-right">
-                        <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-indigo-500/40 group">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold font-mono mb-3">
-                                <i class='bx bx-calendar'></i>
-                                <span x-text="$store.lang?.current === 'en' ? '2024 - Present' : '2024 - Sekarang'">2024 - Sekarang</span>
+                        @if($isEven)
+                            <div class="w-full md:w-1/2 md:pr-12 md:text-right">
+                                <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-{{ $exp->color }}-500/40 group">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono mb-3">
+                                        <i class='bx bx-calendar'></i>
+                                        <span>{{ $exp->period }}</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-{{ $exp->color }}-400 transition-colors mb-2">
+                                        {{ $exp->title }}
+                                    </h3>
+                                    @if($exp->company)
+                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-2">{{ $exp->company }}</div>
+                                    @endif
+                                    <p class="text-sm text-slate-400 leading-relaxed">
+                                        {{ $exp->description }}
+                                    </p>
+                                    @if(!empty($exp->tags_array))
+                                        <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
+                                            @foreach($exp->tags_array as $tag)
+                                                <span class="badge text-[11px] bg-white/5 text-slate-300">{{ $tag }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
-                            <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2">
-                                Freelance Fullstack & Mobile Developer
-                            </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Designing and delivering custom web solutions, POS inventory systems, Android APK mobile apps, QRIS payment gateway integration, and automated WhatsApp bots.' : 'Merancang dan mengembangkan solusi web kustom, sistem kasir inventori, aplikasi mobile Android (APK), integrasi payment gateway QRIS, dan otomatisasi bot WhatsApp untuk berbagai kebutuhan bisnis.'">
-                                Merancang dan mengembangkan solusi web kustom, sistem kasir inventori, aplikasi mobile Android (APK), integrasi payment gateway QRIS, dan otomatisasi bot WhatsApp untuk berbagai kebutuhan bisnis.
-                            </p>
-                            <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Laravel</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Vue.js</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Tailwind</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">MySQL</span>
+                            <div class="hidden md:block w-1/2"></div>
+                        @else
+                            <div class="hidden md:block w-1/2"></div>
+                            <div class="w-full md:w-1/2 md:pl-12">
+                                <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-{{ $exp->color }}-500/40 group">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono mb-3">
+                                        <i class='bx bx-calendar'></i>
+                                        <span>{{ $exp->period }}</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-{{ $exp->color }}-400 transition-colors mb-2">
+                                        {{ $exp->title }}
+                                    </h3>
+                                    @if($exp->company)
+                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-2">{{ $exp->company }}</div>
+                                    @endif
+                                    <p class="text-sm text-slate-400 leading-relaxed">
+                                        {{ $exp->description }}
+                                    </p>
+                                    @if(!empty($exp->tags_array))
+                                        <div class="flex flex-wrap gap-1.5 mt-4">
+                                            @foreach($exp->tags_array as $tag)
+                                                <span class="badge text-[11px] bg-white/5 text-slate-300">{{ $tag }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
-
-                    <div class="hidden md:block w-1/2"></div>
-                </div>
-
-                <!-- Milestone 2 -->
-                <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-cyan-400 shadow-[0_0_15px_#06b6d4]"></div>
-                    <div class="md:hidden timeline-dot left-[6px] top-6 bg-cyan-400 shadow-[0_0_15px_#06b6d4]"></div>
-
-                    <div class="hidden md:block w-1/2"></div>
-
-                    <div class="w-full md:w-1/2 md:pl-12">
-                        <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-cyan-500/40 group">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold font-mono mb-3">
-                                <i class='bx bx-calendar'></i>
-                                <span>2023 - 2024</span>
-                            </div>
-                            <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-cyan-400 transition-colors mb-2">
-                                Web App Architect & Modern Tech Explorer
-                            </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Focusing on modern web architecture, RESTful API design, interactive UI/UX, SEO optimizations, and building production-grade cloud systems.' : 'Fokus mendalami arsitektur modern web, RESTful API, dynamic UI/UX, optimasi SEO, serta membangun proyek open-source dan sistem manajemen berbasis cloud.'">
-                                Fokus mendalami arsitektur modern web, RESTful API, dynamic UI/UX, optimasi SEO, serta membangun proyek open-source dan sistem manajemen berbasis cloud.
-                            </p>
-                            <div class="flex flex-wrap gap-1.5 mt-4">
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">REST API</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">JavaScript</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Git Workflow</span>
-                            </div>
+                @empty
+                    <div class="text-center py-12">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 mb-4">
+                            <i class='bx bx-history text-3xl text-slate-500'></i>
                         </div>
+                        <h3 class="text-lg font-bold text-slate-300 font-['Space_Grotesk'] mb-2">Belum ada pengalaman</h3>
+                        <p class="text-slate-500 text-sm">Riwayat perjalanan karir akan tampil di sini.</p>
                     </div>
-                </div>
-
-                <!-- Milestone 3 -->
-                <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
-                    <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-purple-400 shadow-[0_0_15px_#a855f7]"></div>
-                    <div class="md:hidden timeline-dot left-[6px] top-6 bg-purple-400 shadow-[0_0_15px_#a855f7]"></div>
-
-                    <div class="w-full md:w-1/2 md:pr-12 md:text-right">
-                        <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-purple-500/40 group">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold font-mono mb-3">
-                                <i class='bx bx-calendar'></i>
-                                <span>2022 - 2023</span>
-                            </div>
-                            <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-purple-400 transition-colors mb-2" x-text="$store.lang?.current === 'en' ? 'Intensive Tech Training & Certifications' : 'Pembelajaran Intensif & Sertifikasi'">
-                                Pembelajaran Intensif & Sertifikasi
-                            </h3>
-                            <p class="text-sm text-slate-400 leading-relaxed" x-text="$store.lang?.current === 'en' ? 'Completing comprehensive courses in structured programming, algorithms, database architecture, and user interface design (UI/UX).' : 'Menyelesaikan berbagai pelatihan komprehensif di bidang pemrograman terstruktur, algoritma, database modeling, dan desain antarmuka pengguna (UI/UX).'">
-                                Menyelesaikan berbagai pelatihan komprehensif di bidang pemrograman terstruktur, algoritma, database modeling, dan desain antarmuka pengguna (UI/UX).
-                            </p>
-                            <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Figma</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">HTML5/CSS3</span>
-                                <span class="badge text-[11px] bg-white/5 text-slate-300">Database Design</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hidden md:block w-1/2"></div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>

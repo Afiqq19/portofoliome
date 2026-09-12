@@ -111,6 +111,11 @@
                     <i class='bx bx-award text-lg'></i>
                     <span>Sertifikat</span>
                 </a>
+
+                <a href="{{ route('admin.experiences.index') }}" class="sidebar-link {{ request()->routeIs('admin.experiences.*') ? 'active' : '' }}">
+                    <i class='bx bx-history text-lg'></i>
+                    <span>Pengalaman</span>
+                </a>
                 
                 <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-6 mb-2 px-3">Interaksi</div>
                 
