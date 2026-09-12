@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SkillController;
-use App\Http\Controllers\Admin\DonationController;
+
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\NoteController;
@@ -80,9 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('/skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
     Route::delete('/skills/{skill}', [SkillController::class, 'destroy'])->name('skills.destroy');
 
-    // Integrasi Donasi Trakteer
-    Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
-    Route::put('/donations/trakteer', [DonationController::class, 'updateTrakteer'])->name('donations.update-trakteer');
+
 
     // Pesan Masuk & Tiket
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');

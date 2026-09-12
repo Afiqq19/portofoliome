@@ -124,10 +124,7 @@
                     <span>Catatan Pengunjung</span>
                 </a>
                 
-                <a href="{{ route('admin.donations.index') }}" class="sidebar-link {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
-                    <i class='bx bx-coffee text-lg'></i>
-                    <span>Donasi (Trakteer)</span>
-                </a>
+
 
                 <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-6 mb-2 px-3">Sistem</div>
 

@@ -91,12 +91,17 @@ class ProfileController extends Controller
 
     public function updateSettings(Request $request)
     {
+        $validated = $request->validate([
+            'trakteer_url' => 'nullable|url|max:255',
+        ]);
+
         $profile = Profile::first();
         
         $profile->update([
             'enable_skills' => $request->has('enable_skills'),
             'enable_projects' => $request->has('enable_projects'),
             'enable_certificates' => $request->has('enable_certificates'),
+            'trakteer_url' => $validated['trakteer_url'],
         ]);
 
         return back()->with('success', 'Pengaturan tampilan berhasil diperbarui! 🎨');
