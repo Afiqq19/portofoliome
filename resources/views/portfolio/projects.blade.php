@@ -107,6 +107,19 @@
                             <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2 line-clamp-1">
                                 {{ $project->title }}
                             </h2>
+                            
+                            <div class="flex items-center gap-3 mb-3 text-[10px] text-slate-500 font-mono">
+                                <div class="flex items-center gap-1" title="Tanggal Upload">
+                                    <i class='bx bx-cloud-upload'></i>
+                                    <span>{{ $project->created_at->format('d M Y, H:i') }}</span>
+                                </div>
+                                @if($project->updated_at->gt($project->created_at))
+                                <div class="flex items-center gap-1 text-indigo-400/70" title="Terakhir Diperbarui">
+                                    <i class='bx bx-edit'></i>
+                                    <span>{{ $project->updated_at->format('d M Y, H:i') }}</span>
+                                </div>
+                                @endif
+                            </div>
 
                             <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">
                                 {{ $project->description }}

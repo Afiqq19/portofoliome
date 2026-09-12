@@ -8,3 +8,4 @@ RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html
+RUN echo "upload_max_filesize = 100M\npost_max_size = 120M\nmemory_limit = 256M" > /usr/local/etc/php/conf.d/uploads.ini
