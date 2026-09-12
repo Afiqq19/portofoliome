@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(TrackVisitor::class)->group(function () {
     // Halaman Utama & Khusus
     Route::get('/', [PortfolioController::class, 'index'])->name('home');
+    Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
     Route::get('/estimator', [PortfolioController::class, 'estimator'])->name('estimator');
     Route::get('/faq', [PortfolioController::class, 'faq'])->name('faq');
     Route::get('/certificates', [PortfolioController::class, 'certificates'])->name('certificates');
