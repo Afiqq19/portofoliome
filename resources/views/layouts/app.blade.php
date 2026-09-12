@@ -80,6 +80,51 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
 <body class="bg-[#060609] text-slate-100 antialiased relative selection:bg-indigo-500/30 selection:text-indigo-200" x-data>
+    
+    <!-- Preloader / Splash Screen -->
+    <div id="page-loader" class="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center transition-all duration-700">
+        <div class="relative flex items-center justify-center">
+            <!-- Outer Glow -->
+            <div class="absolute w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl animate-pulse"></div>
+            <div class="absolute w-24 h-24 bg-cyan-500/20 rounded-full blur-xl animate-ping" style="animation-duration: 3s;"></div>
+            
+            <!-- Logo Box -->
+            <div class="relative z-10 w-20 h-20 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm flex items-center justify-center shadow-[0_0_40px_rgba(99,102,241,0.2)]">
+                <span class="text-3xl font-black font-['Space_Grotesk'] text-transparent bg-clip-text bg-gradient-to-tr from-indigo-400 to-cyan-400">MSS</span>
+            </div>
+            
+            <!-- Orbiting Dot -->
+            <div class="absolute w-28 h-28 border border-white/5 rounded-full animate-[spin_4s_linear_infinite]">
+                <div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_10px_#06b6d4]"></div>
+            </div>
+        </div>
+        
+        <!-- Loading Bar -->
+        <div class="mt-8 w-48 h-1 bg-white/5 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500 w-1/2 rounded-full animate-[loading_1.5s_ease-in-out_infinite_alternate]"></div>
+        </div>
+        <div class="mt-3 text-xs font-mono text-slate-500 tracking-widest uppercase animate-pulse">Inisialisasi Sistem...</div>
+    </div>
+    
+    <script>
+        // Sembunyikan loader saat halaman siap
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('page-loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    setTimeout(() => loader.remove(), 700); // Hapus elemen dari DOM setelah fade out
+                }
+            }, 500); // Sedikit delay agar animasi terlihat utuh
+        });
+    </script>
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+    </style>
 
     <!-- Interactive Background Canvas (Constellation Particles) -->
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full"></canvas>
