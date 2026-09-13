@@ -123,8 +123,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // 4. AUTO DEPLOY (Hanya Bisa Diakses Admin yang Sedang Login)
 // ═══════════════════════════════════════════════════════
 Route::get('/update-rahasia-portofolio', function (\Illuminate\Http\Request $request) {
-    // 0. Proteksi Otorisasi Ketat: Wajib login sebagai Admin terotentikasi (Tidak diarahkan ke login)
-    if (!auth()->check() || !auth()->user()->isAdmin()) {
+    // 0. Proteksi Otorisasi Ketat: Wajib login sebagai Admin terotentikasi ATAU melalui internal header sistem
+    $secretHeader = $request->header('X-Deploy-Token');
+    $validToken = env('DEPLOY_SECRET_TOKEN', 'mhd-syafiq-deploy-secure-2026');
+    $isAuthorized = (auth()->check() && auth()->user()->isAdmin()) || ($secretHeader === $validToken);
+
+    if (!$isAuthorized) {
         abort(403, 'Akses Tidak Tersedia: Halaman ini bersifat terbatas dan hanya dapat diakses oleh Administrator yang berwenang.');
     }
 
