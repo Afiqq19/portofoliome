@@ -30,6 +30,11 @@ class ProjectController extends Controller
             'thumbnail.image' => 'File thumbnail harus berupa gambar.',
             'title.required' => 'Judul projek wajib diisi.',
             'status.required' => 'Status publikasi wajib dipilih.',
+            'zip_file.extensions' => 'File source code harus berformat arsip: .zip, .rar, .tar, .gz, atau .7z.',
+            'zip_file.max' => 'Ukuran file zip terlalu besar! Maksimal 100 MB.',
+            'zip_file.file' => 'Upload file zip gagal atau ukuran melebihi batas upload server.',
+            'apk_file.extensions' => 'File aplikasi Android harus berekstensi .apk atau .zip.',
+            'apk_file.max' => 'Ukuran file APK terlalu besar! Maksimal 100 MB.',
         ];
 
         $validated = $request->validate([
@@ -40,8 +45,8 @@ class ProjectController extends Controller
             'demo_url' => 'nullable|url|max:500',
             'github_url' => 'nullable|url|max:500',
             'thumbnail' => 'nullable|image|max:20480',
-            'zip_file' => 'nullable|file|mimes:zip,rar,tar,gz,bz2,7z,apk|max:102400',
-            'apk_file' => 'nullable|file|mimes:apk,zip|max:102400',
+            'zip_file' => 'nullable|file|extensions:zip,rar,tar,gz,bz2,7z,apk|max:102400',
+            'apk_file' => 'nullable|file|extensions:apk,zip|max:102400',
             'is_featured' => 'nullable|boolean',
             'status' => 'required|in:draft,published',
             'credentials_username' => 'nullable|array',
@@ -121,6 +126,11 @@ class ProjectController extends Controller
             'thumbnail.image' => 'File thumbnail harus berupa gambar.',
             'title.required' => 'Judul projek wajib diisi.',
             'status.required' => 'Status publikasi wajib dipilih.',
+            'zip_file.extensions' => 'File source code harus berformat arsip: .zip, .rar, .tar, .gz, atau .7z.',
+            'zip_file.max' => 'Ukuran file zip terlalu besar! Maksimal 100 MB.',
+            'zip_file.file' => 'Upload file zip gagal atau ukuran melebihi batas upload server.',
+            'apk_file.extensions' => 'File aplikasi Android harus berekstensi .apk atau .zip.',
+            'apk_file.max' => 'Ukuran file APK terlalu besar! Maksimal 100 MB.',
         ];
 
         $validated = $request->validate([
@@ -131,8 +141,8 @@ class ProjectController extends Controller
             'demo_url' => 'nullable|url|max:500',
             'github_url' => 'nullable|url|max:500',
             'thumbnail' => 'nullable|image|max:20480',
-            'zip_file' => 'nullable|file|mimes:zip,rar,tar,gz,bz2,7z,apk|max:102400',
-            'apk_file' => 'nullable|file|mimes:apk,zip|max:102400',
+            'zip_file' => 'nullable|file|extensions:zip,rar,tar,gz,bz2,7z,apk|max:102400',
+            'apk_file' => 'nullable|file|extensions:apk,zip|max:102400',
             'is_featured' => 'nullable|boolean',
             'status' => 'required|in:draft,published',
             'credentials_username' => 'nullable|array',
