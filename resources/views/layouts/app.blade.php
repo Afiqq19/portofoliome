@@ -26,25 +26,24 @@
     <meta property="twitter:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
 
     <!-- JSON-LD Structured Data for Google Search Engine (Person & WebSite) -->
+    @php
+        $schemaData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Person',
+            'name' => $profile->name ?? 'Mhd. Syafiq Syahmi',
+            'url' => url('/'),
+            'jobTitle' => !empty($profile->title) ? trim(explode(',', $profile->title)[0]) : 'Software Engineer',
+            'description' => !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Web & Mobile Developer',
+        ];
+        if (isset($profile) && $profile->avatar) {
+            $schemaData['image'] = asset('storage/' . $profile->avatar);
+        }
+        if (isset($profile) && $profile->socialLinks && $profile->socialLinks->count() > 0) {
+            $schemaData['sameAs'] = $profile->socialLinks->pluck('url')->toArray();
+        }
+    @endphp
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "{{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}",
-      "url": "{{ url('/') }}",
-      "jobTitle": "{{ !empty($profile->title) ? trim(explode(',', $profile->title)[0]) : 'Software Engineer' }}",
-      "description": "{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Web & Mobile Developer' }}",
-      @if(isset($profile) && $profile->avatar)
-      "image": "{{ asset('storage/' . $profile->avatar) }}",
-      @endif
-      "sameAs": [
-        @if(isset($profile) && $profile->socialLinks && $profile->socialLinks->count() > 0)
-          @foreach($profile->socialLinks as $index => $link)
-            "{{ $link->url }}"{{ $loop->last ? '' : ',' }}
-          @endforeach
-        @endif
-      ]
-    }
+    {!! json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
     <!-- Google Fonts -->
