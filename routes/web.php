@@ -117,19 +117,43 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Moderasi Catatan Guestbook
     Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
     Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
+
+    // Inisiasi Deploy Server dengan Token Sekali Pakai (One-Time Token / Single-Use Nonce)
+    Route::get('/deploy/start', function () {
+        $otp = \Illuminate\Support\Str::random(48);
+        \Illuminate\Support\Facades\Cache::put('deploy_otp_' . $otp, auth()->id(), now()->addMinutes(2));
+        return redirect('/update-rahasia-portofolio?token=' . $otp);
+    })->name('deploy.start');
 });
 
 // ═══════════════════════════════════════════════════════
-// 4. AUTO DEPLOY (Hanya Bisa Diakses Admin yang Sedang Login)
+// 4. AUTO DEPLOY (Proteksi Token Sekali Pakai / Single-Use OTP)
 // ═══════════════════════════════════════════════════════
 Route::get('/update-rahasia-portofolio', function (\Illuminate\Http\Request $request) {
-    // 0. Proteksi Otorisasi Ketat: Wajib login sebagai Admin terotentikasi ATAU melalui internal header sistem
+    // 0. Proteksi Otorisasi Ketat & Token Sekali Pakai (Single-Use Token / Nonce):
+    $token = $request->query('token');
     $secretHeader = $request->header('X-Deploy-Token');
-    $validToken = env('DEPLOY_SECRET_TOKEN', 'mhd-syafiq-deploy-secure-2026');
-    $isAuthorized = (auth()->check() && auth()->user()->isAdmin()) || ($secretHeader === $validToken);
+    $validStaticToken = env('DEPLOY_SECRET_TOKEN', 'mhd-syafiq-deploy-secure-2026');
 
-    if (!$isAuthorized) {
-        abort(403, 'Akses Tidak Tersedia: Halaman ini bersifat terbatas dan hanya dapat diakses oleh Administrator yang berwenang.');
+    // Izinkan jika request berasal dari header sistem CLI internal
+    $isSystemHeader = ($secretHeader === $validStaticToken);
+
+    // Cek Validitas Token Sekali Pakai (OTP):
+    // Cache::pull() mengambil data sekaligus MENGHAPUSNYA seketika dari cache (atomically).
+    // Jika halaman di-refresh (F5), token sudah hangus dan langsung DITOLAK!
+    $hasValidOtp = false;
+    if (!empty($token)) {
+        $userId = \Illuminate\Support\Facades\Cache::pull('deploy_otp_' . $token);
+        if ($userId) {
+            $hasValidOtp = true;
+        }
+    }
+
+    // Jika bukan dari header internal dan tidak punya OTP yang valid:
+    if (!$isSystemHeader && !$hasValidOtp) {
+        return response()->view('errors.deploy-expired', [
+            'message' => 'Token deploy sekali pakai ini sudah digunakan atau tidak sah. Untuk keamanan sistem, jika halaman di-refresh maka deploy dicegah agar tidak terjadi eksekusi ganda. Silakan kembali ke Panel Admin dan klik tombol Deploy kembali untuk mendapatkan token baru.'
+        ], 403);
     }
 
     // 1. Mencegah Timeout & Tingkatkan Batas Memori

@@ -143,7 +143,7 @@
                     <span>Backup & Restore</span>
                 </a>
 
-                <a href="/update-rahasia-portofolio" target="_blank" class="sidebar-link text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" title="Tarik pembaruan dari GitHub dan jalankan migrasi">
+                <a href="{{ route('admin.deploy.start') }}" target="_blank" class="sidebar-link text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" title="Tarik pembaruan dari GitHub dan jalankan migrasi">
                     <i class='bx bx-cloud-upload text-lg text-emerald-500'></i>
                     <span>Deploy</span>
                     <span class="ml-auto w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>

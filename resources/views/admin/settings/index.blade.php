@@ -35,7 +35,7 @@
                     <span>Lihat Website</span>
                     <i class='bx bx-right-top-arrow-circle text-sm text-slate-400'></i>
                 </a>
-                <a href="{{ url('/update-rahasia-portofolio') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 text-xs font-bold transition-all backdrop-blur-md shadow-sm hover:scale-105 active:scale-95">
+                <a href="{{ route('admin.deploy.start') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 text-xs font-bold transition-all backdrop-blur-md shadow-sm hover:scale-105 active:scale-95">
                     <i class='bx bx-cloud-upload text-base text-emerald-400'></i>
                     <span>Deploy Server 🚀</span>
                 </a>
@@ -463,7 +463,7 @@
                 </div>
             </div>
 
-            <a href="{{ url('/update-rahasia-portofolio') }}" target="_blank" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex-shrink-0 cursor-pointer">
+            <a href="{{ route('admin.deploy.start') }}" target="_blank" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex-shrink-0 cursor-pointer">
                 <i class='bx bx-refresh text-lg animate-spin-slow'></i>
                 <span>Jalankan Deploy Sekarang</span>
                 <i class='bx bx-right-top-arrow-circle text-base'></i>
