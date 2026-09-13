@@ -68,8 +68,8 @@
             </div>
 
             <p class="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed mb-8"
-               x-text="$store.lang?.current === 'en' ? 'Crafting interactive web & mobile applications with premium aesthetics, optimal speed, and clean code architecture.' : 'Menciptakan aplikasi web & mobile interaktif dengan estetika premium, kecepatan optimal, dan arsitektur kode modern.'">
-                Menciptakan aplikasi web & mobile interaktif dengan estetika premium, kecepatan optimal, dan arsitektur kode modern.
+               x-text="$store.lang?.current === 'en' ? 'Focusing on operational efficiency, administrative management, and digital technology to drive organizational productivity.' : 'Berfokus pada efisiensi operasional, manajemen administrasi, dan pemanfaatan teknologi digital untuk mendukung produktivitas organisasi.'">
+                Berfokus pada efisiensi operasional, manajemen administrasi, dan pemanfaatan teknologi digital untuk mendukung produktivitas organisasi.
             </p>
         </div>
 
@@ -237,7 +237,7 @@
                 <!-- Verified Dev Badge -->
                 <div class="flex items-center gap-3 mb-6">
                     <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-xs uppercase tracking-widest font-bold text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified Software Engineer' : 'Pengembang Terverifikasi'">Pengembang Terverifikasi</span>
+                    <span class="text-xs uppercase tracking-widest font-bold text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified Profile' : 'Profil Terverifikasi'">Profil Terverifikasi</span>
                 </div>
                 
                 <div class="text-lg md:text-xl text-slate-300 leading-relaxed font-light space-y-4">
@@ -245,8 +245,8 @@
                         {!! nl2br(e($profile->bio)) !!}
                     </div>
                     <div x-show="$store.lang?.current === 'en'" style="display: none;">
-                        <p>I am a passionate Full Stack & Mobile Engineer dedicated to building high-performance web applications and sleek digital experiences with clean architecture.</p>
-                        <p>Experienced in developing production-ready systems with Laravel, Vue.js, Android apps, and interactive cloud solutions tailored for modern businesses.</p>
+                        <p>Diploma graduate in Informatics Management from Politeknik Negeri Medan (GPA 3.60). Experienced in IT support, operational administration, and system development.</p>
+                        <p>Active in leading and managing organizational administration from campus to national level. An adaptive, fast-learning professional ready to contribute maximum value in collaborative work environments.</p>
                     </div>
                 </div>
 
@@ -257,8 +257,8 @@
                             <i class='bx bx-check-shield text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Clean Architecture' : 'Arsitektur Bersih'">Arsitektur Bersih</div>
-                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Robust & maintainable' : 'Struktur rapi & teruji'">Struktur rapi & teruji</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Structured & Reliable' : 'Tata Kelola Rapi'">Tata Kelola Rapi</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Organized & disciplined' : 'Terstruktur & disiplin tinggi'">Terstruktur & disiplin tinggi</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3.5">
@@ -266,17 +266,17 @@
                             <i class='bx bx-tachometer text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'High Speed' : 'Kecepatan Tinggi'">Kecepatan Tinggi</div>
-                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Optimized performance & SEO' : 'Optimasi performa & SEO'">Optimasi performa & SEO</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'High Adaptability' : 'Adaptabilitas Cepat'">Adaptabilitas Cepat</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Quick learner & agile' : 'Cepat belajar & solutif'">Cepat belajar & solutif</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3.5">
                         <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                            <i class='bx bx-palette text-xl'></i>
+                            <i class='bx bx-group text-xl'></i>
                         </div>
                         <div>
-                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Modern Design' : 'Desain Modern'">Desain Modern</div>
-                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Stunning UI/UX' : 'UI/UX Memukau'">UI/UX Memukau</div>
+                            <div class="text-sm font-bold text-slate-200" x-text="$store.lang?.current === 'en' ? 'Team & Leadership' : 'Kerja Tim & Kolaborasi'">Kerja Tim & Kolaborasi</div>
+                            <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Strong communication' : 'Komunikasi & kepemimpinan'">Komunikasi & kepemimpinan</div>
                         </div>
                     </div>
                 </div>

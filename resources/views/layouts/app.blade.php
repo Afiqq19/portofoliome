@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Web & Mobile Developer. Membangun aplikasi modern berkinerja tinggi, arsitektur bersih, dan desain interaktif.' }}">
+    <meta name="description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Lulusan D3 Manajemen Informatika. Berpengalaman di bidang IT Support, pengembangan sistem, dan tata kelola administrasi operasional.' }}">
     <title>@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="alternate icon" href="{{ asset('favicon.svg') }}">
@@ -15,7 +15,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')">
-    <meta property="og:description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Web & Mobile Developer dengan karya aplikasi berkinerja tinggi.' }}">
+    <meta property="og:description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Lulusan D3 Manajemen Informatika dengan pengalaman di bidang IT Support dan administrasi operasional.' }}">
     <meta property="og:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
 
     <!-- Twitter -->
@@ -245,7 +245,7 @@
                                 </div>
                                 <div>
                                     <div class="text-xs font-bold text-slate-200 group-hover:text-indigo-300" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
-                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Bio, vision & code philosophy' : 'Bio, visi & dedikasi kode'">Bio, visi & dedikasi kode</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Bio, vision & work ethic' : 'Bio, visi & etos kerja'">Bio, visi & etos kerja</div>
                                 </div>
                             </a>
                             @endif
@@ -515,7 +515,7 @@
                         </div>
                         <h3 class="text-2xl font-bold font-['Space_Grotesk'] text-gradient">{{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}</h3>
                     </div>
-                    <p class="text-slate-400 text-sm max-w-md" x-text="$store.lang?.current === 'en' ? 'Building next-generation digital experiences with peak performance, sleek aesthetics, and robust code architecture.' : 'Membangun pengalaman digital masa depan dengan performa tinggi, desain elegan, dan arsitektur kode yang bersih.'">Membangun pengalaman digital masa depan dengan performa tinggi, desain elegan, dan arsitektur kode yang bersih.</p>
+                    <p class="text-slate-400 text-sm max-w-md" x-text="$store.lang?.current === 'en' ? 'Fostering operational synergy, administrative excellence, and integrated digital solutions.' : 'Membangun sinergi tata kelola operasional, administrasi profesional, dan solusi digital yang terintegrasi.'">Membangun sinergi tata kelola operasional, administrasi profesional, dan solusi digital yang terintegrasi.</p>
                 </div>
                 
                 <!-- Quick Navigation Links in Footer -->
