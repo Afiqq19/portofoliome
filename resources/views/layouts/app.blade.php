@@ -255,7 +255,7 @@
                             </a>
                             @if($profile && $profile->resume_path)
                             <div class="h-px bg-white/10 my-1"></div>
-                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors cursor-pointer" @click="open = false; $event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')">
+                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors cursor-pointer" @click="open = false; $event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')">
                                 <div class="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all">
                                     <i class='bx bxs-file-pdf text-base'></i>
                                 </div>
@@ -442,7 +442,7 @@
                 <span x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</span>
             </a>
             @if($profile && $profile->resume_path)
-                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer" @click="mobileMenuOpen = false; $event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')">
+                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer" @click="mobileMenuOpen = false; $event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')">
                     <i class='bx bxs-file-pdf text-lg text-rose-400'></i>
                     <span x-text="$store.lang?.current === 'en' ? 'Preview & Download CV (PDF)' : 'Lihat & Unduh CV / Resume (PDF)'">Lihat & Unduh CV / Resume (PDF)</span>
                 </a>
@@ -517,7 +517,7 @@
                     <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
                     @if($profile && $profile->resume_path)
-                        <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300 cursor-pointer">
+                        <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300 cursor-pointer">
                             <i class='bx bxs-file-pdf text-rose-400'></i>
                             <span x-text="$store.lang?.current === 'en' ? 'Preview CV (PDF)' : 'Lihat CV (PDF)'">Lihat CV (PDF)</span>
                         </a>
@@ -659,22 +659,33 @@
                     </div>
                     <div class="min-w-0">
                         <h4 id="pdf-modal-title" class="text-xs sm:text-sm font-bold font-['Space_Grotesk'] text-slate-100 truncate">Pratinjau Dokumen PDF</h4>
-                        <p class="text-[10px] text-slate-400 font-mono">Dokumen Resmi & Terverifikasi • Mhd. Syafiq Syahmi</p>
+                        <p class="text-[10px] text-slate-400 font-mono truncate">Dokumen Resmi & Terverifikasi • {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <a id="pdf-modal-download" href="#" download class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-bold transition-all shadow-md active:scale-95">
+                    <a id="pdf-modal-open-new" href="{{ route('cv.stream') }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium transition-all" title="Buka Dokumen di Tab Baru">
+                        <i class='bx bx-link-external text-sm'></i>
+                        <span class="hidden sm:inline">Tab Baru</span>
+                    </a>
+                    <a id="pdf-modal-download" href="{{ route('cv.download') }}" download class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-bold transition-all shadow-md active:scale-95">
                         <i class='bx bx-download text-sm'></i>
                         <span class="hidden sm:inline">Unduh Dokumen</span>
                     </a>
-                    <button onclick="closePdfModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer">
+                    <button onclick="closePdfModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer" title="Tutup">
                         <i class='bx bx-x text-2xl'></i>
                     </button>
                 </div>
             </div>
             <!-- Modal Body (Embed / iFrame) -->
             <div class="flex-1 w-full h-full bg-[#131320] relative">
-                <iframe id="pdf-modal-frame" src="" class="w-full h-full border-0" title="PDF Preview"></iframe>
+                <iframe id="pdf-modal-frame" src="about:blank" class="w-full h-full border-0" title="PDF Preview"></iframe>
+            </div>
+            <!-- Modal Footer Note -->
+            <div class="px-4 py-2 bg-[#060609]/80 border-t border-white/5 text-[11px] text-slate-400 flex items-center justify-between">
+                <div class="flex items-center gap-1.5 truncate">
+                    <i class='bx bx-info-circle text-indigo-400'></i>
+                    <span>Pratinjau PDF interaktif. Jika tidak muncul di browser/HP Anda, silakan klik <b>Tab Baru</b> atau <b>Unduh Dokumen</b>.</span>
+                </div>
             </div>
         </div>
     </div>
@@ -682,17 +693,21 @@
     <!-- Global Interactive PDF Viewer & Developer Terminal JS -->
     <script>
         // PDF Modal Functions
-        function openPdfModal(url, title = 'Dokumen PDF') {
+        function openPdfModal(streamUrl, title = 'Dokumen PDF', downloadUrl = null) {
             const modal = document.getElementById('pdf-modal');
             const frame = document.getElementById('pdf-modal-frame');
             const titleElem = document.getElementById('pdf-modal-title');
             const downloadBtn = document.getElementById('pdf-modal-download');
+            const openNewBtn = document.getElementById('pdf-modal-open-new');
             
             if (!modal || !frame) return;
             
             titleElem.innerText = title;
-            downloadBtn.href = url;
-            frame.src = url;
+            if (openNewBtn) openNewBtn.href = streamUrl;
+            if (downloadBtn) downloadBtn.href = downloadUrl || streamUrl;
+            
+            // Set src only when opening
+            frame.src = streamUrl;
             
             modal.style.display = 'flex';
             requestAnimationFrame(() => {
@@ -710,9 +725,21 @@
             modal.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 modal.style.display = 'none';
-                if (frame) frame.src = '';
+                if (frame) frame.src = 'about:blank';
             }, 250);
         }
+
+        // Close on backdrop click & ESC
+        document.getElementById('pdf-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePdfModal();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePdfModal();
+            }
+        });
 
         // Developer CLI Terminal Controller
         const devTerminalData = {
@@ -722,7 +749,8 @@
             email: "{{ $profile->email ?? 'mhdsyafiqsyahmi@gmail.com' }}",
             phone: "{{ $profile->phone ?? '+62 812-3456-7890' }}",
             projectsUrl: "{{ route('projects.all') }}",
-            cvUrl: "{{ route('cv.download') }}",
+            cvStreamUrl: "{{ route('cv.stream') }}",
+            cvDownloadUrl: "{{ route('cv.download') }}",
             socials: [
                 @if(isset($profile) && $profile->socialLinks)
                     @foreach($profile->socialLinks as $link)
@@ -823,8 +851,22 @@
                     resLine.innerHTML = `<div class="text-[11px] space-y-0.5">${linksHtml || 'Belum ada sosial media.'}</div>`;
                     break;
                 case 'cv':
-                    resLine.innerHTML = `<div class="text-rose-400 text-[11px]">Membuka pratinjau dokumen CV...</div>`;
-                    openPdfModal(devTerminalData.cvUrl, 'Curriculum Vitae - ' + devTerminalData.name);
+                    resLine.innerHTML = `
+                        <div class="text-[11px] space-y-1">
+                            <div class="text-emerald-400 font-bold">📄 Membuka Dokumen CV: ${devTerminalData.name}</div>
+                            <div class="text-slate-400">Pratinjau modal sedang dibuka. Atau buka tautan langsung:</div>
+                            <div class="flex items-center gap-3 mt-1.5">
+                                <a href="${devTerminalData.cvStreamUrl}" target="_blank" class="inline-flex items-center gap-1 text-cyan-400 hover:underline font-bold">
+                                    <span>↗ Buka di Tab Baru</span>
+                                </a>
+                                <span class="text-slate-600">•</span>
+                                <a href="${devTerminalData.cvDownloadUrl}" download class="inline-flex items-center gap-1 text-indigo-400 hover:underline font-bold">
+                                    <span>⬇ Unduh PDF</span>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    openPdfModal(devTerminalData.cvStreamUrl, 'Curriculum Vitae - ' + devTerminalData.name, devTerminalData.cvDownloadUrl);
                     break;
                 case 'clear':
                     output.innerHTML = `

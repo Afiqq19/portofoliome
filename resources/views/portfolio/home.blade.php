@@ -114,7 +114,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
             @if($profile && $profile->resume_path)
-            <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')" class="btn btn-outline btn-lg group border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-600/10 shadow-lg cursor-pointer">
+            <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')" class="btn btn-outline btn-lg group border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-600/10 shadow-lg cursor-pointer">
                 <i class='bx bxs-file-pdf text-xl text-rose-400 group-hover:scale-110 transition-transform'></i>
                 <span x-text="$store.lang?.current === 'en' ? 'Preview / Download CV' : 'Lihat / Unduh CV'">Lihat / Unduh CV</span>
             </a>
@@ -296,10 +296,16 @@
                             <div class="text-xs text-slate-400" x-text="$store.lang?.current === 'en' ? 'Download verified official resume in PDF format.' : 'Unduh dokumen resume resmi dan riwayat kualifikasi lengkap (PDF).'">Unduh dokumen resume resmi dan riwayat kualifikasi lengkap (PDF).</div>
                         </div>
                     </div>
-                    <a href="{{ route('cv.download') }}" class="btn btn-primary btn-shimmer btn-sm shadow-xl flex items-center gap-2 group whitespace-nowrap">
-                        <i class='bx bx-download text-lg group-hover:translate-y-0.5 transition-transform'></i>
-                        <span x-text="$store.lang?.current === 'en' ? 'Download Resume (PDF)' : 'Unduh Dokumen CV'">Unduh Dokumen CV</span>
-                    </a>
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <button type="button" onclick="openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')" class="btn btn-outline btn-sm shadow-md flex items-center gap-1.5 cursor-pointer border-white/20 hover:border-indigo-400 hover:text-indigo-300">
+                            <i class='bx bx-show text-base text-indigo-400'></i>
+                            <span x-text="$store.lang?.current === 'en' ? 'Preview' : 'Lihat Pratinjau'">Lihat Pratinjau</span>
+                        </button>
+                        <a href="{{ route('cv.download') }}" class="btn btn-primary btn-shimmer btn-sm shadow-xl flex items-center gap-2 group whitespace-nowrap">
+                            <i class='bx bx-download text-lg group-hover:translate-y-0.5 transition-transform'></i>
+                            <span x-text="$store.lang?.current === 'en' ? 'Download CV' : 'Unduh Dokumen CV'">Unduh Dokumen CV</span>
+                        </a>
+                    </div>
                 </div>
                 @endif
             </div>

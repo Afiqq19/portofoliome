@@ -136,8 +136,12 @@ class PortfolioController extends Controller
     /**
      * Download profile CV / Resume
      */
-    public function downloadCv()
+    public function downloadCv(Request $request)
     {
+        if ($request->boolean('preview') || $request->query('view') === 'inline') {
+            return $this->streamCv();
+        }
+
         $profile = Profile::first();
 
         if (!$profile || !$profile->resume_path || !Storage::disk('public')->exists($profile->resume_path)) {
@@ -151,6 +155,109 @@ class PortfolioController extends Controller
         return Storage::disk('public')->download(
             $profile->resume_path,
             $filename
+        );
+    }
+
+    /**
+     * Stream profile CV / Resume inline for browser preview
+     */
+    public function streamCv()
+    {
+        $profile = Profile::first();
+
+        if (!$profile || !$profile->resume_path || !Storage::disk('public')->exists($profile->resume_path)) {
+            return response(
+                '<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumen CV Belum Tersedia</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 24px;
+            background-color: #0c0c14;
+            color: #cbd5e1;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            max-width: 440px;
+            text-align: center;
+            padding: 40px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 18px;
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        h2 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        p {
+            margin: 0 0 24px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon-box">📄</div>
+        <h2>Dokumen CV Belum Tersedia</h2>
+        <p>File CV / Resume belum diunggah atau sedang dalam pembaruan oleh pemilik portofolio. Silakan unggah dokumen di Dashboard Admin > Edit Profil.</p>
+        <a href="/" target="_top" class="btn">Kembali ke Beranda</a>
+    </div>
+</body>
+</html>',
+                200,
+                ['Content-Type' => 'text/html; charset=UTF-8']
+            );
+        }
+
+        $extension = pathinfo($profile->resume_path, PATHINFO_EXTENSION) ?: 'pdf';
+        $safeName = Str::slug($profile->name ?? 'Portofolio');
+        $filename = 'CV_' . $safeName . '.' . $extension;
+
+        return Storage::disk('public')->response(
+            $profile->resume_path,
+            $filename,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $filename . '"',
+                'Cache-Control' => 'public, max-age=3600',
+            ]
         );
     }
 

@@ -81,6 +81,10 @@
                                     <span>{{ ($profile && $profile->resume_path) ? 'Ganti CV' : 'Pilih File CV' }}</span>
                                 </button>
                                 @if($profile && $profile->resume_path)
+                                    <a href="{{ route('cv.stream') }}" target="_blank" class="btn btn-outline btn-xs shadow-sm text-emerald-600 hover:bg-emerald-50 flex items-center gap-1" title="Lihat pratinjau dokumen PDF CV">
+                                        <i class='bx bx-show'></i>
+                                        <span>Lihat</span>
+                                    </a>
                                     <a href="{{ route('cv.download') }}" target="_blank" class="btn btn-outline btn-xs shadow-sm text-indigo-600 hover:bg-indigo-50 flex items-center gap-1" title="Unduh / Cek file CV saat ini">
                                         <i class='bx bx-download'></i>
                                         <span>Unduh</span>

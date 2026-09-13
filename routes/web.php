@@ -34,6 +34,7 @@ Route::middleware(TrackVisitor::class)->group(function () {
     Route::get('/project/{project}/download', [PortfolioController::class, 'downloadProject'])->name('project.download');
     Route::get('/project/{project}/download-apk', [PortfolioController::class, 'downloadApk'])->name('project.download-apk');
     Route::get('/cv', [PortfolioController::class, 'downloadCv'])->name('cv.download');
+    Route::get('/cv/stream', [PortfolioController::class, 'streamCv'])->name('cv.stream');
     Route::get('/resume', [PortfolioController::class, 'downloadCv'])->name('resume.download');
     
     // Interaksi & Formulir Publik
