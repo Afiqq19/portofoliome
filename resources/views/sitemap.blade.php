@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+{!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>{{ url('/') }}</loc>
@@ -31,12 +31,14 @@
         <priority>0.6</priority>
     </url>
 
-    @foreach($projects as $project)
-    <url>
-        <loc>{{ url('/project/' . $project->slug) }}</loc>
-        <lastmod>{{ $project->updated_at->tz('UTC')->toAtomString() }}</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    @endforeach
+    @if(isset($projects))
+        @foreach($projects as $project)
+        <url>
+            <loc>{{ url('/project/' . $project->slug) }}</loc>
+            <lastmod>{{ ($project->updated_at ?? $project->created_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.7</priority>
+        </url>
+        @endforeach
+    @endif
 </urlset>
