@@ -223,9 +223,9 @@
      4. ABOUT SECTION ("Tentang Saya")
      ═══════════════════════════════════════════════════════ -->
 @if($profile && $profile->bio)
-<section id="about" class="py-24 relative">
+<section id="about" class="py-14 sm:py-18 relative">
     <div class="container max-w-5xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-16 text-center">
+        <div class="reveal flex flex-col items-center mb-10 sm:mb-12 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100">
                 <span x-text="$store.lang?.current === 'en' ? 'Professional' : 'Profil &'">Profil &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Background' : 'Latar Belakang'">Latar Belakang</span>
@@ -399,9 +399,9 @@
      5.5 TECHNICAL SKILLS SECTION ("Keahlian Teknis")
      ═══════════════════════════════════════════════════════ -->
 @if(($profile->enable_skills ?? true) && count($skills) > 0)
-<section id="skills" class="py-24 relative">
+<section id="skills" class="py-14 sm:py-18 relative">
     <div class="container max-w-6xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-16 text-center">
+        <div class="reveal flex flex-col items-center mb-10 sm:mb-12 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Tech Stack & Capabilities' : 'Teknologi & Kemampuan'">Teknologi & Kemampuan</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100">
                 <span x-text="$store.lang?.current === 'en' ? 'Technical' : 'Keahlian'">Keahlian</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Skills & Stack' : 'Teknis & Stack'">Teknis & Stack</span>
@@ -450,9 +450,9 @@
 <!-- ═══════════════════════════════════════════════════════
      5.6 JOURNEY & EXPERIENCE TIMELINE ("Perjalanan & Pengalaman")
      ═══════════════════════════════════════════════════════ -->
-<section id="timeline" class="py-24 relative" x-data="{ activeTab: 'all' }">
+<section id="timeline" class="py-14 sm:py-18 relative" x-data="{ activeTab: 'all' }">
     <div class="container max-w-5xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-10 text-center">
+        <div class="reveal flex flex-col items-center mb-8 sm:mb-10 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Milestones & Track Record' : 'Jejak, Karir & Organisasi'">Jejak, Karir & Organisasi</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Journey &' : 'Perjalanan'">Perjalanan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Track Record' : '& Rekam Jejak'">& Rekam Jejak</span>
@@ -655,9 +655,9 @@
      6. PROJECTS SHOWCASE SECTION ("Projek Unggulan")
      ═══════════════════════════════════════════════════════ -->
 @if($profile->enable_projects ?? true)
-<section id="projects" class="py-24 relative">
+<section id="projects" class="py-14 sm:py-18 relative">
     <div class="container max-w-6xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-12 text-center">
+        <div class="reveal flex flex-col items-center mb-8 sm:mb-10 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Featured Portfolio' : 'Portofolio Karya'">Portofolio Karya</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Featured' : 'Projek'">Projek</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Projects & Releases' : 'Unggulan & Rilis'">Unggulan & Rilis</span>
@@ -778,9 +778,9 @@
      7. CERTIFICATES & AWARDS SECTION ("Sertifikat")
      ═══════════════════════════════════════════════════════ -->
 @if(($profile->enable_certificates ?? true) && count($certificates) > 0)
-<section id="certificates" class="py-24 relative">
+<section id="certificates" class="py-14 sm:py-18 relative">
     <div class="container max-w-6xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-16 text-center">
+        <div class="reveal flex flex-col items-center mb-10 sm:mb-12 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Credentials & Awards' : 'Pencapaian & Lisensi'">Pencapaian & Lisensi</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Certificates &' : 'Sertifikat &'">Sertifikat &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Honors' : 'Penghargaan'">Penghargaan</span>
@@ -849,9 +849,9 @@
 <!-- ═══════════════════════════════════════════════════════
      9. PUBLIC WORKSPACE / GUESTBOOK ("Workspace Publik")
      ═══════════════════════════════════════════════════════ -->
-<section id="workspace" class="py-24 relative">
+<section id="workspace" class="pt-14 pb-6 sm:pt-18 sm:pb-8 relative">
     <div class="container max-w-6xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-16 text-center">
+        <div class="reveal flex flex-col items-center mb-10 sm:mb-12 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Digital Guestbook' : 'Buku Tamu Digital'">Buku Tamu Digital</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Public' : 'Workspace'">Workspace</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Workspace' : 'Publik'">Publik</span>
@@ -930,9 +930,9 @@
 <!-- ═══════════════════════════════════════════════════════
      10. CONTACT SECTION ("Mari Berdiskusi")
      ═══════════════════════════════════════════════════════ -->
-<section id="contact" class="py-24 relative overflow-hidden">
+<section id="contact" class="pt-6 pb-20 sm:pt-8 sm:pb-24 relative overflow-hidden">
     <div class="container max-w-4xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-14 text-center">
+        <div class="reveal flex flex-col items-center mb-8 sm:mb-10 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Get in Touch' : 'Hubungi Langsung'">Hubungi Langsung</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Start a' : 'Mari Mulai'">Mari Mulai</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Collaboration' : 'Kolaborasi'">Kolaborasi</span>
