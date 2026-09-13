@@ -228,7 +228,7 @@
         <div class="reveal flex flex-col items-center mb-16 text-center">
             <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'About Me' : 'Tentang Saya'">Tentang Saya</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100">
-                <span x-text="$store.lang?.current === 'en' ? 'Dedication &' : 'Dedikasi &'">Dedikasi &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Code Philosophy' : 'Filosofi Kode'">Filosofi Kode</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Professional' : 'Profil &'">Profil &</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Background' : 'Latar Belakang'">Latar Belakang</span>
             </h2>
         </div>
         
@@ -461,7 +461,7 @@
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
                 <span x-text="$store.lang?.current === 'en' ? 'Journey &' : 'Perjalanan'">Perjalanan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Track Record' : '& Rekam Jejak'">& Rekam Jejak</span>
             </h2>
-            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'A chronological record of professional industry internships, higher education, and leadership in student organizations.' : 'Rekam jejak dedikasi profesional di industri, riwayat pendidikan formal, kepemimpinan organisasi, dan pengembangan teknologi digital.'">Rekam jejak dedikasi profesional di industri, riwayat pendidikan formal, kepemimpinan organisasi, dan pengembangan teknologi digital.</p>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'A chronological record of professional industry internships, higher education, and leadership in student organizations.' : 'Rekam jejak pengalaman magang industri, pendidikan formal, dan keaktifan dalam organisasi.'">Rekam jejak pengalaman magang industri, pendidikan formal, dan keaktifan dalam organisasi.</p>
         </div>
 
         <!-- Interactive Category Filter Chips -->
