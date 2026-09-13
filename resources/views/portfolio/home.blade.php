@@ -562,14 +562,14 @@
         </div>
 
         <!-- Projects Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
             @foreach($featuredProjects as $project)
-                <div class="reveal">
-                    <div class="glass-card spotlight-card tilt-card rounded-3xl overflow-hidden border border-white/10 hover:border-indigo-500/40 flex flex-col h-full group justify-between">
+                <div class="reveal h-full flex flex-col">
+                    <div class="glass-card spotlight-card rounded-3xl overflow-hidden border border-white/10 hover:border-indigo-500/40 flex flex-col h-full group justify-between transition-all duration-300">
                         
                         <div>
                             <!-- Thumbnail Box -->
-                            <div class="relative h-52 overflow-hidden bg-[#0c0c14]">
+                            <div class="relative h-48 sm:h-52 overflow-hidden bg-[#0c0c14]">
                                 @if($project->thumbnail)
                                     <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                                 @else
@@ -601,38 +601,39 @@
                             </div>
 
                             <!-- Content Box -->
-                            <div class="p-6 md:p-7">
-                                <div class="flex gap-1.5 flex-wrap mb-3">
+                            <div class="p-5 sm:p-6">
+                                <div class="flex gap-1.5 flex-wrap min-h-[26px] items-center mb-2.5">
                                     @foreach(array_slice($project->tech_stack ?? [], 0, 3) as $tech)
                                         <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-white/5 text-slate-300 border border-white/5">{{ $tech }}</span>
                                     @endforeach
                                 </div>
 
-                                <h3 class="text-xl font-bold mb-2 font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors line-clamp-1">
+                                <h3 class="text-lg sm:text-xl font-bold mb-2 font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors line-clamp-1">
                                     {{ $project->title }}
                                 </h3>
                                 
-                                <div class="flex items-center gap-3 mb-3 text-[10px] text-slate-500 font-mono">
-                                    <div class="flex items-center gap-1" title="Tanggal Upload">
-                                        <i class='bx bx-cloud-upload'></i>
-                                        <span>{{ $project->created_at->format('d M Y, H:i') }}</span>
-                                    </div>
+                                <!-- Timestamps (WIB) with clean badge wrapping -->
+                                <div class="flex flex-wrap items-center gap-2 mb-3 text-[10px] font-mono">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-slate-300" title="Waktu Rilis / Upload (WIB)">
+                                        <i class='bx bx-cloud-upload text-indigo-400 text-xs'></i>
+                                        <span>{{ $project->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                                    </span>
                                     @if($project->updated_at->gt($project->created_at))
-                                    <div class="flex items-center gap-1 text-indigo-400/70" title="Terakhir Diperbarui">
-                                        <i class='bx bx-edit'></i>
-                                        <span>{{ $project->updated_at->format('d M Y, H:i') }}</span>
-                                    </div>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-300" title="Terakhir Diperbarui (WIB)">
+                                        <i class='bx bx-refresh text-indigo-400 text-xs'></i>
+                                        <span>Update: {{ $project->updated_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                                    </span>
                                     @endif
                                 </div>
 
-                                <p class="text-slate-400 text-xs line-clamp-2 leading-relaxed mb-4">
+                                <p class="text-slate-400 text-xs line-clamp-2 leading-relaxed min-h-[2.5rem] mb-2">
                                     {{ $project->description }}
                                 </p>
                             </div>
                         </div>
 
                         <!-- Actions Footer -->
-                        <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between mt-auto">
+                        <div class="p-5 sm:p-6 pt-3 border-t border-white/5 flex items-center justify-between mt-auto">
                             <a href="{{ route('project.show', $project->slug) }}" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
                                 <span x-text="$store.lang?.current === 'en' ? 'View Details' : 'Lihat Detail'">Lihat Detail</span>
                                 <i class='bx bx-right-arrow-alt text-base'></i>
@@ -858,6 +859,24 @@
                 <span class="text-sm font-semibold">{{ $profile->location }}</span>
             </div>
             @endif
+        </div>
+        @endif
+
+        <!-- Social Media Connect Pills -->
+        @if($profile && $profile->socialLinks && $profile->socialLinks->count() > 0)
+        <div class="reveal reveal-delay-1 flex flex-col items-center justify-center mb-12">
+            <p class="text-[11px] text-slate-400 uppercase tracking-widest font-mono mb-4" x-text="$store.lang?.current === 'en' ? 'Or Connect via Social Channels' : 'Atau Terhubung Langsung Lewat Media Sosial'">Atau Terhubung Langsung Lewat Media Sosial</p>
+            <div class="flex flex-wrap justify-center items-center gap-3">
+                @foreach($profile->socialLinks as $link)
+                    <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-gradient-to-r hover:from-indigo-600/20 hover:to-purple-600/20 text-slate-300 hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm group" title="{{ $link->platform }}">
+                        @if($link->icon)
+                            <i class="{{ $link->icon }} text-lg text-indigo-400 group-hover:scale-110 transition-transform"></i>
+                        @endif
+                        <span class="text-xs font-semibold">{{ $link->platform }}</span>
+                        <i class='bx bx-arrow-up-right text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all'></i>
+                    </a>
+                @endforeach
+            </div>
         </div>
         @endif
         

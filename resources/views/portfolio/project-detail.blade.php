@@ -145,6 +145,26 @@
                         </a>
                     @endif
 
+                    <!-- Metadata Info (WIB) -->
+                    <div class="bg-black/30 rounded-2xl p-4 border border-white/5 space-y-2 text-xs font-mono">
+                        <div class="flex justify-between items-center text-slate-400">
+                            <span class="flex items-center gap-1.5 text-slate-500">
+                                <i class='bx bx-cloud-upload text-indigo-400'></i>
+                                <span>Rilis:</span>
+                            </span>
+                            <span class="text-slate-300 font-bold">{{ $project->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                        </div>
+                        @if($project->updated_at->gt($project->created_at))
+                        <div class="flex justify-between items-center text-slate-400 pt-2 border-t border-white/5">
+                            <span class="flex items-center gap-1.5 text-slate-500">
+                                <i class='bx bx-refresh text-indigo-400'></i>
+                                <span>Pembaruan:</span>
+                            </span>
+                            <span class="text-indigo-300 font-bold">{{ $project->updated_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                        </div>
+                        @endif
+                    </div>
+
                     @if($project->zip_path || $project->apk_path)
                         <div class="text-center bg-black/30 rounded-2xl py-6 border border-white/5">
                             <div class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Total Diunduh</div>

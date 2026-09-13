@@ -103,30 +103,31 @@
                         </div>
 
                         <!-- Content Details -->
-                        <div class="p-6 md:p-7">
-                            <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2 line-clamp-1">
+                        <div class="p-5 sm:p-6">
+                            <h2 class="text-lg sm:text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-indigo-400 transition-colors mb-2 line-clamp-1">
                                 {{ $project->title }}
                             </h2>
                             
-                            <div class="flex items-center gap-3 mb-3 text-[10px] text-slate-500 font-mono">
-                                <div class="flex items-center gap-1" title="Tanggal Upload">
-                                    <i class='bx bx-cloud-upload'></i>
-                                    <span>{{ $project->created_at->format('d M Y, H:i') }}</span>
-                                </div>
+                            <!-- Timestamps (WIB) with clean badge wrapping -->
+                            <div class="flex flex-wrap items-center gap-2 mb-3.5 text-[10px] font-mono">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-slate-300" title="Waktu Rilis / Upload (WIB)">
+                                    <i class='bx bx-cloud-upload text-indigo-400 text-xs'></i>
+                                    <span>{{ $project->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                                </span>
                                 @if($project->updated_at->gt($project->created_at))
-                                <div class="flex items-center gap-1 text-indigo-400/70" title="Terakhir Diperbarui">
-                                    <i class='bx bx-edit'></i>
-                                    <span>{{ $project->updated_at->format('d M Y, H:i') }}</span>
-                                </div>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-300" title="Terakhir Diperbarui (WIB)">
+                                    <i class='bx bx-refresh text-indigo-400 text-xs'></i>
+                                    <span>Update: {{ $project->updated_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</span>
+                                </span>
                                 @endif
                             </div>
 
-                            <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">
+                            <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed min-h-[2.5rem] mb-3">
                                 {{ $project->description }}
                             </p>
 
                             <!-- Tech Stack Pills -->
-                            <div class="flex flex-wrap gap-1.5 mb-2">
+                            <div class="flex flex-wrap gap-1.5 min-h-[26px] items-center mb-2">
                                 @foreach(array_slice($techArray, 0, 4) as $tech)
                                     <span class="badge text-[10px] bg-white/5 border-white/5 text-slate-300">{{ $tech }}</span>
                                 @endforeach

@@ -60,12 +60,15 @@ class ProfileController extends Controller
             'platforms' => 'array',
             'platforms.*' => 'required|string|max:50',
             'urls' => 'array',
-            'urls.*' => 'nullable|url|max:500',
+            'urls.*' => 'nullable|string|max:500',
             'icons' => 'array',
             'icons.*' => 'nullable|string|max:100',
         ]);
 
         $profile = Profile::first();
+        if (!$profile) {
+            $profile = Profile::create(['name' => 'Admin']);
+        }
 
         $platforms = $request->input('platforms', []);
         $urls = $request->input('urls', []);
@@ -76,12 +79,49 @@ class ProfileController extends Controller
 
         $order = 0;
         foreach ($platforms as $index => $platform) {
-            $url = $urls[$index] ?? '';
+            $rawUrl = trim($urls[$index] ?? '');
             $icon = $icons[$index] ?? null;
 
-            // Skip entries with empty URL
-            if (empty(trim($url))) {
+            if (empty($rawUrl)) {
                 continue;
+            }
+
+            // Smart URL Formatter
+            $url = $rawUrl;
+            $platformLower = strtolower($platform);
+
+            if ($platformLower === 'whatsapp') {
+                // Bersihkan karakter selain angka
+                $cleanPhone = preg_replace('/[^0-9]/', '', $rawUrl);
+                if (str_starts_with($cleanPhone, '0')) {
+                    $cleanPhone = '62' . substr($cleanPhone, 1);
+                } elseif (!str_starts_with($cleanPhone, '62') && strlen($cleanPhone) >= 9) {
+                    $cleanPhone = '62' . $cleanPhone;
+                }
+
+                if (!str_contains($rawUrl, 'wa.me') && !str_contains($rawUrl, 'whatsapp.com')) {
+                    $url = "https://wa.me/{$cleanPhone}";
+                } elseif (!str_starts_with($rawUrl, 'http://') && !str_starts_with($rawUrl, 'https://')) {
+                    $url = 'https://' . ltrim($rawUrl, '/');
+                }
+            } else {
+                // Untuk Instagram, GitHub, LinkedIn, YouTube, dll.
+                if (!str_starts_with($rawUrl, 'http://') && !str_starts_with($rawUrl, 'https://')) {
+                    $cleanHandle = ltrim($rawUrl, '@');
+                    if (!str_contains($cleanHandle, '.')) {
+                        // Jika hanya menginput username (misal: "Afiqq19")
+                        $url = match($platformLower) {
+                            'github' => "https://github.com/{$cleanHandle}",
+                            'instagram' => "https://instagram.com/{$cleanHandle}",
+                            'linkedin' => "https://linkedin.com/in/{$cleanHandle}",
+                            'youtube' => "https://youtube.com/@{$cleanHandle}",
+                            default => "https://{$cleanHandle}",
+                        };
+                    } else {
+                        // Jika menginput domain (misal: "instagram.com/afiqq")
+                        $url = 'https://' . $cleanHandle;
+                    }
+                }
             }
 
             $profile->socialLinks()->create([
@@ -92,7 +132,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Social links berhasil diperbarui! ✅');
+        return back()->with('success', 'Tautan media sosial berhasil disimpan! ✅');
     }
 
     public function editSettings()

@@ -493,6 +493,21 @@
                         </a>
                     @endif
                 </div>
+
+                <!-- Footer Social Media Icons -->
+                @if(isset($profile) && $profile->socialLinks && $profile->socialLinks->count() > 0)
+                <div class="flex flex-wrap justify-center items-center gap-3 pt-2">
+                    @foreach($profile->socialLinks as $link)
+                        <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-gradient-to-tr hover:from-indigo-600 hover:to-purple-600 text-slate-300 hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm" title="{{ $link->platform }}">
+                            @if($link->icon)
+                                <i class="{{ $link->icon }} text-lg"></i>
+                            @else
+                                <span class="text-xs font-bold">{{ substr($link->platform, 0, 2) }}</span>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+                @endif
             </div>
 
             <!-- Divider -->

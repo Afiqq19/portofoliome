@@ -166,15 +166,32 @@
                     @foreach($platforms as $p)
                         @php
                             $link = $socialLinks->get($p['name']);
+                            $val = old('urls.' . $loop->index, $link ? $link->url : '');
+                            $placeholder = match($p['key']) {
+                                'whatsapp' => 'Contoh: 08123456789 atau wa.me/628123456789',
+                                'instagram' => 'Contoh: @username atau instagram.com/username',
+                                'github' => 'Contoh: username atau github.com/username',
+                                'linkedin' => 'Contoh: in/username atau linkedin.com/in/username',
+                                'youtube' => 'Contoh: @channel atau youtube.com/@channel',
+                                default => 'https://...',
+                            };
                         @endphp
                         <div>
-                            <label class="form-label text-xs flex items-center gap-1.5">
-                                <i class="{{ $p['icon'] }} text-base text-indigo-600"></i>
-                                <span>{{ $p['name'] }}</span>
+                            <label class="form-label text-xs flex items-center justify-between">
+                                <span class="flex items-center gap-1.5 font-semibold text-slate-700">
+                                    <i class="{{ $p['icon'] }} text-base text-indigo-600"></i>
+                                    <span>{{ $p['name'] }}</span>
+                                </span>
+                                @if($link && $link->url)
+                                    <a href="{{ $link->url }}" target="_blank" class="text-[10px] text-indigo-600 hover:underline flex items-center gap-0.5">
+                                        <span>Tes Link</span>
+                                        <i class='bx bx-link-external'></i>
+                                    </a>
+                                @endif
                             </label>
                             <input type="hidden" name="platforms[]" value="{{ $p['name'] }}">
                             <input type="hidden" name="icons[]" value="{{ $p['icon'] }}">
-                            <input type="url" name="urls[]" class="form-control text-xs py-2 px-3" value="{{ $link ? $link->url : '' }}" placeholder="https://{{ strtolower($p['name']) }}.com/username">
+                            <input type="text" name="urls[]" class="form-control text-xs py-2 px-3" value="{{ $val }}" placeholder="{{ $placeholder }}">
                         </div>
                     @endforeach
                 </div>
