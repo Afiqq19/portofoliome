@@ -8,3 +8,11 @@ services:
       - "9001:80"
     volumes:
       - .:/var/www/html
+    networks:
+      - default
+      - mss_network
+
+networks:
+  mss_network:
+    external: true
+    name: mss-server-panel_mss-network
