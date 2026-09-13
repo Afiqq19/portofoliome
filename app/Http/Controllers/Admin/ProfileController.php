@@ -149,11 +149,21 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'trakteer_url' => 'nullable|url|max:255',
             'google_analytics_id' => 'nullable|string|max:50',
+            'maintenance_status' => 'nullable|string|in:maintenance,coming_soon,custom',
+            'maintenance_title' => 'nullable|string|max:255',
+            'maintenance_message' => 'nullable|string|max:1000',
         ]);
 
         $profile = Profile::first();
+        if (!$profile) {
+            $profile = Profile::create(['name' => 'Your Name']);
+        }
         
         $profile->update([
+            'enable_landing_page' => $request->has('enable_landing_page'),
+            'maintenance_status' => $validated['maintenance_status'] ?? 'maintenance',
+            'maintenance_title' => $validated['maintenance_title'],
+            'maintenance_message' => $validated['maintenance_message'],
             'enable_skills' => $request->has('enable_skills'),
             'enable_projects' => $request->has('enable_projects'),
             'enable_certificates' => $request->has('enable_certificates'),
@@ -163,7 +173,23 @@ class ProfileController extends Controller
             'google_analytics_id' => $validated['google_analytics_id'],
         ]);
 
-        return back()->with('success', 'Pengaturan tampilan berhasil diperbarui! 🎨');
+        $statusMsg = $request->has('enable_landing_page')
+            ? 'Pengaturan tampilan berhasil diperbarui! (Landing Page Aktif) 🎨'
+            : 'Pengaturan tampilan berhasil diperbarui! (Mode Pemeliharaan Aktif) ⚠️';
+
+        return back()->with('success', $statusMsg);
+    }
+
+    public function previewMaintenance()
+    {
+        $profile = Profile::with('socialLinks')->first();
+        return view('errors.maintenance', [
+            'profile' => $profile,
+            'title' => $profile->maintenance_title ?: 'Sistem Sedang Dalam Pemeliharaan & Pembaruan',
+            'message' => $profile->maintenance_message ?: 'Website portofolio kami sedang dalam proses perbaruan karya dan peningkatan fitur terbaru untuk menghadirkan pengalaman terbaik. Kami akan segera kembali online!',
+            'status' => $profile->maintenance_status ?: 'maintenance',
+            'isPreview' => true,
+        ]);
     }
 
     public function deleteResume()

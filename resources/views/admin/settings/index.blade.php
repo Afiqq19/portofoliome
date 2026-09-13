@@ -18,7 +18,106 @@
     <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf
         @method('PUT')
-        
+
+        <!-- Section Status Publikasi Landing Page (Mode Pemeliharaan) -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-[#0c0c14] text-white border border-slate-700 shadow-xl mb-8 relative overflow-hidden">
+            <!-- Glow background -->
+            <div class="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-indigo-500/20 blur-xl pointer-events-none"></div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-5">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2.5 h-2.5 rounded-full {{ ($profile->enable_landing_page ?? true) ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400 animate-ping' }}"></span>
+                        <h2 class="text-lg font-bold font-['Space_Grotesk'] tracking-tight">Status Publikasi Beranda (Landing Page)</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 max-w-xl">
+                        Aktifkan untuk mempublikasikan website portofolio ke semua pengunjung, atau nonaktifkan untuk beralih ke <b>Mode Pemeliharaan (Under Maintenance)</b> saat Anda sedang memperbarui data/projek.
+                    </p>
+                </div>
+                
+                <!-- Main Toggle Switch -->
+                <div class="flex items-center gap-3 bg-white/5 px-4 py-2.5 rounded-2xl border border-white/10 self-start sm:self-auto flex-shrink-0">
+                    <span class="text-xs font-mono font-bold {{ ($profile->enable_landing_page ?? true) ? 'text-emerald-400' : 'text-amber-400' }}">
+                        {{ ($profile->enable_landing_page ?? true) ? '🌐 ONLINE (Publik Aktif)' : '⚠️ MODE PEMELIHARAAN' }}
+                    </span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle_enable_landing_page" name="enable_landing_page" value="1" {{ ($profile->enable_landing_page ?? true) ? 'checked' : '' }} class="sr-only peer" onchange="toggleMaintenanceConfig(this.checked)">
+                        <div class="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Maintenance Options Panel -->
+            <div id="maintenance_config_panel" class="space-y-4 pt-1 {{ ($profile->enable_landing_page ?? true) ? 'opacity-75' : '' }}">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider font-mono">
+                        ⚙️ Pengaturan Halaman Pemeliharaan (Under Maintenance)
+                    </label>
+                    <a href="{{ route('admin.settings.maintenance-preview') }}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-semibold hover:underline">
+                        <i class='bx bx-show text-sm'></i>
+                        <span>Pratinjau Tampilan Pemeliharaan ↗</span>
+                    </a>
+                </div>
+
+                <!-- Preset Template Options -->
+                <div>
+                    <label class="block text-xs text-slate-400 mb-2">Pilih Preset Kalimat Pemberitahuan:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <label class="flex flex-col p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:border-indigo-400/50 transition-all text-xs">
+                            <div class="flex items-center gap-2 mb-1">
+                                <input type="radio" name="maintenance_status" value="maintenance" {{ ($profile->maintenance_status ?? 'maintenance') === 'maintenance' ? 'checked' : '' }} onchange="applyMaintenancePreset('maintenance')" class="text-indigo-600 focus:ring-0">
+                                <span class="font-bold text-white">🚀 Pembaruan Sistem</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400">Sistem Sedang Dalam Pemeliharaan & Pembaruan (Direkomendasikan)</span>
+                        </label>
+
+                        <label class="flex flex-col p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:border-indigo-400/50 transition-all text-xs">
+                            <div class="flex items-center gap-2 mb-1">
+                                <input type="radio" name="maintenance_status" value="coming_soon" {{ ($profile->maintenance_status ?? '') === 'coming_soon' ? 'checked' : '' }} onchange="applyMaintenancePreset('coming_soon')" class="text-indigo-600 focus:ring-0">
+                                <span class="font-bold text-white">✨ Segera Hadir</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400">Karya & Inovasi Baru Sedang Dipersiapkan (Coming Soon)</span>
+                        </label>
+
+                        <label class="flex flex-col p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:border-indigo-400/50 transition-all text-xs">
+                            <div class="flex items-center gap-2 mb-1">
+                                <input type="radio" name="maintenance_status" value="custom" {{ ($profile->maintenance_status ?? '') === 'custom' ? 'checked' : '' }} onchange="applyMaintenancePreset('custom')" class="text-indigo-600 focus:ring-0">
+                                <span class="font-bold text-white">✏️ Pesan Kustom</span>
+                            </div>
+                            <span class="text-[11px] text-slate-400">Ketik judul dan kalimat keterangan bebas sesuai selera Anda</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Title Input -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Judul Pemberitahuan di Halaman Offline:</label>
+                    <input type="text" id="maintenance_title_input" name="maintenance_title" value="{{ old('maintenance_title', $profile->maintenance_title ?? 'Sistem Sedang Dalam Pemeliharaan & Pembaruan') }}" class="w-full text-xs sm:text-sm py-2.5 px-3.5 bg-black/40 border border-white/15 rounded-xl text-white focus:outline-none focus:border-indigo-500 font-['Space_Grotesk']" placeholder="Contoh: Sistem Sedang Dalam Pemeliharaan & Pembaruan">
+                </div>
+
+                <!-- Message Input -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Pesan / Keterangan Penjelasan:</label>
+                    <textarea id="maintenance_message_input" name="maintenance_message" rows="3" class="w-full text-xs sm:text-sm py-2 px-3 bg-black/40 border border-white/15 rounded-xl text-white focus:outline-none focus:border-indigo-500 leading-relaxed font-sans" placeholder="Tuliskan pesan penjelasan kepada pengunjung...">{{ old('maintenance_message', $profile->maintenance_message ?? 'Website portofolio kami sedang dalam proses perbaruan karya dan peningkatan fitur terbaru untuk menghadirkan pengalaman terbaik. Kami akan segera kembali online!') }}</textarea>
+                </div>
+
+                <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-start gap-2">
+                    <i class='bx bxs-info-circle text-base flex-shrink-0 mt-0.5'></i>
+                    <span><b>Catatan Keamanan Admin:</b> Saat mode pemeliharaan aktif, hanya pengunjung publik yang melihat halaman offline ini. Anda sebagai Admin yang sedang login tetap bisa membuka dan melihat beranda website secara normal.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-100 pt-6 mb-6">
+            <h2 class="text-xl font-bold font-['Space_Grotesk'] text-slate-900 border-b border-slate-100 pb-4 mb-4 flex items-center gap-2.5">
+                <i class='bx bx-slider text-2xl text-indigo-600'></i>
+                <span>Visibilitas Section Portofolio</span>
+            </h2>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                Pilih bagian mana saja yang ingin dimunculkan ke pengunjung. Jika toggle dinonaktifkan, section tersebut akan disembunyikan otomatis dari halaman depan dan menu navigasi.
+            </p>
+        </div>
+
         <div class="space-y-4 mb-8">
             
             <!-- Keahlian -->
@@ -124,9 +223,42 @@
         <div class="flex justify-end pt-4 border-t border-slate-100">
             <button type="submit" class="btn btn-primary px-6 py-3 font-bold text-sm shadow-md flex items-center gap-2 cursor-pointer">
                 <i class='bx bx-save text-lg'></i>
-                <span>Simpan Pengaturan Visibilitas</span>
+                <span>Simpan Seluruh Pengaturan Web</span>
             </button>
         </div>
     </form>
 </div>
+
+<script>
+    const maintenancePresets = {
+        maintenance: {
+            title: 'Sistem Sedang Dalam Pemeliharaan & Pembaruan',
+            message: 'Website portofolio kami sedang dalam proses perbaruan karya dan peningkatan fitur terbaru untuk menghadirkan pengalaman terbaik. Kami akan segera kembali online!'
+        },
+        coming_soon: {
+            title: 'Karya & Inovasi Baru Segera Hadir',
+            message: 'Portofolio versi terbaru sedang dipersiapkan dengan beragam karya baru. Nantikan peluncurannya segera!'
+        }
+    };
+
+    function applyMaintenancePreset(type) {
+        const titleInput = document.getElementById('maintenance_title_input');
+        const messageInput = document.getElementById('maintenance_message_input');
+        if (type in maintenancePresets && type !== 'custom') {
+            if (titleInput) titleInput.value = maintenancePresets[type].title;
+            if (messageInput) messageInput.value = maintenancePresets[type].message;
+        }
+    }
+
+    function toggleMaintenanceConfig(isOnline) {
+        const panel = document.getElementById('maintenance_config_panel');
+        if (panel) {
+            if (isOnline) {
+                panel.classList.add('opacity-75');
+            } else {
+                panel.classList.remove('opacity-75');
+            }
+        }
+    }
+</script>
 @endsection

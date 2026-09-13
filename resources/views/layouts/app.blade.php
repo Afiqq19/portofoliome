@@ -167,6 +167,22 @@
          @scroll.window="scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100"
          :style="`width: ${scrollProgress}%`"></div>
 
+    @if(auth()->check() && isset($profile) && !$profile->enable_landing_page)
+    <!-- Floating Admin Maintenance Banner -->
+    <div class="relative z-[99999] bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-slate-950 font-bold text-xs py-2 px-4 shadow-xl flex items-center justify-between gap-3 border-b border-amber-400/30 select-none">
+        <div class="flex items-center gap-2 truncate text-slate-900 mx-auto sm:mx-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping flex-shrink-0"></span>
+            <i class='bx bxs-error-circle text-base flex-shrink-0 text-slate-950'></i>
+            <span class="truncate font-['Space_Grotesk'] text-slate-950"><b>MODE PEMELIHARAAN AKTIF:</b> Landing page sedang dinonaktifkan untuk publik. Hanya Anda (Admin) yang dapat melihat halaman ini.</span>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 flex-shrink-0">
+            <a href="{{ route('admin.settings.index') }}" class="px-3 py-1 bg-slate-950 text-white rounded-lg hover:bg-slate-800 transition-colors text-[11px] font-mono whitespace-nowrap shadow">
+                Kelola Pengaturan
+            </a>
+        </div>
+    </div>
+    @endif
+
     <!-- Navigation Header (Executive Glass Capsule Layout) -->
     <nav class="navbar w-full max-w-full" x-data="{ mobileMenuOpen: false }">
         <div class="container max-w-7xl flex justify-between items-center relative gap-2 sm:gap-4 px-3 sm:px-6">

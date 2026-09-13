@@ -14,13 +14,14 @@ use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\TrackVisitor;
+use App\Http\Middleware\CheckMaintenanceMode;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // ═══════════════════════════════════════════════════════
 // 1. PUBLIC ROUTES (No Login Required)
 // ═══════════════════════════════════════════════════════
-Route::middleware(TrackVisitor::class)->group(function () {
+Route::middleware([TrackVisitor::class, CheckMaintenanceMode::class])->group(function () {
     // Halaman Utama & Khusus
     Route::get('/', [PortfolioController::class, 'index'])->name('home');
     Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
@@ -72,6 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Pengaturan Tampilan
     Route::get('/settings', [ProfileController::class, 'editSettings'])->name('settings.index');
     Route::put('/settings', [ProfileController::class, 'updateSettings'])->name('settings.update');
+    Route::get('/settings/maintenance-preview', [ProfileController::class, 'previewMaintenance'])->name('settings.maintenance-preview');
 
     // Manajemen Projek
     Route::patch('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
