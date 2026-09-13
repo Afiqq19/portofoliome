@@ -25,16 +25,6 @@
                 </h1>
                 <p class="text-slate-400 text-xs sm:text-sm max-w-2xl leading-relaxed">
                     Kelola visibilitas section portofolio, aktifkan atau matikan asisten virtual AI, atur halaman pemeliharaan, serta tautkan integrasi pihak ketiga secara instan.
-                </p>
-            </div>
-
-            <!-- Quick Action Links -->
-            <div class="flex flex-wrap items-center gap-2.5 flex-shrink-0">
-                <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 hover:text-white border border-white/15 text-xs font-semibold transition-all backdrop-blur-md shadow-sm hover:scale-105 active:scale-95">
-                    <i class='bx bx-globe text-base text-cyan-400'></i>
-                    <span>Lihat Website</span>
-                    <i class='bx bx-right-top-arrow-circle text-sm text-slate-400'></i>
-                </a>
             </div>
         </div>
     </div>

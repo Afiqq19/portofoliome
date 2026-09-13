@@ -109,22 +109,17 @@
                     <span>Bagaimana Cara Deploy Ulang?</span>
                 </div>
                 <p class="text-xs text-slate-400 leading-relaxed">
-                    Kembali ke Panel Admin, lalu klik tombol <b>"Deploy Server 🚀"</b> lagi untuk membuat token keamanan baru yang sah.
+                    Buka menu <b>Pengaturan Tampilan</b> di Panel Admin, lalu klik tombol <b>"Jalankan Deploy Sekarang"</b> untuk membuat token baru yang sah.
                 </p>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-                <a href="{{ route('admin.dashboard') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold text-sm shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_40px_rgba(245,158,11,0.5)] transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer">
-                    <i class='bx bxs-dashboard text-lg'></i>
-                    <span>Kembali ke Dashboard Admin</span>
-                </a>
-                <a href="{{ route('admin.settings.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-sm font-semibold transition-all cursor-pointer">
-                    <i class='bx bx-slider text-lg text-amber-400'></i>
-                    <span>Buka Pengaturan Web</span>
+            <!-- Single Action Button -->
+            <div class="pt-2 flex justify-center">
+                <a href="{{ route('admin.settings.index') }}" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold text-sm shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_40px_rgba(245,158,11,0.5)] transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer">
+                    <i class='bx bx-slider text-lg'></i>
+                    <span>Kembali ke Pengaturan Web</span>
                 </a>
             </div>
-
         </div>
     </main>
 
