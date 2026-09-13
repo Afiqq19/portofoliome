@@ -168,26 +168,13 @@
             <!-- Contact Emergency Action Buttons -->
             <div class="border-t border-white/10 pt-6">
                 <p class="text-xs text-slate-400 mb-4 font-['Space_Grotesk'] uppercase tracking-wider font-semibold">
-                    Perlu Berdiskusi Atau Konsultasi Projek Segera?
+                    Perlu Berdiskusi?
                 </p>
                 <div class="flex flex-wrap items-center justify-center gap-3">
-                    @php
-                        $cleanPhone = preg_replace('/[^0-9]/', '', $profile->phone ?? '6282237905639');
-                        if (str_starts_with($cleanPhone, '0')) {
-                            $cleanPhone = '62' . substr($cleanPhone, 1);
-                        }
-                    @endphp
-                    @if(!empty($cleanPhone))
-                    <a href="https://wa.me/{{ $cleanPhone }}?text=Halo%20{{ urlencode($profile->name ?? 'Mhd. Syafiq Syahmi') }},%20saya%20mengunjungi%20website%20portofolio%20Anda%20dan%20ingin%20berdiskusi%20mengenai%20projek/kesempatan%20kerja." target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95">
-                        <i class='bx bxl-whatsapp text-lg'></i>
-                        <span>Hubungi via WhatsApp</span>
-                    </a>
-                    @endif
-
                     @if(!empty($profile->email))
-                    <a href="mailto:{{ $profile->email }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white text-xs sm:text-sm font-bold transition-all active:scale-95">
-                        <i class='bx bx-envelope text-lg text-indigo-400'></i>
-                        <span>Kirim Email</span>
+                    <a href="mailto:{{ $profile->email }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white text-xs sm:text-sm font-bold shadow-lg shadow-indigo-500/25 transition-all active:scale-95">
+                        <i class='bx bx-envelope text-lg'></i>
+                        <span>Kirim Email: {{ $profile->email }}</span>
                     </a>
                     @endif
                 </div>
@@ -207,13 +194,9 @@
         </div>
     </main>
 
-    <!-- Footer Simple & Admin Bypass Link -->
-    <footer class="relative z-10 w-full max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/5">
+    <!-- Footer Simple -->
+    <footer class="relative z-10 w-full max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-500 border-t border-white/5">
         <p>&copy; {{ date('Y') }} {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}. All rights reserved.</p>
-        <a href="{{ route('login') }}" class="text-[11px] text-slate-600 hover:text-slate-400 transition-colors flex items-center gap-1 font-mono">
-            <i class='bx bx-lock-alt'></i>
-            <span>Akses Login Admin</span>
-        </a>
     </footer>
 
 </body>
