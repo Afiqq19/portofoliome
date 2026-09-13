@@ -72,17 +72,26 @@ class ProjectController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
-            $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
-            $path = 'projects/thumbnails/' . $filename;
             
-            // Auto compress
-            Storage::disk('public')->makeDirectory('projects/thumbnails');
-            $manager = new ImageManager(new Driver());
-            $image = $manager->decode($file->getPathname());
-            $image->scaleDown(width: 1920, height: 1080);
-            $image->save(storage_path('app/public/' . $path));
-            
-            $validated['thumbnail'] = $path;
+            if (extension_loaded('gd')) {
+                try {
+                    $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+                    $path = 'projects/thumbnails/' . $filename;
+                    
+                    // Auto compress
+                    Storage::disk('public')->makeDirectory('projects/thumbnails');
+                    $manager = new ImageManager(new Driver());
+                    $image = $manager->decode($file->getPathname());
+                    $image->scaleDown(width: 1920, height: 1080);
+                    $image->save(storage_path('app/public/' . $path));
+                    
+                    $validated['thumbnail'] = $path;
+                } catch (\Throwable $e) {
+                    $validated['thumbnail'] = $file->store('projects/thumbnails', 'public');
+                }
+            } else {
+                $validated['thumbnail'] = $file->store('projects/thumbnails', 'public');
+            }
         }
 
         if ($request->hasFile('zip_file')) {
@@ -158,17 +167,26 @@ class ProjectController extends Controller
             }
             
             $file = $request->file('thumbnail');
-            $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
-            $path = 'projects/thumbnails/' . $filename;
             
-            // Auto compress
-            Storage::disk('public')->makeDirectory('projects/thumbnails');
-            $manager = new ImageManager(new Driver());
-            $image = $manager->decode($file->getPathname());
-            $image->scaleDown(width: 1920, height: 1080);
-            $image->save(storage_path('app/public/' . $path));
-            
-            $validated['thumbnail'] = $path;
+            if (extension_loaded('gd')) {
+                try {
+                    $filename = Str::random(40) . '.' . $file->getClientOriginalExtension();
+                    $path = 'projects/thumbnails/' . $filename;
+                    
+                    // Auto compress
+                    Storage::disk('public')->makeDirectory('projects/thumbnails');
+                    $manager = new ImageManager(new Driver());
+                    $image = $manager->decode($file->getPathname());
+                    $image->scaleDown(width: 1920, height: 1080);
+                    $image->save(storage_path('app/public/' . $path));
+                    
+                    $validated['thumbnail'] = $path;
+                } catch (\Throwable $e) {
+                    $validated['thumbnail'] = $file->store('projects/thumbnails', 'public');
+                }
+            } else {
+                $validated['thumbnail'] = $file->store('projects/thumbnails', 'public');
+            }
         }
 
         if ($request->hasFile('zip_file')) {
