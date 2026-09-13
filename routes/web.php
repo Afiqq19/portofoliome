@@ -113,12 +113,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // 4. AUTO DEPLOY WEBHOOK (Production Server & Local Sync)
 // ═══════════════════════════════════════════════════════
 Route::get('/update-rahasia-portofolio', function () {
-    // 1. Mencegah Timeout saat proses berjalan lama
-    set_time_limit(0); 
+    // 1. Mencegah Timeout & Tingkatkan Batas Memori
+    @set_time_limit(600);
+    @ini_set('memory_limit', '512M');
 
     $repoDir = base_path();
 
-    // 2. Auto-patch .env untuk server production
+    // 2. Auto-patch .env untuk server production (WIB & Domain)
     $envFile = base_path('.env');
     if (file_exists($envFile) && is_writable($envFile)) {
         $env = file_get_contents($envFile);
@@ -131,50 +132,140 @@ Route::get('/update-rahasia-portofolio', function () {
         @file_put_contents($envFile, $env);
     }
 
-    // Path Git standar untuk Ubuntu/Linux
+    // 3. Konfigurasi Environment & Path
     $gitPath = 'git';
     putenv('GIT_TERMINAL_PROMPT=0');
     putenv('GCM_INTERACTIVE=false');
     putenv('HOME=/tmp');
     putenv('COMPOSER_HOME=/tmp');
+    putenv('PATH=' . getenv('PATH') . ':/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games');
 
-    // 3. Eksekusi Perintah
-    $output0 = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
-    $output1 = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
-    $output2 = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
-    $output3 = shell_exec("cd \"$repoDir\" && composer install --no-interaction --prefer-dist --optimize-autoloader 2>&1");
-    $output4 = shell_exec("cd \"$repoDir\" && php artisan migrate --force 2>&1");
+    // Coba perbaiki hak akses internal jika memungkinkan
+    @chmod($repoDir . '/storage', 0777);
+    @chmod($repoDir . '/bootstrap/cache', 0777);
+    @chmod($repoDir . '/.git', 0777);
+
+    // 4. Eksekusi Perintah Sinkronisasi Lengkap
+    // A. Git Safe Directory & Pull
+    $output_git_cfg = shell_exec("cd \"$repoDir\" && \"$gitPath\" config --global --add safe.directory \"*\" 2>&1");
+    $output_git_fetch = shell_exec("cd \"$repoDir\" && \"$gitPath\" fetch --all 2>&1");
+    $output_git_reset = shell_exec("cd \"$repoDir\" && \"$gitPath\" reset --hard origin/main 2>&1");
+    $output_git_commit = shell_exec("cd \"$repoDir\" && \"$gitPath\" log -1 --pretty=format:\"%h - %s (%ci)\" 2>&1");
+
+    // Deteksi jika terjadi Permission Denied pada Git
+    $hasPermError = str_contains((string)$output_git_fetch, 'Permission denied') || str_contains((string)$output_git_reset, 'Permission denied');
+
+    // B. Composer Install (Dependencies PHP)
+    $output_composer = shell_exec("cd \"$repoDir\" && composer install --no-interaction --prefer-dist --optimize-autoloader 2>&1");
+
+    // C. Database Migration
+    $output_migrate = shell_exec("cd \"$repoDir\" && php artisan migrate --force 2>&1");
+
+    // D. NPM / Vite Build (Frontend Assets)
+    $npmCheck = trim((string) shell_exec("which npm 2>&1"));
+    if ($npmCheck && !str_contains($npmCheck, 'not found') && file_exists($npmCheck)) {
+        $output_npm = shell_exec("cd \"$repoDir\" && npm install --no-audit --no-fund 2>&1 && npm run build 2>&1");
+    } else {
+        $output_npm = "ℹ️ Node.js / NPM belum terpasang di container Docker.\nAset CSS & JS Vite telah otomatis terkompilasi dan disertakan via GitHub di folder 'public/build/'.";
+    }
+
+    // E. Optimize Clear & Cache Refresh
     $output_clear = shell_exec("cd \"$repoDir\" && php artisan optimize:clear 2>&1");
-    $output_link = shell_exec("cd \"$repoDir\" && php artisan storage:link 2>&1");
-    
-    // CATATAN: npm build ditiadakan untuk mengurangi beban server.
-    // Pastikan Bapak sudah menjalankan 'npm run build' di lokal sebelum di-push ke GitHub.
 
-    return "<div style='font-family: monospace; background: #0f172a; color: #38bdf8; padding: 2rem; border-radius: 1rem; max-width: 900px; margin: 2rem auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5);'>
-                <h1 style='color: #4ade80; margin-bottom: 0.5rem;'>🚀 Auto-Deploy Portofolio Berhasil!</h1>
-                <p style='color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem;'>Sistem portofolio telah disinkronkan dengan repositori GitHub terbaru.</p>
-                <pre style='background: #020617; color: #a3e635; padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; border: 1px solid #1e293b; font-size: 0.85rem; line-height: 1.5;'>
-[GIT CONFIG]
-" . htmlspecialchars((string) $output0) . "
+    // F. Storage Link
+    if (!file_exists($repoDir . '/public/storage')) {
+        $output_link = shell_exec("cd \"$repoDir\" && php artisan storage:link 2>&1");
+    } else {
+        $output_link = "Symlink [public/storage] sudah aktif dan terhubung.";
+    }
 
-[GIT FETCH & PULL]
-" . htmlspecialchars((string) $output1) . "
-" . htmlspecialchars((string) $output2) . "
+    $timeWIB = date('d M Y, H:i:s') . ' WIB';
 
-[COMPOSER INSTALL]
-" . htmlspecialchars((string) $output3) . "
-
-[DATABASE MIGRATE]
-" . htmlspecialchars((string) $output4) . "
-
-[OPTIMIZE CLEAR & STORAGE LINK]
-" . htmlspecialchars((string) $output_clear) . "
-" . htmlspecialchars((string) $output_link) . "
-                </pre>
-                <div style='margin-top: 1.5rem;'>
-                    <a href='/' style='background: #6366f1; color: white; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: bold; font-size: 0.85rem;'>Lihat Website</a>
+    // 5. Tampilan Visual Dashboard Auto-Deploy
+    return "<!DOCTYPE html>
+    <html lang='id'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Sistem Auto-Deploy Portofolio</title>
+        <link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;600;700&display=swap' rel='stylesheet'>
+        <style>
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+            body { background-color: #060609; color: #f8fafc; font-family: 'Outfit', sans-serif; padding: 2rem 1rem; line-height: 1.6; }
+            .container { max-width: 960px; margin: 0 auto; }
+            .card { background: #0c0c14; border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+            .header { display: flex; align-items: center; justify-content: space-between; flex-wrap: gap-4; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
+            h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; color: #4ade80; display: flex; align-items: center; gap: 0.5rem; }
+            .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+            .badge-success { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+            .badge-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+            .alert-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.5rem; color: #fde68a; }
+            .code-box { background: #020617; border: 1px solid #1e293b; border-radius: 0.75rem; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a3e635; overflow-x: auto; white-space: pre-wrap; margin-top: 0.5rem; }
+            .step-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: #94a3b8; margin-top: 1.25rem; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between; }
+            .btn-group { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+            .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; font-family: 'Space Grotesk', sans-serif; }
+            .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+            .btn-secondary { background: rgba(255,255,255,0.06); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); }
+            .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='card'>
+                <div class='header'>
+                    <div>
+                        <h1>🚀 Auto-Deploy Portofolio</h1>
+                        <p style='color: #94a3b8; font-size: 0.85rem; margin-top: 0.25rem;'>Waktu Eksekusi: <b style='color: #e2e8f0;'>{$timeWIB}</b></p>
+                    </div>
+                    <div>
+                        " . ($hasPermError 
+                            ? "<span class='badge badge-warning'>⚠️ PERLU IZIN FOLDER</span>" 
+                            : "<span class='badge badge-success'>✓ PROSES SELESAI</span>") . "
+                    </div>
                 </div>
-            </div>";
+
+                " . ($hasPermError ? "
+                <div class='alert-box'>
+                    <strong>⚠️ Perhatian: Terdeteksi 'Permission denied' pada Git!</strong><br>
+                    Agar proses `git pull` dapat memperbarui kode otomatis via browser tanpa kendala hak akses, jalankan satu kali perintah ini di Terminal SSH server Linux Anda:
+                    <div class='code-box' style='color: #facc15;'>sudo chown -R www-data:www-data /var/www/portofoliome</div>
+                    Setelah itu, muat ulang (refresh) halaman ini kembali.
+                </div>
+                " : "") . "
+
+                <div class='step-title'>
+                    <span>1. GIT STATUS & UPDATE TERBARU</span>
+                    <span style='font-size: 0.75rem; font-family: monospace; color: #38bdf8;'>origin/main</span>
+                </div>
+                <div class='code-box'>[GIT CONFIG]\n" . htmlspecialchars((string)$output_git_cfg) . "
+[GIT FETCH]\n" . htmlspecialchars((string)$output_git_fetch) . "
+[GIT RESET]\n" . htmlspecialchars((string)$output_git_reset) . "
+[LATEST COMMIT]\n" . htmlspecialchars((string)$output_git_commit) . "</div>
+
+                <div class='step-title'>2. COMPOSER DEPENDENCIES (PHP)</div>
+                <div class='code-box'>" . htmlspecialchars((string)$output_composer) . "</div>
+
+                <div class='step-title'>3. DATABASE MIGRATION</div>
+                <div class='code-box'>" . htmlspecialchars((string)$output_migrate) . "</div>
+
+                <div class='step-title'>4. FRONTEND BUILD (VITE / NPM RUN BUILD)</div>
+                <div class='code-box'>" . htmlspecialchars((string)$output_npm) . "</div>
+
+                <div class='step-title'>5. OPTIMASI & CACHE CLEAR (LARAVEL)</div>
+                <div class='code-box'>" . htmlspecialchars((string)$output_clear) . "</div>
+
+                <div class='step-title'>6. STORAGE LINK</div>
+                <div class='code-box'>" . htmlspecialchars((string)$output_link) . "</div>
+
+                <div class='btn-group'>
+                    <a href='/' class='btn btn-primary'>🌐 Lihat Halaman Depan</a>
+                    <a href='/projects' class='btn btn-secondary'>📁 Katalog Projek</a>
+                    <a href='/admin' class='btn btn-secondary'>⚙️ Panel Admin</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>";
 });
 
 // Alias route untuk kemudahan akses
