@@ -311,6 +311,7 @@
 <!-- ═══════════════════════════════════════════════════════
      5. CLEAN CODE SNIPPET / MOCKUP EDITOR SHOWCASE (Nomor 5)
      ═══════════════════════════════════════════════════════ -->
+@if($profile->enable_architecture ?? true)
 <section class="py-16 relative">
     <div class="container max-w-5xl mx-auto px-4" x-data="{ activeTab: 'php' }">
         <div class="reveal flex flex-col items-center mb-12 text-center">
@@ -390,6 +391,7 @@
         </div>
     </div>
 </section>
+@endif
 
 <!-- ═══════════════════════════════════════════════════════
      5.5 TECHNICAL SKILLS SECTION ("Keahlian Teknis")

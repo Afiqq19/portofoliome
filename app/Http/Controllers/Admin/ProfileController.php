@@ -158,6 +158,7 @@ class ProfileController extends Controller
             'enable_projects' => $request->has('enable_projects'),
             'enable_certificates' => $request->has('enable_certificates'),
             'enable_estimator' => $request->has('enable_estimator'),
+            'enable_architecture' => $request->has('enable_architecture'),
             'trakteer_url' => $validated['trakteer_url'],
             'google_analytics_id' => $validated['google_analytics_id'],
         ]);

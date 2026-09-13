@@ -69,6 +69,18 @@
                 </div>
             </label>
 
+            <!-- Arsitektur Performa -->
+            <label class="flex items-center justify-between cursor-pointer p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                <div class="pr-4">
+                    <span class="block font-bold text-sm text-slate-900 mb-0.5">Section Arsitektur Performa (Live Code Preview)</span>
+                    <span class="text-xs text-slate-500">Menampilkan showcase editor kode interaktif "Arsitektur Performa & Kecepatan" di beranda.</span>
+                </div>
+                <div class="relative inline-flex items-center flex-shrink-0">
+                    <input type="checkbox" name="enable_architecture" value="1" {{ ($profile->enable_architecture ?? true) ? 'checked' : '' }} class="sr-only peer">
+                    <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 shadow-inner"></div>
+                </div>
+            </label>
+
         </div>
 
         <div class="border-t border-slate-100 pt-6 mb-8">

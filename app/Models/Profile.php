@@ -21,6 +21,7 @@ class Profile extends Model
         'enable_projects',
         'enable_certificates',
         'enable_estimator',
+        'enable_architecture',
         'google_analytics_id',
     ];
 
@@ -29,6 +30,7 @@ class Profile extends Model
         'enable_projects' => 'boolean',
         'enable_certificates' => 'boolean',
         'enable_estimator' => 'boolean',
+        'enable_architecture' => 'boolean',
     ];
 
     public function socialLinks(): HasMany
