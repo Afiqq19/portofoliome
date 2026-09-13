@@ -35,10 +35,6 @@
                     <span>Lihat Website</span>
                     <i class='bx bx-right-top-arrow-circle text-sm text-slate-400'></i>
                 </a>
-                <a href="{{ route('admin.deploy.start') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 text-xs font-bold transition-all backdrop-blur-md shadow-sm hover:scale-105 active:scale-95">
-                    <i class='bx bx-cloud-upload text-base text-emerald-400'></i>
-                    <span>Deploy Server 🚀</span>
-                </a>
             </div>
         </div>
     </div>
