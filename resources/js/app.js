@@ -468,18 +468,19 @@ function initLofiPlayer() {
         }
     }
 
-    // 1. Attempt immediate autoplay on page load
-    playAudio();
-
-    // 2. Fallback: play instantly on first user interaction anywhere on the screen
+    const interactionEvents = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
     function onFirstInteraction() {
+        // Cek lagi: jika pengunjung sudah mematikan musik, jangan pernah putar otomatis!
+        if (localStorage.getItem('lofi_user_paused') === 'true') {
+            removeAutoPlayListeners();
+            return;
+        }
         if (!isPlaying) {
             playAudio();
         }
         removeAutoPlayListeners();
     }
 
-    const interactionEvents = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
     function removeAutoPlayListeners() {
         interactionEvents.forEach((evt) => {
             window.removeEventListener(evt, onFirstInteraction);
@@ -487,17 +488,40 @@ function initLofiPlayer() {
         });
     }
 
-    interactionEvents.forEach((evt) => {
-        window.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
-        document.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
-    });
+    function registerAutoPlayListeners() {
+        interactionEvents.forEach((evt) => {
+            window.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+            document.addEventListener(evt, onFirstInteraction, { once: true, passive: true });
+        });
+    }
 
+    // 0. Cek Preferensi Pengunjung:
+    // Jika pengunjung sebelumnya sudah mematikan musik ('true'), MAKA TETAP MATI saat pindah halaman!
+    const isUserExplicitlyPaused = localStorage.getItem('lofi_user_paused') === 'true';
+
+    if (isUserExplicitlyPaused) {
+        // Pengunjung sudah mematikan: pastikan audio mati & jangan pasang listener autoplay
+        audio.pause();
+        setPausedState();
+        removeAutoPlayListeners();
+    } else {
+        // Kunjungan pertama (atau belum pernah dimatikan): otomatis putar musik
+        playAudio();
+        registerAutoPlayListeners();
+    }
+
+    // Toggle button handler
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (isPlaying) {
+            // User mematikan musik:
             audio.pause();
             setPausedState();
+            removeAutoPlayListeners();
+            localStorage.setItem('lofi_user_paused', 'true');
         } else {
+            // User menyalakan musik:
+            localStorage.setItem('lofi_user_paused', 'false');
             audio.play().then(() => {
                 setPlayingState();
             }).catch((err) => {

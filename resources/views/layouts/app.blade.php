@@ -574,13 +574,25 @@
 
     <!-- Floating Lo-Fi Coding Beats Audio Player Widget -->
     <div id="lofi-widget" class="lofi-widget">
-        <audio id="lofi-audio" preload="auto" autoplay loop>
+        <audio id="lofi-audio" preload="auto" loop>
             <source src="https://stream.zeno.fm/f3wvbbqmdg8uv" type="audio/mpeg">
         </audio>
         
         <button id="lofi-toggle" class="w-8 h-8 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95" title="Putar / Jeda Musik Santai (Lo-Fi)">
             <i class='bx bx-pause text-xl'></i>
         </button>
+
+        <script>
+            // Mencegah audio menyala dan icon flicker jika pengunjung sudah mematikan musik sebelumnya
+            if (localStorage.getItem('lofi_user_paused') === 'true') {
+                const initToggleBtn = document.getElementById('lofi-toggle');
+                if (initToggleBtn) {
+                    initToggleBtn.innerHTML = "<i class='bx bx-play text-xl'></i>";
+                    initToggleBtn.classList.remove('bg-emerald-600');
+                    initToggleBtn.classList.add('bg-indigo-600');
+                }
+            }
+        </script>
         
         <div class="flex flex-col">
             <span class="text-[11px] font-bold text-slate-200 tracking-tight flex items-center gap-1.5">
