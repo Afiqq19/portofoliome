@@ -41,7 +41,7 @@ Di dalam folder proyek (/var/www/portofoliome), pastikan kedua file ini ada:
    (Gunakan PHP versi 8.3 Apache sesuai standar Laravel terbaru)
 
    FROM php:8.3-apache
-   RUN apt-get update && apt-get install -y libzip-dev zip git libpq-dev && docker-php-ext-install pdo_mysql pdo_pgsql zip
+   RUN apt-get update && apt-get install -y libzip-dev zip git libpq-dev default-mysql-client && docker-php-ext-install pdo_mysql pdo_pgsql zip
    RUN a2enmod rewrite
    ENV APACHE_DOCUMENT_ROOT /var/www/html/public
    RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
@@ -90,7 +90,7 @@ LANGKAH 4: HUBUNGKAN KONEKSI DATABASE (.ENV)
 LANGKAH 5: JALANKAN DOCKER, KUNCI AKSES, & MIGRATE
 ------------------------------------------------------------------------
 1. Bangun dan hidupkan container Docker:
-   sudo docker compose up -d --build
+   docker compose up -d --build
 
 2. Gabungkan jaringan container ke jaringan panel MSS (agar mss-db terbaca):
    docker network connect mss-server-panel_mss-network syafiq_portofolio
