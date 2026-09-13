@@ -123,9 +123,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // 4. AUTO DEPLOY (Hanya Bisa Diakses Admin yang Sedang Login)
 // ═══════════════════════════════════════════════════════
 Route::get('/update-rahasia-portofolio', function (\Illuminate\Http\Request $request) {
-    // 0. Proteksi Otorisasi Ketat: Wajib login sebagai Admin terotentikasi
+    // 0. Proteksi Otorisasi Ketat: Wajib login sebagai Admin terotentikasi (Tidak diarahkan ke login)
     if (!auth()->check() || !auth()->user()->isAdmin()) {
-        return redirect()->guest(route('login'))->with('error', 'Akses Terbatas: Silakan login terlebih dahulu sebagai Admin untuk melakukan pembaruan sistem.');
+        abort(403, 'Akses Tidak Tersedia: Halaman ini bersifat terbatas dan hanya dapat diakses oleh Administrator yang berwenang.');
     }
 
     // 1. Mencegah Timeout & Tingkatkan Batas Memori
