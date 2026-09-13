@@ -215,7 +215,37 @@ class ProjectController extends Controller
 
         unset($validated['zip_file'], $validated['apk_file'], $validated['credentials_username'], $validated['credentials_password'], $validated['credentials_role'], $validated['credentials_note']);
 
-        $project->update($validated);
+        // Cek apakah ada perubahan pada konten / isi sebenarnya dari projek
+        $project->fill($validated);
+
+        $contentAttributes = [
+            'title',
+            'slug',
+            'description',
+            'long_description',
+            'tech_stack',
+            'demo_url',
+            'github_url',
+            'thumbnail',
+            'zip_path',
+            'apk_path',
+            'credentials',
+        ];
+
+        $contentChanged = false;
+        foreach ($contentAttributes as $attr) {
+            if ($project->isDirty($attr)) {
+                $contentChanged = true;
+                break;
+            }
+        }
+
+        // Jika hanya mengubah status (draft <-> published) atau visibilitas tanpa mengubah isi konten, jangan perbarui jam updated_at
+        if (!$contentChanged) {
+            $project->timestamps = false;
+        }
+
+        $project->save();
 
         return redirect()->route('admin.projects.index')->with('success', 'Projek berhasil diperbarui! ✅');
     }
@@ -239,9 +269,10 @@ class ProjectController extends Controller
 
     public function toggleStatus(Project $project)
     {
-        $project->update([
-            'status' => $project->status === 'published' ? 'draft' : 'published'
-        ]);
+        // Jangan ubah jam updated_at saat hanya mengubah status draft / published
+        $project->timestamps = false;
+        $project->status = $project->status === 'published' ? 'draft' : 'published';
+        $project->save();
 
         return redirect()->back()->with('success', 'Status projek berhasil diubah!');
     }
