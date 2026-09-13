@@ -255,13 +255,13 @@
                             </a>
                             @if($profile && $profile->resume_path)
                             <div class="h-px bg-white/10 my-1"></div>
-                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
+                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors cursor-pointer" @click="open = false; $event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')">
                                 <div class="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all">
                                     <i class='bx bxs-file-pdf text-base'></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-200 group-hover:text-rose-300" x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh CV / Resume'">Unduh CV / Resume</div>
-                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified PDF Document' : 'Dokumen PDF Resmi'">Dokumen PDF Resmi</div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-rose-300" x-text="$store.lang?.current === 'en' ? 'Preview / Download CV' : 'Lihat & Unduh CV'">Lihat & Unduh CV</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified PDF Document' : 'Pratinjau Dokumen PDF'">Pratinjau Dokumen PDF</div>
                                 </div>
                             </a>
                             @endif
@@ -442,9 +442,9 @@
                 <span x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</span>
             </a>
             @if($profile && $profile->resume_path)
-                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2" @click="mobileMenuOpen = false">
+                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer" @click="mobileMenuOpen = false; $event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')">
                     <i class='bx bxs-file-pdf text-lg text-rose-400'></i>
-                    <span x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh CV / Resume (PDF)'">Unduh CV / Resume (PDF)</span>
+                    <span x-text="$store.lang?.current === 'en' ? 'Preview & Download CV (PDF)' : 'Lihat & Unduh CV / Resume (PDF)'">Lihat & Unduh CV / Resume (PDF)</span>
                 </a>
             @endif
             
@@ -517,9 +517,9 @@
                     <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
                     @if($profile && $profile->resume_path)
-                        <a href="{{ route('cv.download') }}" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300">
+                        <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300 cursor-pointer">
                             <i class='bx bxs-file-pdf text-rose-400'></i>
-                            <span x-text="$store.lang?.current === 'en' ? 'CV (PDF)' : 'Unduh CV'">Unduh CV</span>
+                            <span x-text="$store.lang?.current === 'en' ? 'Preview CV (PDF)' : 'Lihat CV (PDF)'">Lihat CV (PDF)</span>
                         </a>
                     @endif
                 </div>
@@ -597,6 +597,264 @@
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-y-1 transition-transform relative z-10"><path d="m18 15-6-6-6 6"/></svg>
     </button>
+
+    <!-- Developer CLI Floating Trigger Button -->
+    <button id="terminal-trigger" onclick="toggleTerminalModal()" class="fixed bottom-24 left-6 z-40 px-3.5 py-2 rounded-full bg-[#0c0c14]/90 hover:bg-indigo-600 border border-white/15 hover:border-indigo-400 text-slate-300 hover:text-white backdrop-blur-xl shadow-lg transition-all duration-300 flex items-center gap-2 group hover:scale-105 active:scale-95 cursor-pointer" title="Buka Interactive Developer Terminal">
+        <span class="font-mono font-bold text-xs text-accent-cyan group-hover:text-white">&gt;_</span>
+        <span class="text-xs font-mono font-semibold hidden sm:inline">Dev Console</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    </button>
+
+    <!-- Developer CLI Terminal Modal -->
+    <div id="terminal-modal" class="fixed bottom-24 left-4 sm:left-6 z-50 w-[calc(100vw-2rem)] sm:w-[520px] max-h-[480px] bg-[#0c0c14]/98 border border-indigo-500/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0 pointer-events-none font-mono" style="display: none;">
+        <!-- Terminal Header Bar -->
+        <div class="flex items-center justify-between px-4 py-2.5 bg-[#060609] border-b border-white/10 select-none">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500 cursor-pointer hover:opacity-80" onclick="toggleTerminalModal()"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span class="text-[11px] text-slate-300 font-bold ml-2">syafiq@terminal:~ (zsh)</span>
+            </div>
+            <button onclick="toggleTerminalModal()" class="text-slate-400 hover:text-white text-xs cursor-pointer">
+                <i class='bx bx-x text-base'></i>
+            </button>
+        </div>
+
+        <!-- Terminal Output Area -->
+        <div id="terminal-output" class="p-4 overflow-y-auto max-h-[300px] text-xs space-y-2 text-slate-300 leading-relaxed scrollbar-thin">
+            <div class="text-emerald-400 font-bold">💻 Mhd. Syafiq Syahmi Interactive CLI [Version 2.4]</div>
+            <div class="text-slate-400 text-[11px]">Ketik <span class="text-cyan-400 font-bold">help</span> untuk daftar perintah, atau klik chip di bawah.</div>
+            <div class="h-px bg-white/10 my-1"></div>
+        </div>
+
+        <!-- Quick Action Command Chips -->
+        <div class="px-3 py-1.5 bg-[#08080d] border-t border-white/10 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px]">
+            <span class="text-slate-500 font-semibold uppercase tracking-wider text-[9px] mr-1">Quick:</span>
+            <button onclick="executeTerminalCommand('bio')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-cyan-300 transition-colors cursor-pointer">bio</button>
+            <button onclick="executeTerminalCommand('skills')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-cyan-300 transition-colors cursor-pointer">skills</button>
+            <button onclick="executeTerminalCommand('projects')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-cyan-300 transition-colors cursor-pointer">projects</button>
+            <button onclick="executeTerminalCommand('contact')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-cyan-300 transition-colors cursor-pointer">contact</button>
+            <button onclick="executeTerminalCommand('socials')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-cyan-300 transition-colors cursor-pointer">socials</button>
+            <button onclick="executeTerminalCommand('clear')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-rose-400 transition-colors cursor-pointer">clear</button>
+        </div>
+
+        <!-- Terminal Input Line -->
+        <form id="terminal-form" onsubmit="handleTerminalSubmit(event)" class="flex items-center px-4 py-2.5 bg-[#060609] border-t border-white/10">
+            <span class="text-emerald-400 font-bold mr-2 text-xs">❯</span>
+            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="Ketik perintah..." class="flex-1 bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none font-mono">
+            <button type="submit" class="text-indigo-400 hover:text-indigo-300 text-sm ml-2 cursor-pointer">
+                <i class='bx bx-send'></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Interactive In-Page PDF Modal Viewer -->
+    <div id="pdf-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl transition-all duration-300 opacity-0 pointer-events-none" style="display: none;">
+        <div class="relative w-full max-w-5xl h-[88vh] bg-[#0c0c14] border border-white/15 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[#060609]/90 backdrop-blur-md select-none">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 flex-shrink-0">
+                        <i class='bx bxs-file-pdf text-xl'></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 id="pdf-modal-title" class="text-xs sm:text-sm font-bold font-['Space_Grotesk'] text-slate-100 truncate">Pratinjau Dokumen PDF</h4>
+                        <p class="text-[10px] text-slate-400 font-mono">Dokumen Resmi & Terverifikasi • Mhd. Syafiq Syahmi</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a id="pdf-modal-download" href="#" download class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-bold transition-all shadow-md active:scale-95">
+                        <i class='bx bx-download text-sm'></i>
+                        <span class="hidden sm:inline">Unduh Dokumen</span>
+                    </a>
+                    <button onclick="closePdfModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer">
+                        <i class='bx bx-x text-2xl'></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Modal Body (Embed / iFrame) -->
+            <div class="flex-1 w-full h-full bg-[#131320] relative">
+                <iframe id="pdf-modal-frame" src="" class="w-full h-full border-0" title="PDF Preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Interactive PDF Viewer & Developer Terminal JS -->
+    <script>
+        // PDF Modal Functions
+        function openPdfModal(url, title = 'Dokumen PDF') {
+            const modal = document.getElementById('pdf-modal');
+            const frame = document.getElementById('pdf-modal-frame');
+            const titleElem = document.getElementById('pdf-modal-title');
+            const downloadBtn = document.getElementById('pdf-modal-download');
+            
+            if (!modal || !frame) return;
+            
+            titleElem.innerText = title;
+            downloadBtn.href = url;
+            frame.src = url;
+            
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100');
+            });
+        }
+
+        function closePdfModal() {
+            const modal = document.getElementById('pdf-modal');
+            const frame = document.getElementById('pdf-modal-frame');
+            if (!modal) return;
+            
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                if (frame) frame.src = '';
+            }, 250);
+        }
+
+        // Developer CLI Terminal Controller
+        const devTerminalData = {
+            name: "{{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}",
+            title: "{{ !empty($profile->title) ? trim(explode(',', $profile->title)[0]) : 'Software Engineer' }}",
+            bio: "{{ addslashes(strip_tags($profile->bio ?? 'Full Stack & Mobile Engineer.')) }}",
+            email: "{{ $profile->email ?? 'mhdsyafiqsyahmi@gmail.com' }}",
+            phone: "{{ $profile->phone ?? '+62 812-3456-7890' }}",
+            projectsUrl: "{{ route('projects.all') }}",
+            cvUrl: "{{ route('cv.download') }}",
+            socials: [
+                @if(isset($profile) && $profile->socialLinks)
+                    @foreach($profile->socialLinks as $link)
+                        { platform: "{{ $link->platform }}", url: "{{ $link->url }}" },
+                    @endforeach
+                @endif
+            ]
+        };
+
+        function toggleTerminalModal() {
+            const modal = document.getElementById('terminal-modal');
+            if (!modal) return;
+
+            const isHidden = modal.style.display === 'none' || modal.classList.contains('pointer-events-none');
+            if (isHidden) {
+                modal.style.display = 'flex';
+                requestAnimationFrame(() => {
+                    modal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                    modal.classList.add('opacity-100', 'scale-100');
+                    document.getElementById('terminal-input')?.focus();
+                });
+            } else {
+                modal.classList.remove('opacity-100', 'scale-100');
+                modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+                setTimeout(() => { modal.style.display = 'none'; }, 200);
+            }
+        }
+
+        function executeTerminalCommand(cmd) {
+            const output = document.getElementById('terminal-output');
+            if (!output) return;
+
+            const trimmed = cmd.trim().toLowerCase();
+            const promptLine = document.createElement('div');
+            promptLine.className = 'text-slate-400 font-bold';
+            promptLine.innerHTML = `<span class="text-emerald-400">❯</span> <span class="text-white">${cmd}</span>`;
+            output.appendChild(promptLine);
+
+            const resLine = document.createElement('div');
+            resLine.className = 'pl-3';
+
+            switch (trimmed) {
+                case 'help':
+                    resLine.innerHTML = `
+                        <div class="text-indigo-400 font-semibold mb-1">Perintah Tersedia:</div>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[11px]">
+                            <div><span class="text-cyan-300 font-bold">bio</span> - Info pengembang</div>
+                            <div><span class="text-cyan-300 font-bold">skills</span> - Stack teknologi</div>
+                            <div><span class="text-cyan-300 font-bold">projects</span> - Katalog karya</div>
+                            <div><span class="text-cyan-300 font-bold">contact</span> - Kontak & WhatsApp</div>
+                            <div><span class="text-cyan-300 font-bold">socials</span> - Akun media sosial</div>
+                            <div><span class="text-cyan-300 font-bold">cv</span> - Pratinjau PDF CV</div>
+                            <div><span class="text-rose-400 font-bold">clear</span> - Bersihkan konsol</div>
+                            <div><span class="text-slate-400 font-bold">exit</span> - Tutup terminal</div>
+                        </div>
+                    `;
+                    break;
+                case 'bio':
+                    resLine.innerHTML = `
+                        <div class="p-2 rounded-lg bg-white/5 border border-white/10">
+                            <div class="font-bold text-white">${devTerminalData.name}</div>
+                            <div class="text-xs text-indigo-400">${devTerminalData.title}</div>
+                            <div class="text-[11px] text-slate-400 mt-1">${devTerminalData.bio}</div>
+                        </div>
+                    `;
+                    break;
+                case 'skills':
+                    resLine.innerHTML = `
+                        <div class="text-slate-300 text-[11px] space-y-1">
+                            <div>⚡ <b class="text-white">Core:</b> Laravel, PHP 8+, JavaScript (ES6+), Alpine.js</div>
+                            <div>🎨 <b class="text-white">Frontend:</b> Tailwind CSS, HTML5/CSS3, Blade Templates</div>
+                            <div>📱 <b class="text-white">Mobile:</b> Flutter, Android APK Development</div>
+                            <div>🛠️ <b class="text-white">Tools & Ops:</b> Docker, Nginx, Git, MySQL, Linux VPS</div>
+                        </div>
+                    `;
+                    break;
+                case 'projects':
+                    resLine.innerHTML = `
+                        <div class="text-[11px]">
+                            <div class="text-slate-300 mb-1">Menampilkan ringkasan katalog karya:</div>
+                            <a href="${devTerminalData.projectsUrl}" class="inline-flex items-center gap-1 text-cyan-400 hover:underline font-bold">
+                                <span>Buka Semua Projek Portofolio</span>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </a>
+                        </div>
+                    `;
+                    break;
+                case 'contact':
+                    resLine.innerHTML = `
+                        <div class="text-[11px] space-y-0.5">
+                            <div>📧 Email: <a href="mailto:${devTerminalData.email}" class="text-cyan-400 hover:underline">${devTerminalData.email}</a></div>
+                            <div>💬 WhatsApp: <a href="https://wa.me/${devTerminalData.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-400 hover:underline">${devTerminalData.phone}</a></div>
+                        </div>
+                    `;
+                    break;
+                case 'socials':
+                    let linksHtml = devTerminalData.socials.map(s => `<div>🔗 <a href="${s.url}" target="_blank" class="text-cyan-400 hover:underline capitalize">${s.platform}</a></div>`).join('');
+                    resLine.innerHTML = `<div class="text-[11px] space-y-0.5">${linksHtml || 'Belum ada sosial media.'}</div>`;
+                    break;
+                case 'cv':
+                    resLine.innerHTML = `<div class="text-rose-400 text-[11px]">Membuka pratinjau dokumen CV...</div>`;
+                    openPdfModal(devTerminalData.cvUrl, 'Curriculum Vitae - ' + devTerminalData.name);
+                    break;
+                case 'clear':
+                    output.innerHTML = `
+                        <div class="text-emerald-400 font-bold">💻 Mhd. Syafiq Syahmi Interactive CLI [Version 2.4]</div>
+                        <div class="text-slate-400 text-[11px]">Ketik <span class="text-cyan-400 font-bold">help</span> untuk daftar perintah.</div>
+                        <div class="h-px bg-white/10 my-1"></div>
+                    `;
+                    return;
+                case 'exit':
+                case 'quit':
+                    toggleTerminalModal();
+                    return;
+                default:
+                    resLine.innerHTML = `<div class="text-rose-400 text-[11px]">Perintah tidak dikenali: <b>${cmd}</b>. Ketik <span class="text-cyan-400">help</span> untuk melihat daftar perintah.</div>`;
+                    break;
+            }
+
+            output.appendChild(resLine);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function handleTerminalSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('terminal-input');
+            if (!input || !input.value.trim()) return;
+            const cmd = input.value;
+            input.value = '';
+            executeTerminalCommand(cmd);
+        }
+    </script>
 
 </body>
 </html>

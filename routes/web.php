@@ -60,6 +60,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 // ═══════════════════════════════════════════════════════
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/export-visitors', [DashboardController::class, 'exportVisitors'])->name('dashboard.export-visitors');
 
     // Profil & Media Sosial
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -92,6 +93,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
 
     // Pesan Masuk & Tiket
+    Route::get('/messages/export', [MessageController::class, 'export'])->name('messages.export');
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::post('/messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');

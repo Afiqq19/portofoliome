@@ -1,9 +1,17 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="mb-8">
-    <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Pesan Masuk (Inbox)</h1>
-    <p class="text-slate-500 text-sm">Kelola seluruh pesan, pertanyaan, dan tawaran kerjasama dari formulir kontak.</p>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+        <h1 class="text-3xl font-black font-['Space_Grotesk'] text-slate-900 mb-1">Pesan Masuk (Inbox)</h1>
+        <p class="text-slate-500 text-sm">Kelola seluruh pesan, pertanyaan, dan tawaran kerjasama dari formulir kontak.</p>
+    </div>
+    <div>
+        <a href="{{ route('admin.messages.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-sm">
+            <i class='bx bx-download text-base text-indigo-400'></i>
+            <span>Export Semua Pesan (CSV)</span>
+        </a>
+    </div>
 </div>
 
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">

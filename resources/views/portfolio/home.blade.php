@@ -114,9 +114,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
             @if($profile && $profile->resume_path)
-            <a href="{{ route('cv.download') }}" class="btn btn-outline btn-lg group border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-600/10 shadow-lg">
+            <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.download') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}')" class="btn btn-outline btn-lg group border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-600/10 shadow-lg cursor-pointer">
                 <i class='bx bxs-file-pdf text-xl text-rose-400 group-hover:scale-110 transition-transform'></i>
-                <span x-text="$store.lang?.current === 'en' ? 'Download CV' : 'Unduh CV'">Unduh CV</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Preview / Download CV' : 'Lihat / Unduh CV'">Lihat / Unduh CV</span>
             </a>
             @endif
             <a href="#contact" class="btn btn-outline btn-lg group">

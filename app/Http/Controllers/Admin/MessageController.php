@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MessageController extends Controller
 {
@@ -25,7 +27,7 @@ class MessageController extends Controller
         return redirect()->route('admin.messages.index')->with('success', 'Pesan berhasil dihapus!');
     }
 
-    public function reply(\Illuminate\Http\Request $request, ContactMessage $message)
+    public function reply(Request $request, ContactMessage $message)
     {
         $request->validate([
             'reply_body' => 'required|string',
@@ -50,5 +52,52 @@ class MessageController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Balasan tersimpan di sistem, TAPI gagal mengirim email: ' . $e->getMessage() . '. Pastikan setting SMTP di file .env sudah benar.');
         }
+    }
+
+    /**
+     * Export all contact messages to CSV
+     */
+    public function export()
+    {
+        $fileName = 'pesan-kontak-' . date('Y-m-d-His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            fputcsv($file, ['No', 'ID Tiket', 'Nama Pengirim', 'Email', 'Subjek', 'Isi Pesan', 'Status Baca', 'Waktu Masuk (WIB)']);
+
+            $no = 0;
+            ContactMessage::latest()->chunk(250, function ($messages) use ($file, &$no) {
+                foreach ($messages as $m) {
+                    $no++;
+                    $status = $m->is_read ? 'Sudah Dibaca' : 'Belum Dibaca';
+                    $timeWib = $m->created_at ? $m->created_at->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s') : '-';
+
+                    fputcsv($file, [
+                        $no,
+                        $m->ticket_id ?? '-',
+                        $m->name,
+                        $m->email,
+                        $m->subject ?? '-',
+                        $m->message,
+                        $status,
+                        $timeWib
+                    ]);
+                }
+            });
+
+            fclose($file);
+        };
+
+        return new StreamedResponse($callback, 200, $headers);
     }
 }
