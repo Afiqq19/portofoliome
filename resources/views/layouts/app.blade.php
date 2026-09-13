@@ -161,9 +161,12 @@
                     <span class="text-xs sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight truncate max-w-[120px] xs:max-w-[150px] sm:max-w-none leading-tight">
                         {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}
                     </span>
+                    @php
+                        $headerRole = !empty($profile->title) ? trim(explode(',', $profile->title)[0]) : 'Software Engineer';
+                    @endphp
                     <span class="text-[9px] sm:text-[10px] text-slate-400 font-mono flex items-center gap-1 sm:gap-1.5 leading-none mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
-                        <span class="text-slate-400 truncate">Software Engineer</span>
+                        <span class="text-slate-400 truncate">{{ $headerRole }}</span>
                     </span>
                 </div>
             </a>

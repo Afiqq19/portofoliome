@@ -12,9 +12,10 @@ class TicketController extends Controller
      */
     public function show($ticket_id)
     {
+        $profile = \App\Models\Profile::with('socialLinks')->first();
         $message = ContactMessage::with('replies')->where('ticket_id', $ticket_id)->firstOrFail();
         
-        return view('portfolio.ticket', compact('message'));
+        return view('portfolio.ticket', compact('message', 'profile'));
     }
 
     /**
