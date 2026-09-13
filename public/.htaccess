@@ -14,6 +14,13 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Block access to hidden files and dotfiles (except .well-known)
+    RewriteCond %{REQUEST_URI} "!(^|/)\.well-known([^./]+)?/" [NC]
+    RewriteRule "(^|/)\.(?!well-known)" - [F,L]
+
+    # Block access to sensitive file extensions (.env, .sql, .bak, .sh, .log, .yml, .yaml, .git)
+    RewriteRule \.(env|sql|bak|sh|log|yml|yaml|ini|git)$ - [F,L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

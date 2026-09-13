@@ -38,14 +38,14 @@ Route::middleware([TrackVisitor::class, CheckMaintenanceMode::class])->group(fun
     Route::get('/cv/stream', [PortfolioController::class, 'streamCv'])->name('cv.stream');
     Route::get('/resume', [PortfolioController::class, 'downloadCv'])->name('resume.download');
     
-    // Interaksi & Formulir Publik
-    Route::post('/donate', [PortfolioController::class, 'donate'])->name('donate');
-    Route::post('/contact', [PortfolioController::class, 'contact'])->name('contact.send');
-    Route::post('/notes', [PortfolioController::class, 'storeNote'])->name('notes.store');
+    // Interaksi & Formulir Publik (Anti-Spam Rate Limiting: max 5/min)
+    Route::post('/donate', [PortfolioController::class, 'donate'])->name('donate')->middleware('throttle:5,1');
+    Route::post('/contact', [PortfolioController::class, 'contact'])->name('contact.send')->middleware('throttle:5,1');
+    Route::post('/notes', [PortfolioController::class, 'storeNote'])->name('notes.store')->middleware('throttle:5,1');
     
     // Tiket Percakapan
     Route::get('/ticket/{ticket_id}', [TicketController::class, 'show'])->name('ticket.show');
-    Route::post('/ticket/{ticket_id}/reply', [TicketController::class, 'reply'])->name('ticket.reply');
+    Route::post('/ticket/{ticket_id}/reply', [TicketController::class, 'reply'])->name('ticket.reply')->middleware('throttle:5,1');
 });
 
 // ═══════════════════════════════════════════════════════
@@ -53,7 +53,7 @@ Route::middleware([TrackVisitor::class, CheckMaintenanceMode::class])->group(fun
 // ═══════════════════════════════════════════════════════
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:10,1');
 });
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
@@ -119,7 +119,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // ═══════════════════════════════════════════════════════
 // 4. AUTO DEPLOY WEBHOOK (Production Server & Local Sync)
 // ═══════════════════════════════════════════════════════
-Route::get('/update-rahasia-portofolio', function () {
+Route::get('/update-rahasia-portofolio', function (\Illuminate\Http\Request $request) {
+    // 0. Proteksi Otorisasi: Hanya Admin yang sedang login ATAU memiliki token rahasia yang sah
+    $validToken = env('DEPLOY_SECRET_TOKEN', 'mhd-syafiq-deploy-secure-2026');
+    $isAuthorized = (auth()->check() && auth()->user()->isAdmin()) || ($request->query('token') === $validToken);
+
+    if (!$isAuthorized) {
+        abort(403, 'Akses Ditolak: Anda tidak memiliki otoritas untuk memicu proses pembaruan sistem.');
+    }
+
     // 1. Mencegah Timeout & Tingkatkan Batas Memori
     @set_time_limit(600);
     @ini_set('memory_limit', '512M');
