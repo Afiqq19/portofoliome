@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
+    <meta name="description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Web & Mobile Developer. Membangun aplikasi modern berkinerja tinggi, arsitektur bersih, dan desain interaktif.' }}">
     <title>@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="alternate icon" href="{{ asset('favicon.svg') }}">
@@ -14,16 +14,38 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('title', ($profile->name ?? 'Portofolio'))">
-    <meta property="og:description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
+    <meta property="og:title" content="@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')">
+    <meta property="og:description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Web & Mobile Developer dengan karya aplikasi berkinerja tinggi.' }}">
     <meta property="og:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="@yield('title', ($profile->name ?? 'Portofolio'))">
-    <meta property="twitter:description" content="{{ $profile->bio ?? 'Portofolio Profesional & Modern - Web & Mobile Developer' }}">
+    <meta property="twitter:title" content="@yield('title', ($profile->name ?? 'Mhd. Syafiq Syahmi') . ' - Portofolio')">
+    <meta property="twitter:description" content="{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Portofolio resmi Mhd. Syafiq Syahmi - Web & Mobile Developer dengan karya aplikasi berkinerja tinggi.' }}">
     <meta property="twitter:image" content="{{ (isset($profile) && $profile->avatar) ? asset('storage/' . $profile->avatar) : asset('favicon.svg') }}">
+
+    <!-- JSON-LD Structured Data for Google Search Engine (Person & WebSite) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}",
+      "url": "{{ url('/') }}",
+      "jobTitle": "{{ !empty($profile->title) ? trim(explode(',', $profile->title)[0]) : 'Software Engineer' }}",
+      "description": "{{ !empty($profile->bio) ? Str::limit(strip_tags($profile->bio), 160) : 'Web & Mobile Developer' }}",
+      @if(isset($profile) && $profile->avatar)
+      "image": "{{ asset('storage/' . $profile->avatar) }}",
+      @endif
+      "sameAs": [
+        @if(isset($profile) && $profile->socialLinks && $profile->socialLinks->count() > 0)
+          @foreach($profile->socialLinks as $index => $link)
+            "{{ $link->url }}"{{ $loop->last ? '' : ',' }}
+          @endforeach
+        @endif
+      ]
+    }
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
