@@ -307,6 +307,7 @@
                              @click.outside="open = false"
                              class="absolute top-full left-0 mt-3 w-64 p-2 rounded-2xl bg-[#0c0c14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-50 flex flex-col gap-1"
                              style="display: none;">
+                            @if($profile->enable_estimator ?? true)
                             <a href="{{ route('estimator') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
                                 <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all">
                                     <i class='bx bx-calculator text-base'></i>
@@ -316,6 +317,7 @@
                                     <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Estimate duration & investment' : 'Simulasi biaya & waktu projek'">Simulasi biaya & waktu projek</div>
                                 </div>
                             </a>
+                            @endif
                             <a href="{{ route('faq') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors" @click="open = false">
                                 <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all">
                                     <i class='bx bx-help-circle text-base'></i>
@@ -435,9 +437,11 @@
             @endif
 
             <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider px-3 mt-2" x-text="$store.lang?.current === 'en' ? 'Services & Interaction' : 'Layanan & Interaksi'">Layanan & Interaksi</div>
+            @if($profile->enable_estimator ?? true)
             <a href="{{ route('estimator') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
                 <span x-text="$store.lang?.current === 'en' ? 'Cost & Time Estimator' : 'Kalkulator Estimasi Projek'">Kalkulator Estimasi Projek</span>
             </a>
+            @endif
             <a href="{{ route('faq') }}" class="text-slate-300 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all" @click="mobileMenuOpen = false">
                 <span x-text="$store.lang?.current === 'en' ? 'FAQ (Frequently Asked Questions)' : 'Tanya Jawab (FAQ)'">Tanya Jawab (FAQ)</span>
             </a>
@@ -483,7 +487,9 @@
                     <a href="{{ route('home') }}#timeline" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Timeline' : 'Pengalaman'">Pengalaman</a>
                     <a href="{{ route('projects.all') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Projects' : 'Katalog Projek'">Katalog Projek</a>
                     <a href="{{ route('certificates') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Certificates' : 'Galeri Sertifikat'">Galeri Sertifikat</a>
+                    @if($profile->enable_estimator ?? true)
                     <a href="{{ route('estimator') }}" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Estimator' : 'Kalkulator Estimasi'">Kalkulator Estimasi</a>
+                    @endif
                     <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
                     @if($profile && $profile->resume_path)

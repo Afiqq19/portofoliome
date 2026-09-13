@@ -52,6 +52,9 @@ class PortfolioController extends Controller
     public function estimator()
     {
         $profile = Profile::with('socialLinks')->first();
+        if (!($profile->enable_estimator ?? true)) {
+            return redirect()->route('home')->with('info', 'Layanan Kalkulator Estimasi sedang dinonaktifkan.');
+        }
         return view('portfolio.estimator', compact('profile'));
     }
 
