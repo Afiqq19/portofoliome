@@ -147,7 +147,7 @@
          :style="`width: ${scrollProgress}%`"></div>
 
     <!-- Navigation Header (Executive Glass Capsule Layout) -->
-    <nav class="navbar w-full max-w-full overflow-hidden" x-data="{ mobileMenuOpen: false }">
+    <nav class="navbar w-full max-w-full" x-data="{ mobileMenuOpen: false }">
         <div class="container max-w-7xl flex justify-between items-center relative gap-2 sm:gap-4 px-3 sm:px-6">
             
             <!-- Brand Mark (Left) -->
