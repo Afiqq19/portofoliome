@@ -3,19 +3,19 @@
 @section('title', $project->title . ' - ' . config('app.name'))
 
 @section('content')
-<div class="pt-32 pb-24 relative">
+<div class="pt-24 sm:pt-32 pb-24 relative overflow-hidden w-full max-w-full">
     
-    <!-- Ambient Glow -->
-    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+    <!-- Ambient Glow (Strictly Contained) -->
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-[350px] sm:max-w-[600px] h-[250px] sm:h-[400px] bg-indigo-600/15 rounded-full blur-[90px] sm:blur-[140px] pointer-events-none -z-10"></div>
 
-    <div class="container max-w-6xl mx-auto px-4">
+    <div class="container max-w-6xl mx-auto px-4 sm:px-6 w-full">
         
         <!-- Back Navigation Button -->
-        <a href="{{ route('home') }}#projects" class="group text-slate-400 hover:text-white flex items-center gap-2 mb-10 inline-flex transition-colors font-medium">
+        <a href="{{ route('home') }}#projects" class="group text-slate-400 hover:text-white flex items-center gap-2 mb-8 sm:mb-10 inline-flex transition-colors font-medium">
             <span class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500 group-hover:border-transparent group-hover:text-white transition-all">
                 <i class='bx bx-arrow-back text-lg'></i>
             </span>
-            <span class="text-sm font-semibold">Kembali ke Daftar Projek</span>
+            <span class="text-xs sm:text-sm font-semibold">Kembali ke Daftar Projek</span>
         </a>
 
         @if(session('error'))
@@ -31,78 +31,78 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-14">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 w-full">
             
             <!-- Main Content Area (2 Cols) -->
-            <div class="lg:col-span-2 space-y-10">
+            <div class="lg:col-span-2 space-y-8 sm:space-y-10 w-full min-w-0">
                 
                 <!-- Cinematic Thumbnail Card -->
-                <div class="rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10 relative group max-h-[500px] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group max-h-[420px] sm:max-h-[500px] flex items-center justify-center bg-black/50 backdrop-blur-sm w-full">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#060609] via-transparent to-transparent opacity-70 z-10 pointer-events-none"></div>
                     
                     @if($project->thumbnail)
-                        <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full max-h-[500px] object-contain transform group-hover:scale-105 transition-transform duration-1000 relative z-0">
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full max-h-[420px] sm:max-h-[500px] object-contain transform group-hover:scale-105 transition-transform duration-1000 relative z-0">
                     @else
-                        <div class="flex flex-col items-center justify-center text-slate-600 w-full h-[380px]">
-                            <i class='bx bx-laptop text-7xl text-indigo-400/40 mb-3'></i>
-                            <span class="text-sm font-mono tracking-wider uppercase text-slate-400">Pratinjau Projek</span>
+                        <div class="flex flex-col items-center justify-center text-slate-600 w-full h-[220px] sm:h-[350px] p-6 text-center">
+                            <i class='bx bx-laptop text-5xl sm:text-7xl text-indigo-400/40 mb-3'></i>
+                            <span class="text-xs sm:text-sm font-mono tracking-wider uppercase text-slate-400">Pratinjau Projek</span>
                         </div>
                     @endif
                     
-                    <div class="absolute bottom-6 left-6 right-6 z-20 flex justify-between items-end">
-                        <div class="flex gap-2 flex-wrap">
+                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 z-20 flex justify-between items-end">
+                        <div class="flex gap-1.5 sm:gap-2 flex-wrap">
                             @foreach($project->tech_stack ?? [] as $tech)
-                                <span class="px-3 py-1 rounded-lg text-xs font-bold bg-black/60 text-indigo-300 backdrop-blur-md border border-white/20">{{ $tech }}</span>
+                                <span class="px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs font-bold bg-black/70 text-indigo-300 backdrop-blur-md border border-white/20">{{ $tech }}</span>
                             @endforeach
                         </div>
                     </div>
                 </div>
 
                 <!-- Title & Description -->
-                <div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 tracking-tight leading-tight mb-6">
+                <div class="w-full">
+                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 tracking-tight leading-tight mb-4 sm:mb-6 break-words">
                         {{ $project->title }}
                     </h1>
                     
                     <!-- Long Description Glass Panel -->
-                    <div class="glass-panel p-8 md:p-10 text-slate-300 leading-loose text-base md:text-lg font-light rounded-3xl border border-white/10 shadow-xl space-y-4">
+                    <div class="glass-panel p-5 sm:p-8 md:p-10 text-slate-300 leading-relaxed sm:leading-loose text-sm sm:text-base md:text-lg font-light rounded-3xl border border-white/10 shadow-xl space-y-4 break-words">
                         {!! nl2br(e($project->long_description ?? $project->description)) !!}
                     </div>
                 </div>
 
                 <!-- Credentials Info Section (If applicable) -->
                 @if($project->credentials && count($project->credentials) > 0)
-                <div class="glass-panel p-8 md:p-10 rounded-3xl relative overflow-hidden shadow-2xl border border-white/10">
+                <div class="glass-panel p-5 sm:p-8 md:p-10 rounded-3xl relative overflow-hidden shadow-2xl border border-white/10 w-full">
                     <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.2)] flex-shrink-0">
                             <i class='bx bx-key text-2xl'></i>
                         </div>
-                        <h3 class="text-2xl font-bold font-['Space_Grotesk'] text-slate-100">Panduan Login Demo</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold font-['Space_Grotesk'] text-slate-100">Panduan Login Demo</h3>
                     </div>
-                    <p class="text-slate-400 mb-6 font-light text-sm">Gunakan akun berikut untuk menguji fitur aplikasi secara langsung setelah diunduh atau saat live demo.</p>
+                    <p class="text-slate-400 mb-6 font-light text-xs sm:text-sm">Gunakan akun berikut untuk menguji fitur aplikasi secara langsung setelah diunduh atau saat live demo.</p>
                     
-                    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-black/30">
-                        <table class="w-full text-left border-collapse">
+                    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-black/30 max-w-full">
+                        <table class="w-full text-left border-collapse min-w-[480px]">
                             <thead>
-                                <tr class="border-b border-white/10 text-xs uppercase tracking-wider text-slate-400 bg-white/5">
-                                    <th class="p-4 font-bold">Role</th>
-                                    <th class="p-4 font-bold">Username / Email</th>
-                                    <th class="p-4 font-bold">Password</th>
-                                    <th class="p-4 font-bold">Catatan</th>
-                                    <th class="p-4 font-bold text-right">Salin</th>
+                                <tr class="border-b border-white/10 text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 bg-white/5">
+                                    <th class="p-3 sm:p-4 font-bold">Role</th>
+                                    <th class="p-3 sm:p-4 font-bold">Username / Email</th>
+                                    <th class="p-3 sm:p-4 font-bold">Password</th>
+                                    <th class="p-3 sm:p-4 font-bold">Catatan</th>
+                                    <th class="p-3 sm:p-4 font-bold text-right">Salin</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-white/5 text-sm">
+                            <tbody class="divide-y divide-white/5 text-xs sm:text-sm">
                                 @foreach($project->credentials as $cred)
                                 <tr class="hover:bg-white/5 transition-colors">
-                                    <td class="p-4"><span class="px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">{{ $cred['role'] ?? 'User' }}</span></td>
-                                    <td class="p-4 font-bold text-slate-100">{{ $cred['username'] }}</td>
-                                    <td class="p-4 font-mono font-bold text-accent-cyan">{{ $cred['password'] }}</td>
-                                    <td class="p-4 text-slate-400 text-xs">{{ $cred['note'] ?? '-' }}</td>
-                                    <td class="p-4 text-right">
+                                    <td class="p-3 sm:p-4"><span class="px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">{{ $cred['role'] ?? 'User' }}</span></td>
+                                    <td class="p-3 sm:p-4 font-bold text-slate-100 break-all">{{ $cred['username'] }}</td>
+                                    <td class="p-3 sm:p-4 font-mono font-bold text-accent-cyan break-all">{{ $cred['password'] }}</td>
+                                    <td class="p-3 sm:p-4 text-slate-400 text-xs">{{ $cred['note'] ?? '-' }}</td>
+                                    <td class="p-3 sm:p-4 text-right">
                                         <button type="button" 
                                                 onclick="copyToClipboard('{{ addslashes($cred['username'] . ' / ' . $cred['password']) }}', 'Akun demo berhasil disalin!')" 
-                                                class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-indigo-600 text-slate-200 hover:text-white text-xs font-semibold transition-colors inline-flex items-center gap-1">
+                                                class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-indigo-600 text-slate-200 hover:text-white text-xs font-semibold transition-colors inline-flex items-center gap-1 cursor-pointer">
                                             <i class='bx bx-copy'></i>
                                             <span>Salin</span>
                                         </button>
@@ -118,8 +118,8 @@
             </div>
 
             <!-- Sidebar Actions (1 Col) -->
-            <div class="lg:col-span-1">
-                <div class="glass-panel p-8 rounded-3xl sticky top-28 border border-white/10 shadow-2xl space-y-6">
+            <div class="lg:col-span-1 w-full">
+                <div class="glass-panel p-5 sm:p-8 rounded-3xl sticky top-28 border border-white/10 shadow-2xl space-y-6 w-full">
                     <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 border-b border-white/10 pb-4 flex items-center gap-2">
                         <i class='bx bx-rocket text-indigo-400'></i>
                         <span>Aksi Projek</span>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden w-full max-w-full">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,7 +79,7 @@
     <!-- AlpineJS for reactive interactions -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
-<body class="bg-[#060609] text-slate-100 antialiased relative selection:bg-indigo-500/30 selection:text-indigo-200" x-data>
+<body class="bg-[#060609] text-slate-100 antialiased relative selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden w-full max-w-full" x-data>
     
     <!-- Preloader / Splash Screen -->
     <div id="page-loader" class="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center transition-all duration-700">
@@ -147,23 +147,23 @@
          :style="`width: ${scrollProgress}%`"></div>
 
     <!-- Navigation Header (Executive Glass Capsule Layout) -->
-    <nav class="navbar" x-data="{ mobileMenuOpen: false }">
-        <div class="container max-w-7xl flex justify-between items-center relative gap-4">
+    <nav class="navbar w-full max-w-full overflow-hidden" x-data="{ mobileMenuOpen: false }">
+        <div class="container max-w-7xl flex justify-between items-center relative gap-2 sm:gap-4 px-3 sm:px-6">
             
             <!-- Brand Mark (Left) -->
-            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-3 flex-shrink-0" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300">
-                    <div class="w-full h-full bg-[#060609] rounded-[10px] flex items-center justify-center font-black text-xs sm:text-sm tracking-wider">
+            <a href="{{ route('home') }}" class="nav-brand group flex items-center gap-2 sm:gap-3 flex-shrink min-w-0" @click="if (window.location.pathname === '/') { $event.preventDefault(); window.scrollTo({top: 0, behavior: 'smooth'}); history.replaceState(null, '', '/'); }">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] transition-all duration-300 flex-shrink-0">
+                    <div class="w-full h-full bg-[#060609] rounded-[9px] sm:rounded-[10px] flex items-center justify-center font-black text-xs sm:text-sm tracking-wider">
                         <span class="text-gradient font-black">MSS</span>
                     </div>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight group-hover:scale-[1.01] transition-transform whitespace-nowrap leading-tight">
+                <div class="flex flex-col min-w-0 overflow-hidden">
+                    <span class="text-xs sm:text-lg font-bold font-['Space_Grotesk'] text-gradient tracking-tight truncate max-w-[120px] xs:max-w-[150px] sm:max-w-none leading-tight">
                         {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}
                     </span>
-                    <span class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 leading-none mt-0.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span class="text-slate-400">Software Engineer</span>
+                    <span class="text-[9px] sm:text-[10px] text-slate-400 font-mono flex items-center gap-1 sm:gap-1.5 leading-none mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
+                        <span class="text-slate-400 truncate">Software Engineer</span>
                     </span>
                 </div>
             </a>
@@ -362,7 +362,7 @@
             </div>
 
             <!-- Mobile Controls (Right) -->
-            <div class="flex items-center gap-2 md:hidden">
+            <div class="flex items-center gap-1.5 sm:gap-2 md:hidden flex-shrink-0">
                 <!-- Mobile Segmented Language Pill -->
                 <div class="glass-panel p-0.5 rounded-full border border-white/10 flex items-center bg-white/5">
                     <button @click="$store.lang.set('id')" 
@@ -378,9 +378,9 @@
                 </div>
 
                 <!-- Mobile Menu Toggle Button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all">
-                    <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-                    <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 hover:border-indigo-500 transition-all flex-shrink-0">
+                    <svg x-show="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    <svg x-show="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
                 </button>
             </div>
         </div>
@@ -451,7 +451,7 @@
     </nav>
 
     <!-- Main Dynamic Content -->
-    <main class="relative z-10 min-h-screen">
+    <main class="relative z-10 min-h-screen overflow-x-hidden w-full max-w-full">
         @yield('content')
     </main>
 

@@ -3,10 +3,10 @@
 @section('title', 'Tiket Percakapan #' . ($message->ticket_id ?? '') . ' - ' . config('app.name'))
 
 @section('content')
-<div class="container max-w-4xl mx-auto px-4 pt-36 pb-24 relative">
+<div class="container max-w-4xl mx-auto px-4 pt-36 pb-24 relative overflow-hidden">
     
     <!-- Ambient Glow -->
-    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-[500px] h-[350px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
     <div class="mb-12 text-center">
         <a href="{{ route('home') }}" class="group text-slate-400 hover:text-white flex items-center justify-center gap-2 mb-6 inline-flex transition-colors font-medium">
