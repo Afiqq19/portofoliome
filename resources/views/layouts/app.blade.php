@@ -271,13 +271,13 @@
                             </a>
                             @if($profile && $profile->resume_path)
                             <div class="h-px bg-white/10 my-1"></div>
-                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors cursor-pointer" @click="open = false; $event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')">
+                            <a href="{{ route('cv.download') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 group transition-colors cursor-pointer" @click="open = false">
                                 <div class="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all">
                                     <i class='bx bxs-file-pdf text-base'></i>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-bold text-slate-200 group-hover:text-rose-300" x-text="$store.lang?.current === 'en' ? 'Preview / Download CV' : 'Lihat & Unduh CV'">Lihat & Unduh CV</div>
-                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Verified PDF Document' : 'Pratinjau Dokumen PDF'">Pratinjau Dokumen PDF</div>
+                                    <div class="text-xs font-bold text-slate-200 group-hover:text-rose-300" x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh Dokumen CV'">Unduh Dokumen CV</div>
+                                    <div class="text-[10px] text-slate-400" x-text="$store.lang?.current === 'en' ? 'Official PDF Resume' : 'Format Dokumen PDF Resmi'">Format Dokumen PDF Resmi</div>
                                 </div>
                             </a>
                             @endif
@@ -458,9 +458,9 @@
                 <span x-text="$store.lang?.current === 'en' ? 'Experience & Career' : 'Pengalaman & Karir'">Pengalaman & Karir</span>
             </a>
             @if($profile && $profile->resume_path)
-                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer" @click="mobileMenuOpen = false; $event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')">
+                <a href="{{ route('cv.download') }}" class="text-rose-400 hover:text-white font-medium py-2 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center gap-2 cursor-pointer" @click="mobileMenuOpen = false">
                     <i class='bx bxs-file-pdf text-lg text-rose-400'></i>
-                    <span x-text="$store.lang?.current === 'en' ? 'Preview & Download CV (PDF)' : 'Lihat & Unduh CV / Resume (PDF)'">Lihat & Unduh CV / Resume (PDF)</span>
+                    <span x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh Dokumen CV (PDF)'">Unduh Dokumen CV (PDF)</span>
                 </a>
             @endif
             
@@ -533,9 +533,9 @@
                     <a href="{{ route('faq') }}" class="hover:text-indigo-400 transition-colors {{ request()->routeIs('faq') ? 'text-indigo-400 font-bold' : '' }}">FAQ</a>
                     <a href="{{ route('home') }}#contact" class="hover:text-indigo-400 transition-colors" x-text="$store.lang?.current === 'en' ? 'Contact' : 'Kontak'">Kontak</a>
                     @if($profile && $profile->resume_path)
-                        <a href="{{ route('cv.download') }}" onclick="event.preventDefault(); openPdfModal('{{ route('cv.stream') }}', 'Curriculum Vitae - {{ $profile->name ?? 'Mhd. Syafiq Syahmi' }}', '{{ route('cv.download') }}')" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300 cursor-pointer">
+                        <a href="{{ route('cv.download') }}" class="hover:text-rose-400 transition-colors flex items-center gap-1 font-semibold text-slate-300 cursor-pointer">
                             <i class='bx bxs-file-pdf text-rose-400'></i>
-                            <span x-text="$store.lang?.current === 'en' ? 'Preview CV (PDF)' : 'Lihat CV (PDF)'">Lihat CV (PDF)</span>
+                            <span x-text="$store.lang?.current === 'en' ? 'Download CV (PDF)' : 'Unduh CV (PDF)'">Unduh CV (PDF)</span>
                         </a>
                     @endif
                 </div>
