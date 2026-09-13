@@ -11,12 +11,55 @@ class ExperienceController extends Controller
     public function index()
     {
         $experiences = Experience::orderBy('order')->orderBy('created_at', 'desc')->get();
+
+        // Normalisasi otomatis jika terdapat order bernilai 0 atau ada nilai duplikat
+        $orders = $experiences->pluck('order')->toArray();
+        if (in_array(0, $orders) || count($orders) !== count(array_unique($orders))) {
+            foreach ($experiences as $i => $item) {
+                $item->update(['order' => $i + 1]);
+            }
+            $experiences = Experience::orderBy('order')->get();
+        }
+
         return view('admin.experiences.index', compact('experiences'));
     }
 
     public function create()
     {
-        return view('admin.experiences.create');
+        $nextOrder = (Experience::max('order') ?? 0) + 1;
+        return view('admin.experiences.create', compact('nextOrder'));
+    }
+
+    public function moveUp(Experience $experience)
+    {
+        $previous = Experience::where('order', '<', $experience->order)
+            ->orderBy('order', 'desc')
+            ->first();
+
+        if ($previous) {
+            $currentOrder = $experience->order;
+            $experience->update(['order' => $previous->order]);
+            $previous->update(['order' => $currentOrder]);
+            return back()->with('success', 'Urutan berhasil dinaikkan! 🔼');
+        }
+
+        return back()->with('info', 'Pengalaman ini sudah berada di posisi paling atas.');
+    }
+
+    public function moveDown(Experience $experience)
+    {
+        $next = Experience::where('order', '>', $experience->order)
+            ->orderBy('order', 'asc')
+            ->first();
+
+        if ($next) {
+            $currentOrder = $experience->order;
+            $experience->update(['order' => $next->order]);
+            $next->update(['order' => $currentOrder]);
+            return back()->with('success', 'Urutan berhasil diturunkan! 🔽');
+        }
+
+        return back()->with('info', 'Pengalaman ini sudah berada di posisi paling bawah.');
     }
 
     public function store(Request $request)

@@ -69,9 +69,9 @@
             </div>
             
             <div class="form-group mb-0">
-                <label class="form-label">Urutan Tampil (Order)</label>
-                <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}" min="0" required>
-                <p class="text-xs text-slate-500 mt-1">Angka yang lebih kecil akan tampil lebih dulu (di atas).</p>
+                <label class="form-label">Urutan Prioritas Tampil</label>
+                <input type="number" name="order" class="form-control" value="{{ old('order', $nextOrder ?? 1) }}" min="1" required>
+                <p class="text-xs text-slate-500 mt-1">Nomor urutan tampil di web (1, 2, 3...). Otomatis diisi urutan berikutnya.</p>
             </div>
         </div>
 

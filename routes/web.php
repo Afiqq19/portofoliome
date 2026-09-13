@@ -91,6 +91,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Manajemen Pengalaman (Experiences)
     Route::patch('experiences/{experience}/toggle-status', [ExperienceController::class, 'toggleStatus'])->name('experiences.toggle-status');
+    Route::post('experiences/{experience}/move-up', [ExperienceController::class, 'moveUp'])->name('experiences.move-up');
+    Route::post('experiences/{experience}/move-down', [ExperienceController::class, 'moveDown'])->name('experiences.move-down');
     Route::resource('experiences', ExperienceController::class);
 
 

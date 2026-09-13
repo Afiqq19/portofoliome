@@ -18,10 +18,11 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                        <th class="p-4 pl-6 w-16 text-center">Urutan</th>
+                        <th class="p-4 pl-6 w-14 text-center">No.</th>
                         <th class="p-4">Pengalaman & Peran</th>
                         <th class="p-4">Kategori</th>
                         <th class="p-4">Periode</th>
+                        <th class="p-4 text-center">Urutan Tampil</th>
                         <th class="p-4 text-center">Status</th>
                         <th class="p-4 pr-6 text-right">Aksi</th>
                     </tr>
@@ -29,8 +30,8 @@
                 <tbody class="text-sm divide-y divide-slate-100">
                     @foreach($experiences as $exp)
                     <tr class="hover:bg-slate-50/50 transition-colors group">
-                        <td class="p-4 pl-6 text-center font-mono font-bold text-slate-400">
-                            {{ $exp->order }}
+                        <td class="p-4 pl-6 text-center font-bold text-slate-400 text-sm">
+                            {{ $loop->iteration }}
                         </td>
                         <td class="p-4">
                             <div class="flex items-start gap-3">
@@ -73,6 +74,25 @@
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
                                 <i class='bx bx-calendar text-slate-400'></i> {{ $exp->period }}
                             </span>
+                        </td>
+                        <td class="p-4 text-center whitespace-nowrap">
+                            <div class="inline-flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-200 shadow-2xs">
+                                <span class="font-mono font-bold text-xs text-indigo-600">#{{ $exp->order }}</span>
+                                <div class="flex items-center gap-0.5 ml-1 border-l border-slate-200 pl-1.5">
+                                    <form action="{{ route('admin.experiences.move-up', $exp->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="w-5 h-5 flex items-center justify-center rounded text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors {{ $loop->first ? 'opacity-25 cursor-not-allowed' : 'cursor-pointer' }}" {{ $loop->first ? 'disabled' : '' }} title="Pindah ke Atas">
+                                            <i class='bx bx-chevron-up text-base font-bold'></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('admin.experiences.move-down', $exp->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="w-5 h-5 flex items-center justify-center rounded text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors {{ $loop->last ? 'opacity-25 cursor-not-allowed' : 'cursor-pointer' }}" {{ $loop->last ? 'disabled' : '' }} title="Pindah ke Bawah">
+                                            <i class='bx bx-chevron-down text-base font-bold'></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                         <td class="p-4 text-center">
                             <form action="{{ route('admin.experiences.toggle-status', $exp->id) }}" method="POST">
