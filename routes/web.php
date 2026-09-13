@@ -122,13 +122,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 // ═══════════════════════════════════════════════════════
 // 4. AUTO DEPLOY WEBHOOK (Production Server & Local Sync)
 // ═══════════════════════════════════════════════════════
-Route::get('/update-rahasia-portofolio', function (\Illuminate\Http\Request $request) {
-    // 0. Proteksi Otorisasi: Hanya Admin yang sedang login ATAU memiliki token rahasia yang sah
+Route::get('/update-rahasia-portofolio/{token?}', function (\Illuminate\Http\Request $request, $token = null) {
+    // 0. Proteksi Otorisasi: Hanya Admin yang sedang login ATAU memiliki token rahasia yang sah (via query ?token= atau path /token)
     $validToken = env('DEPLOY_SECRET_TOKEN', 'mhd-syafiq-deploy-secure-2026');
-    $isAuthorized = (auth()->check() && auth()->user()->isAdmin()) || ($request->query('token') === $validToken);
+    $isAuthorized = (auth()->check() && auth()->user()->isAdmin()) 
+        || ($request->query('token') === $validToken) 
+        || ($token === $validToken);
 
     if (!$isAuthorized) {
-        abort(403, 'Akses Ditolak: Anda tidak memiliki otoritas untuk memicu proses pembaruan sistem.');
+        abort(403, 'Akses Ditolak: Anda tidak memiliki otoritas untuk memicu proses pembaruan sistem. Gunakan token rahasia yang sah atau login sebagai Admin.');
     }
 
     // 1. Mencegah Timeout & Tingkatkan Batas Memori
