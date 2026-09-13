@@ -20,6 +20,7 @@
                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
                         <th class="p-4 pl-6 w-16 text-center">Urutan</th>
                         <th class="p-4">Pengalaman & Peran</th>
+                        <th class="p-4">Kategori</th>
                         <th class="p-4">Periode</th>
                         <th class="p-4 text-center">Status</th>
                         <th class="p-4 pr-6 text-right">Aksi</th>
@@ -34,7 +35,7 @@
                         <td class="p-4">
                             <div class="flex items-start gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-{{ $exp->color }}-50 text-{{ $exp->color }}-600 flex items-center justify-center flex-shrink-0 shadow-sm border border-{{ $exp->color }}-100 mt-0.5">
-                                    <i class='bx bx-briefcase text-xl'></i>
+                                    <i class='{{ $exp->category_icon }} text-xl'></i>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-slate-900 text-base mb-0.5 group-hover:text-indigo-600 transition-colors">{{ $exp->title }}</h3>
@@ -52,6 +53,21 @@
                                     @endif
                                 </div>
                             </div>
+                        </td>
+                        <td class="p-4 whitespace-nowrap">
+                            @if($exp->category === 'education')
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-50 text-cyan-700 text-xs font-bold border border-cyan-200">
+                                    <i class='bx bxs-graduation'></i> Pendidikan
+                                </span>
+                            @elseif($exp->category === 'organization')
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
+                                    <i class='bx bx-group'></i> Organisasi
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-200">
+                                    <i class='bx bx-briefcase'></i> Karir & Magang
+                                </span>
+                            @endif
                         </td>
                         <td class="p-4 whitespace-nowrap">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">

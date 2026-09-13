@@ -8,6 +8,7 @@ class Experience extends Model
 {
     protected $fillable = [
         'profile_id',
+        'category',
         'title',
         'company',
         'period',
@@ -21,6 +22,24 @@ class Experience extends Model
     protected $casts = [
         'is_published' => 'boolean',
     ];
+
+    public function getCategoryLabelAttribute(): string
+    {
+        return match($this->category) {
+            'education' => 'Pendidikan',
+            'organization' => 'Organisasi',
+            default => 'Karir & Magang',
+        };
+    }
+
+    public function getCategoryIconAttribute(): string
+    {
+        return match($this->category) {
+            'education' => 'bx bxs-graduation',
+            'organization' => 'bx bx-group',
+            default => 'bx bx-briefcase',
+        };
+    }
 
     public function profile()
     {

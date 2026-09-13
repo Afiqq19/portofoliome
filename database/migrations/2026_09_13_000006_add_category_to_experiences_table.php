@@ -1,20 +1,23 @@
 <?php
 
-namespace Database\Seeders;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Database\Seeder;
-use App\Models\Experience;
-use App\Models\Profile;
-
-class ExperienceSeeder extends Seeder
+return new class extends Migration
 {
-    public function run(): void
+    public function up(): void
     {
-        $profileId = Profile::first()->id ?? null;
+        if (!Schema::hasColumn('experiences', 'category')) {
+            Schema::table('experiences', function (Blueprint $table) {
+                $table->string('category')->default('work')->after('company');
+            });
+        }
 
-        $experiences = [
+        // Authentic CV Experiences data for Syafiq
+        $authenticExperiences = [
             [
-                'profile_id' => $profileId,
                 'title' => 'Teknologi Informasi (IT) - Magang',
                 'company' => 'PT Pelindo Multi Terminal (Kuala Tanjung)',
                 'category' => 'work',
@@ -26,7 +29,6 @@ class ExperienceSeeder extends Seeder
                 'is_published' => true,
             ],
             [
-                'profile_id' => $profileId,
                 'title' => 'Admin Administrasi Umum - Magang',
                 'company' => 'PT Telkom Akses (Siantar)',
                 'category' => 'work',
@@ -38,7 +40,6 @@ class ExperienceSeeder extends Seeder
                 'is_published' => true,
             ],
             [
-                'profile_id' => $profileId,
                 'title' => 'Freelance Fullstack & Mobile Developer',
                 'company' => 'Self-Employed / Freelance',
                 'category' => 'work',
@@ -50,7 +51,6 @@ class ExperienceSeeder extends Seeder
                 'is_published' => true,
             ],
             [
-                'profile_id' => $profileId,
                 'title' => 'D3 Manajemen Informatika',
                 'company' => 'Politeknik Negeri Medan (Polmed)',
                 'category' => 'education',
@@ -62,7 +62,6 @@ class ExperienceSeeder extends Seeder
                 'is_published' => true,
             ],
             [
-                'profile_id' => $profileId,
                 'title' => 'Pengurus Departemen (Purna Tugas)',
                 'company' => 'BEM Politeknik Negeri Medan',
                 'category' => 'organization',
@@ -74,7 +73,6 @@ class ExperienceSeeder extends Seeder
                 'is_published' => true,
             ],
             [
-                'profile_id' => $profileId,
                 'title' => 'Pengurus Wilayah / Nasional (Purna Tugas)',
                 'company' => 'FKMPI (Forum Komunikasi Mahasiswa Politeknik se-Indonesia)',
                 'category' => 'organization',
@@ -87,9 +85,26 @@ class ExperienceSeeder extends Seeder
             ],
         ];
 
-        Experience::truncate();
-        foreach ($experiences as $exp) {
-            Experience::create($exp);
+        $firstProfileId = DB::table('profiles')->value('id');
+        $hasPelindo = DB::table('experiences')->where('company', 'LIKE', '%Pelindo%')->exists();
+        
+        if (!$hasPelindo) {
+            DB::table('experiences')->truncate();
+            foreach ($authenticExperiences as $item) {
+                $item['profile_id'] = $firstProfileId;
+                $item['created_at'] = now();
+                $item['updated_at'] = now();
+                DB::table('experiences')->insert($item);
+            }
         }
     }
-}
+
+    public function down(): void
+    {
+        if (Schema::hasColumn('experiences', 'category')) {
+            Schema::table('experiences', function (Blueprint $table) {
+                $table->dropColumn('category');
+            });
+        }
+    }
+};

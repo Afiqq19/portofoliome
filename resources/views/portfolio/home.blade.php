@@ -454,14 +454,52 @@
 <!-- ═══════════════════════════════════════════════════════
      5.6 JOURNEY & EXPERIENCE TIMELINE ("Perjalanan & Pengalaman")
      ═══════════════════════════════════════════════════════ -->
-<section id="timeline" class="py-24 relative">
+<section id="timeline" class="py-24 relative" x-data="{ activeTab: 'all' }">
     <div class="container max-w-5xl mx-auto">
-        <div class="reveal flex flex-col items-center mb-16 text-center">
-            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Milestones & Career' : 'Jejak & Pencapaian'">Jejak & Pencapaian</div>
+        <div class="reveal flex flex-col items-center mb-10 text-center">
+            <div class="badge mb-3" x-text="$store.lang?.current === 'en' ? 'Milestones & Track Record' : 'Jejak, Karir & Organisasi'">Jejak, Karir & Organisasi</div>
             <h2 class="text-3xl md:text-5xl font-black font-['Space_Grotesk'] text-slate-100 mb-4">
-                <span x-text="$store.lang?.current === 'en' ? 'Journey &' : 'Perjalanan'">Perjalanan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Experience' : '& Pengalaman'">& Pengalaman</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Journey &' : 'Perjalanan'">Perjalanan</span> <span class="text-gradient" x-text="$store.lang?.current === 'en' ? 'Track Record' : '& Rekam Jejak'">& Rekam Jejak</span>
             </h2>
-            <p class="text-slate-400 max-w-lg text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'Timeline of dedication, technological exploration, and building digital products.' : 'Garis waktu dedikasi, eksplorasi teknologi, dan peran dalam membangun produk digital berkualitas.'">Garis waktu dedikasi, eksplorasi teknologi, dan peran dalam membangun produk digital berkualitas.</p>
+            <p class="text-slate-400 max-w-xl text-sm md:text-base" x-text="$store.lang?.current === 'en' ? 'A chronological record of professional industry internships, higher education, and leadership in student organizations.' : 'Rekam jejak dedikasi profesional di industri, riwayat pendidikan formal, kepemimpinan organisasi, dan pengembangan teknologi digital.'">Rekam jejak dedikasi profesional di industri, riwayat pendidikan formal, kepemimpinan organisasi, dan pengembangan teknologi digital.</p>
+        </div>
+
+        <!-- Interactive Category Filter Chips -->
+        <div class="reveal flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-14">
+            <button @click="activeTab = 'all'" 
+                    :class="activeTab === 'all' ? 'bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 text-white shadow-lg shadow-indigo-500/25 border-transparent scale-105' : 'bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white'"
+                    class="px-4 py-2 rounded-full text-xs md:text-sm font-bold border transition-all duration-300 flex items-center gap-2 cursor-pointer">
+                <span>⚡</span>
+                <span x-text="$store.lang?.current === 'en' ? 'All Milestones' : 'Semua Jejak'">Semua Jejak</span>
+                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white">{{ $experiences->count() }}</span>
+            </button>
+            <button @click="activeTab = 'work'" 
+                    :class="activeTab === 'work' ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25 border-transparent scale-105' : 'bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white'"
+                    class="px-4 py-2 rounded-full text-xs md:text-sm font-bold border transition-all duration-300 flex items-center gap-2 cursor-pointer">
+                <span>💼</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Career & Internships' : 'Karir & Magang'">Karir & Magang</span>
+                @if($experiences->where('category', 'work')->count() > 0)
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white">{{ $experiences->where('category', 'work')->count() }}</span>
+                @endif
+            </button>
+            <button @click="activeTab = 'education'" 
+                    :class="activeTab === 'education' ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 border-transparent scale-105' : 'bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white'"
+                    class="px-4 py-2 rounded-full text-xs md:text-sm font-bold border transition-all duration-300 flex items-center gap-2 cursor-pointer">
+                <span>🎓</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Education' : 'Pendidikan'">Pendidikan</span>
+                @if($experiences->where('category', 'education')->count() > 0)
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white">{{ $experiences->where('category', 'education')->count() }}</span>
+                @endif
+            </button>
+            <button @click="activeTab = 'organization'" 
+                    :class="activeTab === 'organization' ? 'bg-gradient-to-r from-amber-500 to-rose-600 text-white shadow-lg shadow-amber-500/25 border-transparent scale-105' : 'bg-white/5 text-slate-400 border-white/10 hover:border-white/20 hover:text-white'"
+                    class="px-4 py-2 rounded-full text-xs md:text-sm font-bold border transition-all duration-300 flex items-center gap-2 cursor-pointer">
+                <span>🏛️</span>
+                <span x-text="$store.lang?.current === 'en' ? 'Organizations' : 'Organisasi'">Organisasi</span>
+                @if($experiences->where('category', 'organization')->count() > 0)
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white">{{ $experiences->where('category', 'organization')->count() }}</span>
+                @endif
+            </button>
         </div>
 
         <div class="timeline-container relative">
@@ -471,7 +509,6 @@
                 @forelse($experiences as $index => $exp)
                     @php
                         $isEven = $index % 2 == 0;
-                        // Map colors to hex for glow effects
                         $colorHex = match($exp->color) {
                             'indigo' => '#6366f1',
                             'cyan' => '#06b6d4',
@@ -481,24 +518,60 @@
                             'amber' => '#f59e0b',
                             default => '#6366f1',
                         };
+                        $cat = $exp->category ?? 'work';
                     @endphp
                     
-                    <div class="reveal flex flex-col md:flex-row items-center gap-8 relative">
+                    <div class="reveal flex flex-col md:flex-row items-center gap-8 relative"
+                         x-show="activeTab === 'all' || activeTab === '{{ $cat }}'"
+                         x-transition:enter="transition ease-out duration-300 transform"
+                         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-200 transform"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95">
+                        
                         <div class="hidden md:block timeline-dot left-1/2 -translate-x-1/2 top-8 bg-{{ $exp->color }}-400 shadow-[0_0_15px_{{ $colorHex }}]"></div>
                         <div class="md:hidden timeline-dot left-[6px] top-6 bg-{{ $exp->color }}-400 shadow-[0_0_15px_{{ $colorHex }}]"></div>
 
                         @if($isEven)
                             <div class="w-full md:w-1/2 md:pr-12 md:text-right">
                                 <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-{{ $exp->color }}-500/40 group">
-                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono mb-3">
-                                        <i class='bx bx-calendar'></i>
-                                        <span>{{ $exp->period }}</span>
+                                    <div class="flex flex-wrap items-center gap-2 mb-3 md:justify-end">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono">
+                                            <i class='bx bx-calendar'></i>
+                                            <span>{{ $exp->period }}</span>
+                                        </div>
+                                        @if($cat === 'education')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold">
+                                                <i class='bx bxs-graduation'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Education' : 'Pendidikan'">Pendidikan</span>
+                                            </span>
+                                        @elseif($cat === 'organization')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-semibold">
+                                                <i class='bx bx-group'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Organization' : 'Organisasi'">Organisasi</span>
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-[11px] font-semibold">
+                                                <i class='bx bx-briefcase'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Career & Intern' : 'Karir & Magang'">Karir & Magang</span>
+                                            </span>
+                                        @endif
                                     </div>
                                     <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-{{ $exp->color }}-400 transition-colors mb-2">
                                         {{ $exp->title }}
                                     </h3>
                                     @if($exp->company)
-                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-2">{{ $exp->company }}</div>
+                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-3 flex items-center gap-1.5 md:justify-end">
+                                            @if($cat === 'education')
+                                                <i class='bx bxs-school text-base'></i>
+                                            @elseif($cat === 'organization')
+                                                <i class='bx bx-sitemap text-base'></i>
+                                            @else
+                                                <i class='bx bx-buildings text-base'></i>
+                                            @endif
+                                            <span>{{ $exp->company }}</span>
+                                        </div>
                                     @endif
                                     <p class="text-sm text-slate-400 leading-relaxed">
                                         {{ $exp->description }}
@@ -506,7 +579,7 @@
                                     @if(!empty($exp->tags_array))
                                         <div class="flex flex-wrap gap-1.5 mt-4 md:justify-end">
                                             @foreach($exp->tags_array as $tag)
-                                                <span class="badge text-[11px] bg-white/5 text-slate-300">{{ $tag }}</span>
+                                                <span class="badge text-[11px] bg-white/5 text-slate-300 border border-white/5">{{ $tag }}</span>
                                             @endforeach
                                         </div>
                                     @endif
@@ -517,15 +590,42 @@
                             <div class="hidden md:block w-1/2"></div>
                             <div class="w-full md:w-1/2 md:pl-12">
                                 <div class="glass-card spotlight-card tilt-card p-6 md:p-8 rounded-3xl border border-white/10 hover:border-{{ $exp->color }}-500/40 group">
-                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono mb-3">
-                                        <i class='bx bx-calendar'></i>
-                                        <span>{{ $exp->period }}</span>
+                                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-{{ $exp->color }}-500/10 border border-{{ $exp->color }}-500/30 text-{{ $exp->color }}-400 text-xs font-bold font-mono">
+                                            <i class='bx bx-calendar'></i>
+                                            <span>{{ $exp->period }}</span>
+                                        </div>
+                                        @if($cat === 'education')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold">
+                                                <i class='bx bxs-graduation'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Education' : 'Pendidikan'">Pendidikan</span>
+                                            </span>
+                                        @elseif($cat === 'organization')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-semibold">
+                                                <i class='bx bx-group'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Organization' : 'Organisasi'">Organisasi</span>
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-[11px] font-semibold">
+                                                <i class='bx bx-briefcase'></i>
+                                                <span x-text="$store.lang?.current === 'en' ? 'Career & Intern' : 'Karir & Magang'">Karir & Magang</span>
+                                            </span>
+                                        @endif
                                     </div>
                                     <h3 class="text-xl font-bold font-['Space_Grotesk'] text-slate-100 group-hover:text-{{ $exp->color }}-400 transition-colors mb-2">
                                         {{ $exp->title }}
                                     </h3>
                                     @if($exp->company)
-                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-2">{{ $exp->company }}</div>
+                                        <div class="text-{{ $exp->color }}-400 text-sm font-semibold mb-3 flex items-center gap-1.5">
+                                            @if($cat === 'education')
+                                                <i class='bx bxs-school text-base'></i>
+                                            @elseif($cat === 'organization')
+                                                <i class='bx bx-sitemap text-base'></i>
+                                            @else
+                                                <i class='bx bx-buildings text-base'></i>
+                                            @endif
+                                            <span>{{ $exp->company }}</span>
+                                        </div>
                                     @endif
                                     <p class="text-sm text-slate-400 leading-relaxed">
                                         {{ $exp->description }}
@@ -533,7 +633,7 @@
                                     @if(!empty($exp->tags_array))
                                         <div class="flex flex-wrap gap-1.5 mt-4">
                                             @foreach($exp->tags_array as $tag)
-                                                <span class="badge text-[11px] bg-white/5 text-slate-300">{{ $tag }}</span>
+                                                <span class="badge text-[11px] bg-white/5 text-slate-300 border border-white/5">{{ $tag }}</span>
                                             @endforeach
                                         </div>
                                     @endif
@@ -546,8 +646,8 @@
                         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 mb-4">
                             <i class='bx bx-history text-3xl text-slate-500'></i>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-300 font-['Space_Grotesk'] mb-2">Belum ada pengalaman</h3>
-                        <p class="text-slate-500 text-sm">Riwayat perjalanan karir akan tampil di sini.</p>
+                        <h3 class="text-lg font-bold text-slate-300 font-['Space_Grotesk'] mb-2" x-text="$store.lang?.current === 'en' ? 'No milestones recorded yet' : 'Belum ada rekam jejak'">Belum ada rekam jejak</h3>
+                        <p class="text-slate-500 text-sm" x-text="$store.lang?.current === 'en' ? 'Timeline records will appear here.' : 'Riwayat perjalanan karir dan pendidikan akan tampil di sini.'">Riwayat perjalanan karir dan pendidikan akan tampil di sini.</p>
                     </div>
                 @endforelse
             </div>

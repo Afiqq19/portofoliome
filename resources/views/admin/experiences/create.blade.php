@@ -17,20 +17,29 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="form-group mb-0">
-                <label class="form-label">Judul Peran / Pengalaman <span class="text-rose-500">*</span></label>
-                <input type="text" name="title" class="form-control" value="{{ old('title') }}" required placeholder="Contoh: Freelance Fullstack Developer">
+                <label class="form-label">Judul Peran / Gelar / Posisi <span class="text-rose-500">*</span></label>
+                <input type="text" name="title" class="form-control" value="{{ old('title') }}" required placeholder="Contoh: Freelance Fullstack Developer / D3 Manajemen Informatika">
             </div>
             
             <div class="form-group mb-0">
-                <label class="form-label">Nama Perusahaan / Organisasi</label>
-                <input type="text" name="company" class="form-control" value="{{ old('company') }}" placeholder="Contoh: PT Teknologi Modern (Boleh dikosongkan)">
+                <label class="form-label">Nama Institusi / Perusahaan / Organisasi</label>
+                <input type="text" name="company" class="form-control" value="{{ old('company') }}" placeholder="Contoh: PT Pelindo Multi Terminal / Politeknik Negeri Medan">
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="form-group mb-0">
+                <label class="form-label">Kategori Jejak <span class="text-rose-500">*</span></label>
+                <select name="category" class="form-control cursor-pointer" required>
+                    <option value="work" {{ old('category') == 'work' ? 'selected' : '' }}>💼 Karir & Magang (Work & Internship)</option>
+                    <option value="education" {{ old('category') == 'education' ? 'selected' : '' }}>🎓 Pendidikan (Education)</option>
+                    <option value="organization" {{ old('category') == 'organization' ? 'selected' : '' }}>🏛️ Organisasi & Kepemimpinan</option>
+                </select>
+            </div>
+
             <div class="form-group mb-0">
                 <label class="form-label">Periode Waktu <span class="text-rose-500">*</span></label>
-                <input type="text" name="period" class="form-control" value="{{ old('period') }}" required placeholder="Contoh: 2024 - Sekarang atau Jan 2023 - Des 2023">
+                <input type="text" name="period" class="form-control" value="{{ old('period') }}" required placeholder="Contoh: 2024 - Sekarang atau Jan 2026 - Mar 2026">
             </div>
 
             <div class="form-group mb-0">
