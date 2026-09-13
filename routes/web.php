@@ -46,6 +46,9 @@ Route::middleware([TrackVisitor::class, CheckMaintenanceMode::class])->group(fun
     // Tiket Percakapan
     Route::get('/ticket/{ticket_id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/ticket/{ticket_id}/reply', [TicketController::class, 'reply'])->name('ticket.reply')->middleware('throttle:5,1');
+
+    // Asisten Cerdas Virtual Syafiq AI
+    Route::post('/ai/chat', [PortfolioController::class, 'aiChat'])->name('ai.chat')->middleware('throttle:30,1');
 });
 
 // ═══════════════════════════════════════════════════════

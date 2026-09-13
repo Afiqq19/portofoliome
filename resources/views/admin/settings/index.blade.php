@@ -180,6 +180,22 @@
                 </div>
             </label>
 
+            <!-- Asisten Cerdas Syafiq AI -->
+            <label class="flex items-center justify-between cursor-pointer p-5 rounded-2xl bg-gradient-to-r from-indigo-50/50 via-purple-50/40 to-slate-50 border border-indigo-200/80 hover:border-indigo-400 hover:shadow-sm transition-all">
+                <div class="pr-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="font-bold text-sm text-slate-900">Asisten Cerdas Virtual Syafiq AI (Interactive Chatbot)</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700 uppercase tracking-wider">AI Widget</span>
+                    </div>
+                    <span class="text-xs text-slate-500">Menampilkan widget asisten virtual pintar di pojok layar yang siap menjawab pertanyaan pengunjung tentang CV, magang di Pelindo & Telkom, keahlian, dan estimasi biaya secara otomatis.</span>
+                </div>
+                <div class="relative inline-flex items-center flex-shrink-0">
+                    <input type="checkbox" name="enable_ai_assistant" value="1" {{ ($profile->enable_ai_assistant ?? true) ? 'checked' : '' }} class="sr-only peer">
+                    <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 shadow-inner"></div>
+                </div>
+            </label>
+
         </div>
 
         <div class="border-t border-slate-100 pt-6 mb-8">

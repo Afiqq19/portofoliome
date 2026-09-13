@@ -23,6 +23,7 @@ class Profile extends Model
         'enable_estimator',
         'enable_architecture',
         'enable_landing_page',
+        'enable_ai_assistant',
         'maintenance_status',
         'maintenance_title',
         'maintenance_message',
@@ -36,6 +37,7 @@ class Profile extends Model
         'enable_estimator' => 'boolean',
         'enable_architecture' => 'boolean',
         'enable_landing_page' => 'boolean',
+        'enable_ai_assistant' => 'boolean',
     ];
 
     public function socialLinks(): HasMany

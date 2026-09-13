@@ -320,4 +320,154 @@ class PortfolioController extends Controller
 
         return back()->with('success_note', 'Catatan Anda berhasil dipublikasikan! 🎉');
     }
+
+    /**
+     * Syafiq AI Assistant - Intelligent NLP Response Engine
+     */
+    public function aiChat(Request $request)
+    {
+        $validated = $request->validate([
+            'message' => 'required|string|max:500',
+        ]);
+
+        $msg = mb_strtolower(trim($validated['message']));
+        $profile = Profile::first();
+
+        // 1. Pendidikan / Kampus / Polmed
+        if (preg_match('/pendidikan|sekolah|kuliah|kampus|polmed|politeknik|manajemen informatika|d3|jurusan|ipk|lulusan|almamater|fresh graduate/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Mhd. Syafiq Syahmi adalah lulusan Program Studi D3 Manajemen Informatika dari Politeknik Negeri Medan (Polmed) periode 2023 - 2026.\n\nFokus kompetensi akademiknya meliputi Rekayasa Perangkat Lunak, Arsitektur Basis Data Relasional, Pemrograman Web & Mobile, serta Analisis Sistem Informasi. Syafiq juga aktif dalam organisasi kemahasiswaan BEM Polmed!",
+                'suggestions' => ['💼 Pengalaman Magang', '🚀 Projek Unggulan', '📄 Lihat CV Syafiq'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Lihat Bagian Pendidikan',
+                    'url' => '#timeline',
+                ]
+            ]);
+        }
+
+        // 2. Pengalaman Kerja / Magang / Pelindo / Telkom Akses
+        if (preg_match('/kerja|magang|pelindo|telkom|karir|pekerjaan|pengalaman|pkl|intern|internship|riwayat karir/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Syafiq memiliki rekam jejak pengalaman industri yang terverifikasi:\n\n1. 🏢 **PT Pelindo Multi Terminal (Kuala Tanjung)** (Januari 2026 – Maret 2026)\n   • IT Support & Pemeliharaan Infrastruktur Jaringan di area operasional pelabuhan maritim.\n\n2. 🏢 **PT Telkom Akses (Siantar)** (Oktober 2024 – November 2024)\n   • Admin Administrasi Umum & pengawasan teknis lapangan jaringan fiber optic.\n\n3. 💻 **Freelance Fullstack & Mobile Developer** (2024 – Sekarang)\n   • Mengembangkan aplikasi web dinamis (Laravel, Vue.js), sistem kasir/POS, dan aplikasi Android APK.",
+                'suggestions' => ['🚀 Projek Unggulan', '📄 Unduh Dokumen CV', '💬 Chat WhatsApp'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Buka Timeline Pengalaman',
+                    'url' => '#timeline',
+                ]
+            ]);
+        }
+
+        // 3. Organisasi / BEM / FKMPI
+        if (preg_match('/organisasi|bem|fkmpi|kepemimpinan|organisasi mahasiswa|purna tugas/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Syafiq aktif memegang posisi strategis kepemimpinan kemahasiswaan:\n\n🏛️ **BEM Politeknik Negeri Medan (2024–2025)**:\n• Pengurus Departemen, bertanggung jawab atas manajemen program kemahasiswaan, advokasi kesejahteraan mahasiswa, dan event kampus berskala besar.\n\n🏛️ **FKMPI Nasional (2024–2025)**:\n• Forum Komunikasi Mahasiswa Politeknik se-Indonesia tingkat nasional, aktif dalam konsolidasi jejaring kemitraan politeknik se-Indonesia.",
+                'suggestions' => ['🎓 Riwayat Pendidikan', '💼 Pengalaman Magang', '📄 Unduh CV'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Lihat Timeline Organisasi',
+                    'url' => '#timeline',
+                ]
+            ]);
+        }
+
+        // 4. Keahlian / Tech Stack / Skills
+        if (preg_match('/keahlian|skill|tech stack|teknologi|bahasa|pemrograman|coding|koding|framework|laravel|vue|php|flutter|android|mysql/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Stack teknologi dan keahlian utama Syafiq meliputi:\n\n⚡ **Backend & Framework**: PHP, Laravel 11 (Clean Architecture, RESTful API, MVC, Security Hardening)\n🎨 **Frontend**: JavaScript (ES6+), Alpine.js, Tailwind CSS, HTML5/CSS3, Blade\n📱 **Mobile Development**: Flutter, Android APK Development\n🗄️ **Database & Cloud**: MySQL, Database Modeling, Nginx, Docker, Linux VPS\n🛠️ **Tools & Workflow**: Git, GitHub, REST API, Payment Gateway QRIS, WhatsApp Bot",
+                'suggestions' => ['🚀 Projek Unggulan', '💰 Estimasi Biaya Projek', '💬 Hubungi Syafiq'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Lihat Grafik Keahlian',
+                    'url' => '#skills',
+                ]
+            ]);
+        }
+
+        // 5. Projek Portofolio / Karya
+        if (preg_match('/projek|project|aplikasi|karya|portofolio|fitur|source code|download apk|sistem kasir|pos|arsip/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Syafiq telah merancang dan membangun beragam aplikasi skala produksi siap pakai:\n\n• **Sistem Kasir POS & Inventori Modern**: Multi-cabang, barcode, dan laporan kasir otomatis.\n• **Platform Portofolio & Interactive CLI**: Sistem web berkecepatan tinggi dengan analitik mandiri dan dark-space UI.\n• **Aplikasi Mobile Android (APK)**: Aplikasi mobile interaktif berkinerja tinggi.\n\nAnda dapat mencoba live demo atau mengunduh source code ZIP & file APK langsung di menu Projek!",
+                'suggestions' => ['📁 Buka Katalog Projek', '💰 Kalkulator Estimasi', '📄 Lihat CV'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Jelajahi Semua Projek',
+                    'url' => '/projects',
+                ]
+            ]);
+        }
+
+        // 6. Layanan / Jasa / Estimasi Biaya / Freelance
+        if (preg_match('/biaya|harga|estimasi|jasa|layanan|freelance|buat web|bikin aplikasi|pesan website|tarif|order|hire|sewa/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Syafiq membuka layanan konsultasi dan pembuatan aplikasi:\n\n✓ **Website Kustom**: Portofolio, Company Profile, Landing Page Interaktif\n✓ **Sistem Manajemen & Kasir (POS)**: Bisnis, inventori, laporan penjualan\n✓ **Aplikasi Mobile Android (APK)**: Kustom fitur sesuai kebutuhan Anda\n✓ **Integrasi Sistem**: Payment Gateway QRIS & Bot Notifikasi WhatsApp\n\nAnda dapat menghitung perkiraan budget & durasi kerja di menu **Kalkulator Estimasi**, atau diskusi langsung via WhatsApp!",
+                'suggestions' => ['📊 Kalkulator Estimasi', '💬 Chat WhatsApp Syafiq', '📧 Kirim Pesan'],
+                'action' => [
+                    'type' => 'link',
+                    'label' => 'Buka Kalkulator Estimasi',
+                    'url' => '/estimator',
+                ]
+            ]);
+        }
+
+        // 7. CV / Resume / Dokumen
+        if (preg_match('/cv|resume|riwayat hidup|curriculum vitae|biodata|dokumen|pdf/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Dokumen Curriculum Vitae resmi Mhd. Syafiq Syahmi (2 Halaman Terverifikasi) siap diunduh atau dilihat secara interaktif di layar Anda tanpa perlu keluar dari halaman web!",
+                'suggestions' => ['📄 Buka Pratinjau CV', '⬇ Unduh PDF CV', '💬 Hubungi WhatsApp'],
+                'action' => [
+                    'type' => 'cv_modal',
+                    'label' => 'Buka Dokumen CV Interaktif',
+                    'url' => '/cv/stream',
+                ]
+            ]);
+        }
+
+        // 8. Kontak / WhatsApp / Email / Nomor HP
+        if (preg_match('/kontak|hubungi|whatsapp|wa|nomor|telepon|hp|email|lokasi|alamat|rekrut/i', $msg)) {
+            $phone = $profile->phone ?? '+62 822-3790-5639';
+            $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Anda dapat langsung menghubungi Mhd. Syafiq Syahmi melalui saluran resmi berikut:\n\n📱 **WhatsApp**: {$phone}\n📧 **Email**: " . ($profile->email ?? 'mhdsyafiqsyahmi19@gmail.com') . "\n📍 **Lokasi**: " . ($profile->location ?? 'Kab. Batu Bara / Medan, Sumatera Utara') . "\n💼 **Status**: Tersedia untuk Full-time, Magang Industri, maupun Project Freelance!",
+                'suggestions' => ['💬 Hubungi via WhatsApp', '📄 Unduh Dokumen CV', '📊 Kalkulator Estimasi'],
+                'action' => [
+                    'type' => 'whatsapp',
+                    'label' => 'Buka WhatsApp Syafiq',
+                    'url' => "https://wa.me/{$cleanPhone}?text=Halo%20Syafiq,%20saya%20melihat%20portofolio%20Anda%20dan%20tertarik%20untuk%20diskusi%20lebih%20lanjut.",
+                ]
+            ]);
+        }
+
+        // 9. Sapaan / Salam
+        if (preg_match('/halo|hai|hi|pagi|siang|sore|malam|assalamualaikum|hey|hello|tes|test|ping/i', $msg)) {
+            return response()->json([
+                'status' => 'success',
+                'reply' => "Halo! Selamat datang di portofolio Mhd. Syafiq Syahmi. Senang sekali bisa menyapa Anda! 👋\n\nSaya adalah **Syafiq AI**, asisten virtual cerdas yang siap menjawab pertanyaan Anda seputar keahlian koding, riwayat pendidikan Polmed, pengalaman magang di PT Pelindo & PT Telkom Akses, hingga estimasi projek. Ada yang bisa saya bantu?",
+                'suggestions' => ['💼 Pengalaman Kerja', '🎓 Riwayat Pendidikan', '🚀 Projek Unggulan', '📄 Lihat CV Syafiq']
+            ]);
+        }
+
+        // 10. Fallback Respons
+        $phone = $profile->phone ?? '+62 822-3790-5639';
+        $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+        return response()->json([
+            'status' => 'success',
+            'reply' => "Pertanyaan yang menarik! Sebagai asisten virtual, fokus utama saya adalah memberikan informasi seputar portofolio, riwayat pendidikan, magang di industri, dan keahlian koding Mhd. Syafiq Syahmi.\n\nJika Anda ingin berdiskusi lebih spesifik atau membicarakan kerjasama projek, Anda bisa langsung ngobrol dengan Syafiq via WhatsApp ya!",
+            'suggestions' => ['💬 Chat WhatsApp Syafiq', '📄 Buka Dokumen CV', '💼 Pengalaman Magang', '🚀 Projek Unggulan'],
+            'action' => [
+                'type' => 'whatsapp',
+                'label' => 'Tanya Langsung ke Syafiq',
+                'url' => "https://wa.me/{$cleanPhone}?text=Halo%20Syafiq,%20saya%20ingin%20bertanya%20langsung%20kepada%20Anda.",
+            ]
+        ]);
+    }
 }

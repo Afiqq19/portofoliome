@@ -706,6 +706,11 @@
         </div>
     </div>
 
+    <!-- Syafiq AI Interactive Assistant Widget -->
+    @if($profile->enable_ai_assistant ?? true)
+        @include('partials.ai-assistant')
+    @endif
+
     <!-- Global Interactive PDF Viewer & Developer Terminal JS -->
     <script>
         // PDF Modal Functions
