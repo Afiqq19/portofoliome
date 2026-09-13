@@ -120,7 +120,7 @@ Route::get('/update-rahasia-portofolio', function () {
 
     // 2. Auto-patch .env untuk server production
     $envFile = base_path('.env');
-    if (file_exists($envFile)) {
+    if (file_exists($envFile) && is_writable($envFile)) {
         $env = file_get_contents($envFile);
         $env = preg_replace('/^APP_URL=.*/m', 'APP_URL=https://mhdsyafiqsyahmi.my.id', $env);
         if (!str_contains($env, 'APP_TIMEZONE=')) {
@@ -128,7 +128,7 @@ Route::get('/update-rahasia-portofolio', function () {
         } else {
             $env = preg_replace('/^APP_TIMEZONE=.*/m', 'APP_TIMEZONE=Asia/Jakarta', $env);
         }
-        file_put_contents($envFile, $env);
+        @file_put_contents($envFile, $env);
     }
 
     // Path Git standar untuk Ubuntu/Linux
